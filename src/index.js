@@ -13,8 +13,10 @@ class App extends React.Component {
   render() {
     return (
       <ReduxProvider store={this.state.store}>
-        <i className="fa fa-search"></i>
-        <h1>Hello, World!</h1>
+        <header>
+          <i className="fa fa-search"></i>
+          <h1>Hello, World!</h1>
+        </header>
       </ReduxProvider>
     )
   }
