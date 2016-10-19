@@ -1,11 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import './index.scss'
+import './scss/scims.scss';
 
 class HelloWorld extends React.Component {
   render() {
-    return <h1>Hello, World!</h1>
+    return (
+      <header>
+        <i className="fa fa-search"></i>
+        <h1>Hello, World!</h1>
+      </header>
+    )
   }
 }
 

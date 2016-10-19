@@ -13,6 +13,9 @@ module.exports = {
 				'style',
 				'css!sass'
 			)
+		}, {
+			test: /\.(eot|svg|ttf|woff2?).*$/,
+			loader: 'url'
 		}]
 	},
 	plugins: [
