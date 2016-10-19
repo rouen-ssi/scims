@@ -9,7 +9,7 @@ class HelloWorld extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <HelloWorld />,
-  document.body
-)
+const root = document.createElement('div')
+document.body.appendChild(root)
+
+ReactDOM.render(<HelloWorld />, root)
