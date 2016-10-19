@@ -1,0 +1,21 @@
+{
+    "parser": "babel-eslint",
+    "extends": "standard",
+    "plugins": [
+        "standard",
+        "promise",
+        "react",
+        "flowtype"
+    ],
+    "rules" : {
+      "comma-dangle": [2, "always-multiline"],
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+      "space-before-function-paren": [2, "never"]
+    },
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+}

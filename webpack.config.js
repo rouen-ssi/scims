@@ -16,7 +16,7 @@ module.exports = {
 		}]
 	},
 	plugins: [
-		new ExtractTextPlugin('bundle.css'),
+		new ExtractTextPlugin('bundle.[hash].css'),
 		new HtmlWebpackPlugin({
 			title: 'SciMS - Le CMS pour les scientifiques'
 		})
@@ -24,6 +24,6 @@ module.exports = {
 	entry: './src/index.js',
 	output: {
 		path: './build',
-		filename: 'bundle.js'
+		filename: 'bundle.[hash].js'
 	}
  }
