@@ -2,6 +2,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+	devServer: { inline: true },
 	module: {
 		loaders: [{
 			test: /\.jsx?$/,
