@@ -1,16 +1,16 @@
-@import 'font-awesome/font-awesome.scss';
+@import 'font-awesome/font-awesome';
 
-@import './_mixins.scss';
-@import './_variables.scss';
-@import './_reset.css';
+@import '_mixins';
+@import '_variables';
+@import '_reset';
 
-@import './partials/header/_header.scss';
-@import './partials/sidebar/_sidebar.scss';
+@import 'components/_header';
+@import 'components/_sidebar';
 
 body {
   font-family: $font-family;
   font-size: $font-size;
-  background: $background-color;
+  background: $body-background-color;
 }
 
 a {

@@ -1,11 +1,9 @@
 .header {
-  @import './_variables.scss';
-
   overflow: hidden;
   width: 100%;
   height: 80px;
   margin-bottom: 20px;
-  background: $background-color;
+  background: $header-background-color;
 
   .header-wrap {
     width: $page-width;

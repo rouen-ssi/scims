@@ -1,11 +1,23 @@
+/**********
+ * Global *
+ **********/
 $fa-font-path: '../fonts';
-
 $page-width: 1000px;
 $font-family: 'sans';
 $font-size: 14px;
-$background-color: #F2F2F2;
+$bloc-padding: 20px;
 $link-color: gray;
 $border-color: #CECECE;
 $shadow-color: #CECECE;
+$body-background-color: #F2F2F2;
+
+/**********
+ * Header *
+ **********/
+ $header-background-color: #363636;
+ $nav-color: white;
+
+/***********
+ * Sidebar *
+ ***********/
 $sidebar-width: 250px;
-$bloc-padding: 20px;
