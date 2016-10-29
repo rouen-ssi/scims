@@ -9,3 +9,10 @@
   -moz-box-shadow: $offset-x $offset-y $blur-radius $color;
   box-shadow: $offset-x $offset-y $blur-radius $color;
 }
+
+@mixin center() {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+}

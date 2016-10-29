@@ -1,0 +1,12 @@
+.login-form {
+  margin: auto;
+  @include center();
+
+  table {
+    margin: auto;
+
+    td {
+      padding: 10px;
+    }
+  }
+}
