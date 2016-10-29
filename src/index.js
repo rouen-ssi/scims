@@ -22,7 +22,7 @@ class App extends React.Component {
           <Header />
           <div className="page-wrap">
             <Sidebar />
-            <div className='bloc content-wrap'>
+            <div className='content-wrap'>
               <Article />
               <Article />
             </div>

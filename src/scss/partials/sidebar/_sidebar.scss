@@ -5,7 +5,10 @@
   width: $sidebar-width;
 
   .sidebar-bloc {
-    padding: 20px;
+
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
 
     h1 {
       font-size: 1.2em;

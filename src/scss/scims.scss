@@ -31,23 +31,28 @@ a {
 }
 
 h1 {
-  font-size: 1.6em;
+  font-size: 1.8em;
+  margin-bottom: 20px;
 }
 
 h2 {
   font-size: 1.5em;
+  margin-bottom: 20px;
 }
 
 h3 {
   font-size: 1.4em;
+  margin-bottom: 20px;
 }
 
 h4 {
   font-size: 1.3em;
+  margin-bottom: 20px;
 }
 
 h5 {
   font-size: 1.2em;
+  margin-bottom: 20px;
 }
 
 .clear-float {
@@ -63,10 +68,11 @@ h5 {
   background: white;
   @include border-radius(2px);
   @include box-shadow(0, 0, 3px, $shadow-color);
+  margin-bottom: 20px;
+  padding: $bloc-padding;
 }
 
 .content-wrap {
-  border: 1px solid red;
-  width: $page-width - $sidebar-width - 20px;
+  width: $page-width - $sidebar-width - $bloc-padding * 2 - 20px;
   float: left;
 }
