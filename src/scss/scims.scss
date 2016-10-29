@@ -1,1 +1,23 @@
 @import 'font-awesome/font-awesome.scss';
+
+@import './mixins.scss';
+
+@import './_variables.scss';
+@import './_reset.css';
+
+@import './partials/header/_header.scss';
+
+body {
+  font-family: $font-family;
+  font-size: $font-size;
+  background: $background_color;
+}
+
+a {
+  color: $link_color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
