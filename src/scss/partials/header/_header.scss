@@ -4,11 +4,23 @@
   overflow: hidden;
   width: 100%;
   height: 80px;
-  background: $background_color;
+  margin-bottom: 20px;
+  background: $background-color;
+
+  .header-wrap {
+    width: $page-width;
+    margin: 25px auto auto auto;
+  }
+
+  .logo {
+    float: left;
+    color: white;
+    font-size: 2em;
+  }
 
   .nav {
-    width: 800px;
-    margin: 30px auto auto auto;
+    float: right;
+    margin-top: 10px;
     text-align: right;
 
     li {
@@ -19,7 +31,7 @@
       }
 
       a {
-        color: $nav_color;
+        color: $nav-color;
       }
     }
   }

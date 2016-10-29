@@ -1,23 +1,72 @@
 @import 'font-awesome/font-awesome.scss';
 
-@import './mixins.scss';
-
+@import './_mixins.scss';
 @import './_variables.scss';
 @import './_reset.css';
 
 @import './partials/header/_header.scss';
+@import './partials/sidebar/_sidebar.scss';
 
 body {
   font-family: $font-family;
   font-size: $font-size;
-  background: $background_color;
+  background: $background-color;
 }
 
 a {
-  color: $link_color;
+  color: $link-color;
   text-decoration: none;
 
   &:hover {
     text-decoration: underline;
   }
+
+  &:visited {
+    color: $link-color;
+  }
+
+  &:link {
+    color: $link-color;
+  }
+}
+
+h1 {
+  font-size: 1.6em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1.4em;
+}
+
+h4 {
+  font-size: 1.3em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+.clear-float {
+  clear: both;
+}
+
+.page-wrap {
+  width: $page-width;
+  margin: auto;
+}
+
+.bloc {
+  background: white;
+  @include border-radius(2px);
+  @include box-shadow(0, 0, 3px, $shadow-color);
+}
+
+.content-wrap {
+  border: 1px solid red;
+  width: $page-width - $sidebar-width - 20px;
+  float: left;
 }

@@ -1,0 +1,20 @@
+.sidebar {
+  @import './_variables.scss';
+
+  float: right;
+  width: $sidebar-width;
+
+  .sidebar-bloc {
+    padding: 20px;
+
+    h1 {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+
+    li {
+      padding: 10px 0;
+      border-bottom: 1px solid $border-color;
+    }
+  }
+}
