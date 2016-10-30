@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/rouenssi-tnp/SciMS#readme",
   "devDependencies": {
+    "axios": "^0.15.2",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.5",
