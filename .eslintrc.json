@@ -5,13 +5,19 @@
         "standard",
         "promise",
         "react",
-        "flowtype"
+        "flowtype",
+        "import"
     ],
     "rules" : {
       "comma-dangle": [2, "always-multiline"],
       "react/jsx-uses-react": "error",
       "react/jsx-uses-vars": "error",
-      "space-before-function-paren": [2, "never"]
+      "space-before-function-paren": [2, "never"],
+      "no-duplicate-imports": 0,
+      "import/no-duplicates": 2,
+      "flowtype/define-flow-type": 1,
+      "flowtype/use-flow-type": 1,
+      "no-unused-vars": [2, { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }]
     },
     "parserOptions": {
       "ecmaFeatures": {

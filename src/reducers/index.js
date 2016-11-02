@@ -1,3 +1,3 @@
-export function fooReducer(state, action) {
+export function fooReducer(_state, _action) {
   return {}
 }
