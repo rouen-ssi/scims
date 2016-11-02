@@ -4,7 +4,7 @@
   "description": "Le CMS open-source pour les scientifiques",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server -d -w",
     "build": "webpack -p --progress",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
