@@ -12,7 +12,7 @@ module.exports = {
       loader: ExtractTextPlugin.extract('style', 'css!sass'),
     }, {
       test: /\.(eot|svg|ttf|woff2?).*$/,
-      loader: 'url',
+      loader: 'url?limit=10000',
     }],
   },
   plugins: [
