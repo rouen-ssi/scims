@@ -8,6 +8,7 @@ import { configureStore } from './configureStore'
 import App from './components/App'
 import Home from './components/Home'
 import Signup from './components/Signup'
+import Signin from './components/Signin'
 
 import './scss/scims.scss'
 
@@ -22,6 +23,7 @@ ReactDOM.render((
       <Router path='/' component={App}>
         <IndexRoute component={Home} />
         <Router path='/signup' component={Signup} />
+        <Router path='/signin' component={Signin} />
       </Router>
     </Router>
   </Provider>

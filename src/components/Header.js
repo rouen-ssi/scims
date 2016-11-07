@@ -11,7 +11,7 @@ const Header = () => (
           <li><a href='#'>CATEGORIES</a></li>
           <li><a href='#'>ARCHIVES</a></li>
           <li><Link to="/signup">SIGN UP</Link></li>
-          <li><a href='#'>SIGN IN</a></li>
+          <li><Link to="/signin">SIGN IN</Link></li>
         </ul>
       </nav>
       <div className='clear-float'></div>
