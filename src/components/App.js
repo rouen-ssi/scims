@@ -8,9 +8,9 @@ const App = ({children}) => (
 
     <div className="page-wrap">
       {children}
-
-      <Footer />
     </div>
+
+    <Footer />
   </div>
 )
 

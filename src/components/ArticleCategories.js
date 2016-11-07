@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SidebarCategories = () => (
+const ArticleCategories = () => (
   <div className='sidebar-bloc'>
     <h1>Categories</h1>
     <ul>
@@ -12,4 +12,4 @@ const SidebarCategories = () => (
   </div>
 )
 
-export default SidebarCategories
+export default ArticleCategories

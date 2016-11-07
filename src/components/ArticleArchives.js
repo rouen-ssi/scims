@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SidebarArchives = () => (
+const ArticleArchives = () => (
   <div className='sidebar-bloc'>
     <h1>Archives</h1>
     <ul>
@@ -12,4 +12,4 @@ const SidebarArchives = () => (
   </div>
 )
 
-export default SidebarArchives
+export default ArticleArchives

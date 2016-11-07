@@ -1,0 +1,16 @@
+.profile {
+  .avatar {
+    width: 150px;
+    height: 150px;
+    border: 1px solid black;
+    margin: auto auto 20px auto;
+
+    img {
+      height: 150px;
+    }
+  }
+
+  .biography {
+    text-align: justify;
+  }
+}

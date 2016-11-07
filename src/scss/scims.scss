@@ -1,14 +1,16 @@
 @import 'font-awesome/font-awesome';
 
-@import '_mixins';
-@import '_variables';
-@import '_reset';
+@import 'mixins';
+@import 'variables';
+@import 'reset';
 
-@import 'components/_header';
-@import 'components/_sidebar';
-@import 'components/_article';
-@import 'components/_signup';
-@import 'components/_footer';
+@import 'components/header';
+@import 'components/sidebar';
+@import 'components/article';
+@import 'components/signup';
+@import 'components/footer';
+@import 'components/profile';
+@import 'components/main-content';
 
 body {
   font-family: $font-family;
@@ -65,17 +67,14 @@ h5 {
 .page-wrap {
   width: $page-width;
   margin: auto;
+  display: flex;
 }
 
 .bloc {
+  box-sizing: border-box;
   background: white;
   @include border-radius(2px);
   @include box-shadow(0, 0, 3px, $shadow-color);
   margin-bottom: 20px;
   padding: $bloc-padding;
-}
-
-.content-wrap {
-  width: $page-width - $sidebar-width - $bloc-padding * 2 - 20px;
-  float: left;
 }

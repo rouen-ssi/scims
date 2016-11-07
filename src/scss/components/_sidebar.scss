@@ -1,9 +1,16 @@
 .sidebar {
-  float: right;
+  box-sizing: border-box;
   width: $sidebar-width;
 
-  .sidebar-bloc {
+  &.left {
+    float: left;
+  }
 
+  &.right {
+    float: right;
+  }
+
+  .sidebar-bloc {
     &:not(:last-child) {
       margin-bottom: 20px;
     }

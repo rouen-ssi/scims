@@ -1,12 +1,13 @@
 import React from 'react'
-import SidebarCategories from './SidebarCategories'
-import SidebarArchives from './SidebarArchives'
+import classNames from 'classnames'
 
-const Sidebar = () => (
-  <div className="bloc sidebar">
-    <SidebarCategories />
-    <SidebarArchives />
-  </div>
-)
+const Sidebar = ({ children, side }) => {
+  let classes = classNames('bloc', 'sidebar', side)
+  return (
+    <div className={classes}>
+      {children}
+    </div>
+  )
+}
 
 export default Sidebar

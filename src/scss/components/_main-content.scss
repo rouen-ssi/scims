@@ -1,0 +1,14 @@
+.main-content {
+
+  &.right {
+    margin-left: $sidebar-width + $bloc-margin;
+  }
+
+  &.left {
+    margin-right: $sidebar-width + $bloc-margin;
+  }
+
+  &.center {
+    width: 100%;
+  }
+}
