@@ -1,10 +1,12 @@
 .main-content {
 
   &.right {
+    width: $page-width - $sidebar-width - $bloc-margin;
     margin-left: $sidebar-width + $bloc-margin;
   }
 
   &.left {
+    width: $page-width - $sidebar-width - $bloc-margin;
     margin-right: $sidebar-width + $bloc-margin;
   }
 
