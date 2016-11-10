@@ -1,0 +1,6 @@
+[submodule "scims-backend"]
+	path = scims-backend
+	url = https://github.com/rouenssi-tnp/scims-backend.git
+[submodule "api"]
+	path = api
+	url = https://github.com/rouenssi-tnp/scims-backend.git
