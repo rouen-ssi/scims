@@ -1,36 +1,69 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { Form, Button, Component as FormComponent } from './Form'
 
-const Signup = () => (
-  <div className="bloc login-form">
-    <form>
-      <table>
-        <tr>
-          <td><label for="email">E-mail</label></td>
-          <td><input type="email" id="email" /></td>
-        </tr>
+import MainContent from './MainContent'
+import * as accountActions from '../actions/account'
 
-        <tr>
-          <td><label for="last_name">Last name</label></td>
-          <td><input type="test" id="last_name" /></td>
-        </tr>
+class Signup extends FormComponent {
+  static errors = {
+    'Failed to fetch': ['firstname', 'Failed to fetch'],
+    'INVALID_EMAIL': ['email', 'Invalid email address (empty or malformed)'],
+    'EMAIL_ALREADY_EXISTS': ['email', 'The email already exists'],
+    'INVALID_FIRST_NAME': ['firstname', 'Invalid first name (empty)'],
+    'INVALID_LAST_NAME': ['lastname', 'Invalid last name (empty)'],
+    'INVALID_PASSWORD': ['password', 'Invalid password (8 characters min.)'],
+  }
 
-        <tr>
-          <td><label for="first_name">First name</label></td>
-          <td><input type="text" id="first_name" /></td>
-        </tr>
+  render() {
+    if (this.props.success) {
+      this.props.router.push('/login')
+      return null
+    }
 
-        <tr>
-          <td><label for="password">Password:</label></td>
-          <td><input type="password" id="password" /></td>
-        </tr>
+    return (
+      <MainContent side='center'>
+        <div className='bloc'>
+          <Form onSubmit={this._onSubmit}>
+            {this.renderField('firstname', 'Firstname')}
+            {this.renderField('lastname', 'Lastname')}
+            {this.renderField('email', 'E-mail', {type: 'email'})}
+            {this.renderField('password', 'Password', {type: 'password'})}
 
-        <tr>
-          <td></td>
-          <td><button>Sign-up</button></td>
-        </tr>
-      </table>
-    </form>
-  </div>
-)
+            <Button type="submit" loading={this.props.loading}>Sign Up</Button>
+          </Form>
+        </div>
+      </MainContent>
+    )
+  }
 
-export default Signup
+  onSubmit({ email, firstname, lastname, password }) {
+    this.setState({loading: true})
+
+    this.props.account.sendSignupRequest(
+      email,
+      firstname,
+      lastname,
+      password,
+    )
+
+    return false
+  }
+}
+
+function mapStateToProps(state) {
+  return {
+    loading: state.account.signingUp,
+    errors: state.account.signupError || [],
+    success: state.account.signupSuccess,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    account: bindActionCreators(accountActions, dispatch),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signup)

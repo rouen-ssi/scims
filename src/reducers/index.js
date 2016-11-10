@@ -1,3 +1,1 @@
-export function fooReducer(_state, _action) {
-  return {}
-}
+export { default as account } from './account'

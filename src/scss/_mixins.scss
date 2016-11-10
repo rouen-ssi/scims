@@ -14,5 +14,36 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
+  transform: translate(-50%, -50%);
+}
+
+/**
+ * Credits to [Simon Højberg](http://www.cssarrowplease.com/).
+ */
+@mixin arrow-please($background, $border, $size, $position) {
+  position: relative;
+
+  &:after, &:before {
+    bottom: 100%;
+    left: $position;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &:after {
+    border-color: transparentize($background, 1);
+    border-bottom-color: $background;
+    border-width: $size;
+    margin-left: -$size;
+  }
+  &:before {
+    border-color: transparentize($border, 1);
+    border-bottom-color: $border;
+    border-width: $size + 1px;
+    margin-left: -$size - 1px;
+  }
 }

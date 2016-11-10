@@ -1,12 +1,107 @@
-.login-form {
-  width: 350px;
-  margin: auto;
+$border-color: rgba(0, 0, 0, 0.1);
+$border-active-color: #71ADDB;
+$shadow-color: #eee;
 
+$error-background: #B34C48;
+$error-border: darken($error-background, 30%);
+$error-color: #EFE1CF;
+$error-widget: #9a231f;
+
+.form {
   table {
     margin: auto;
+    width: 50%;
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
 
-    td {
-      padding: 10px;
+    tr.form-field {
+      td {
+        vertical-align: baseline;
+
+        &:first-child {
+          width: 15%;
+          text-align: right;
+          padding: 1em;
+        }
+
+        input {
+          width: 100%;
+          font-size: 1em;
+          padding: 0.5em;
+          border-radius: 3px;
+          border: 1px solid $border-color;
+          &:focus {
+            outline: none;
+            border: 1px solid $border-active-color;
+            box-shadow: 0 0 5px 2px $shadow-color;
+          }
+        }
+      }
+
+      ul.form-field-errors {
+        background: linear-gradient(to bottom, $error-background, darken($error-background, 3%));
+        box-shadow: 0 3px 10px 3px rgba(0,0,0,0.3);
+        border-radius: 3px;
+        border: 1px solid $error-border;
+        color: $error-color;
+        font-weight: lighter;
+
+        margin: 1em 0;
+        padding: 0.8em 1em;
+
+        @include arrow-please($error-background, $error-border, 10px, 10%);
+
+        li {
+          margin-bottom: 0.8em;
+          line-height: 1.2em;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      &.form-field-error {
+        label {
+          color: $error-widget;
+          font-weight: bold;
+        }
+
+        input, input:focus {
+          border: 1px solid $error-widget;
+        }
+
+        i.fa {
+          float: right;
+          font-size: 1.3em;
+        }
+      }
+
+      &:not(.form-field-error) {
+        ul.form-field-errors {
+          display: none;
+        }
+      }
+    }
+
+    button {
+      background: linear-gradient(to bottom, #fff, lighten($border-color, 70%));
+      border: 1px solid $border-color;
+      border-radius: 3px;
+      padding: 0.5em 1.2em;
+      margin-top: 1em;
+      font-size: 1em;
+      &:focus {
+        outline: none;
+      }
+      &:hover {
+        background: linear-gradient(to bottom, #fff, lighten($border-color, 20%));
+        box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+      .fa {
+        float: right;
+      }
     }
   }
 }
