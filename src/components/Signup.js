@@ -18,7 +18,7 @@ class Signup extends FormComponent {
 
   render() {
     if (this.props.success) {
-      this.props.router.push('/login')
+      this.props.router.push('/signin')
       return null
     }
 

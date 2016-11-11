@@ -58,7 +58,7 @@ export class Component extends React.Component {
 
   renderField(id: string, label: string, props: Object = {}) {
     const errors = []
-    for (const error of this.props.errors) {
+    for (const error of this.props.errors || []) {
       const errorMeta = this.constructor.errors[error]
       if (errorMeta) {
         const [errorField, errorMessage] = errorMeta

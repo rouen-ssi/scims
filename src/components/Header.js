@@ -1,7 +1,18 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
-const Header = () => (
+const LoggedHeader = [
+  <li><Link to="/me">MY PROFILE</Link></li>,
+  <li><Link to="/signout">SIGN OUT</Link></li>,
+]
+
+const GuestHeader = [
+  <li><Link to="/signup">SIGN UP</Link></li>,
+  <li><Link to="/signin">SIGN IN</Link></li>,
+]
+
+const Header = ({logged}) => (
   <header className='header'>
     <div className='header-wrap'>
       <h1 className='logo'>SciMS</h1>
@@ -10,8 +21,8 @@ const Header = () => (
           <li><Link to='/'>HOME</Link></li>
           <li><a href='#'>CATEGORIES</a></li>
           <li><a href='#'>ARCHIVES</a></li>
-          <li><Link to="/signup">SIGN UP</Link></li>
-          <li><a href='#'>SIGN IN</a></li>
+
+          { logged ? LoggedHeader : GuestHeader }
         </ul>
       </nav>
       <div className='clear-float'></div>
@@ -19,4 +30,10 @@ const Header = () => (
   </header>
 )
 
-export default Header
+function mapStateToProps(state) {
+  return {
+    logged: !!state.account.currentUser,
+  }
+}
+
+export default connect(mapStateToProps)(Header)
