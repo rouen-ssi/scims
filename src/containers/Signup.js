@@ -1,9 +1,10 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Form, Button, Component as FormComponent } from './Form'
 
-import MainContent from './MainContent'
+import { Form, Button, Component as FormComponent } from '../components/Form'
+import MainContent from '../components/MainContent'
+
 import * as accountActions from '../actions/account'
 
 class Signup extends FormComponent {

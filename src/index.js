@@ -5,11 +5,11 @@ import { Router, IndexRoute, hashHistory } from 'react-router'
 import { Provider } from 'react-redux'
 import { configureStore } from './configureStore'
 
-import App from './components/App'
-import Home from './components/Home'
-import Signup from './components/Signup'
-import Signin from './components/Signin'
-import Signout from './components/Signout'
+import App from './containers/App'
+import Home from './containers/Home'
+import Signup from './containers/Signup'
+import Signin from './containers/Signin'
+import Signout from './containers/Signout'
 
 import './scss/scims.scss'
 

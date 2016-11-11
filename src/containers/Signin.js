@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import MainContent from './MainContent'
-import { Form, Button, Component } from './Form'
+import MainContent from '../components/MainContent'
+import { Form, Button, Component } from '../components/Form'
 
 import { bindActionCreators } from 'redux'
 import * as accountActions from '../actions/account'

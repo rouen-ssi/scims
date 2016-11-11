@@ -1,9 +1,9 @@
 import React from 'react'
-import Sidebar from './Sidebar'
-import ArticleCategories from './ArticleCategories'
-import ArticleArchives from './ArticleArchives'
-import Article from './Article'
-import MainContent from './MainContent'
+import Sidebar from '../components/Sidebar'
+import ArticleCategories from '../components/ArticleCategories'
+import ArticleArchives from '../components/ArticleArchives'
+import Article from '../components/Article'
+import MainContent from '../components/MainContent'
 
 const Home = () => (
   <div>
