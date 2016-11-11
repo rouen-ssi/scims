@@ -5,6 +5,7 @@ import type { Action } from '../actions/account'
 
 export type State = {
   currentUser: ?User,
+  token: ?string,
 
   loggingIn: boolean,
   loginError?: Array<LoginError>,
@@ -16,6 +17,7 @@ export type State = {
 
 const initialState: State = {
   currentUser: null,
+  token: null,
 
   loggingIn: false,
   signingUp: false,
@@ -45,6 +47,39 @@ export default function reducer(state: State = initialState, action: Action): St
         signingUp: false,
         signupError: undefined,
         signupSuccess: true,
+      }
+
+    case '@ACCOUNT/LOGGING_IN':
+      return {
+        ...state,
+        loggingIn: true,
+        loginError: undefined,
+        loginSuccess: false,
+      }
+
+    case '@ACCOUNT/LOGIN_ERROR':
+      return {
+        ...state,
+        loggingIn: false,
+        loginError: action.errors,
+        loginSuccess: false,
+      }
+
+    case '@ACCOUNT/LOGIN_SUCCESS':
+      return {
+        ...state,
+        currentUser: action.user,
+        token: action.token,
+        loggingIn: false,
+        loginError: undefined,
+        loginSuccess: true,
+      }
+
+    case '@ACCOUNT/LOGOUT':
+      return {
+        ...state,
+        currentUser: null,
+        token: null,
       }
 
     default:

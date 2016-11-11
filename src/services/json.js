@@ -3,7 +3,7 @@
 import { stringify as querystring } from 'querystring'
 
 export type HttpMethod = 'HEAD' | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS' | 'TRACE'
-export type HttpParams = {[key: string]: mixed}
+export type HttpParams = {[key: string]: any}
 export type HttpHeaders = {[key: string]: string}
 
 /**
