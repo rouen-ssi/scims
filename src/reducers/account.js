@@ -70,17 +70,18 @@ export default function reducer(state: State = initialState, action: Action): St
         ...state,
         currentUser: action.user,
         token: action.token,
+
         loggingIn: false,
         loginError: undefined,
         loginSuccess: true,
+
+        signingUp: false,
+        signupError: undefined,
+        signupSuccess: true,
       }
 
     case '@ACCOUNT/LOGOUT':
-      return {
-        ...state,
-        currentUser: null,
-        token: null,
-      }
+      return initialState
 
     default:
       return state

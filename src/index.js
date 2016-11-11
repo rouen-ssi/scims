@@ -9,6 +9,7 @@ import App from './components/App'
 import Home from './components/Home'
 import Signup from './components/Signup'
 import Signin from './components/Signin'
+import Signout from './components/Signout'
 
 import './scss/scims.scss'
 
@@ -24,6 +25,7 @@ ReactDOM.render((
         <IndexRoute component={Home} />
         <Router path='/signup' component={Signup} />
         <Router path='/signin' component={Signin} />
+        <Router path='/signout' component={Signout} />
       </Router>
     </Router>
   </Provider>
