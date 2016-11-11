@@ -11,6 +11,9 @@
 @import 'components/footer';
 @import 'components/profile';
 @import 'components/main-content';
+@import 'components/article-category';
+
+@import url('https://fonts.googleapis.com/css?family=PT+Serif');
 
 body {
   font-family: $font-family;
@@ -77,4 +80,8 @@ h5 {
   @include box-shadow(0, 0, 3px, $shadow-color);
   margin-bottom: 20px;
   padding: $bloc-padding;
+}
+
+strong {
+  font-weight: bold;
 }

@@ -4116,6 +4116,10 @@ slice-ansi@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-0.0.4.tgz#edbf8903f66f7ce2f8eafd6ceed65e264c831b35"
 
+slugify:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.0.2.tgz#dd8e70cdcff737c599d384020eb398596ecfd348"
+
 snake-case@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/snake-case/-/snake-case-2.1.0.tgz#41bdb1b73f30ec66a04d4e2cad1b76387d4d6d9f"

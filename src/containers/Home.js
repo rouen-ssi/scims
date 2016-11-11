@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-import ArticleCategories from '../components/ArticleCategories'
+import ArticleCategoryScreen from './ArticleCategoryScreen'
 import ArticleArchives from '../components/ArticleArchives'
 import Article from '../components/Article'
 import MainContent from '../components/MainContent'
@@ -8,7 +8,7 @@ import MainContent from '../components/MainContent'
 const Home = () => (
   <div>
     <Sidebar side="right">
-      <ArticleCategories />
+      <ArticleCategoryScreen />
       <ArticleArchives />
     </Sidebar>
     <MainContent side="left">

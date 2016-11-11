@@ -58,8 +58,8 @@ export class AccountService extends JsonService {
   }
 
   authRequest<T>(method: HttpMethod, path: string, params?: HttpParams = {}, headers?: HttpHeaders): Promise<T> {
-    if (this.token !== null) {
-      return this.request(method, path, { ...params, token: this.token }, headers)
+    if (this.token) {
+      return this.request(method, path, params, { ...headers, 'Authorization': `Basic ${this.token}` })
     }
     return this.request(method, path, params, headers)
   }
