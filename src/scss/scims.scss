@@ -1,8 +1,8 @@
-@import 'font-awesome/font-awesome';
-
 @import 'mixins';
 @import 'variables';
 @import 'reset';
+
+@import '~font-awesome/scss/font-awesome.scss';
 
 @import 'components/header';
 @import 'components/sidebar';
