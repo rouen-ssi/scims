@@ -1,6 +1,7 @@
 /** @flow */
 import React from 'react'
 import { Link } from 'react-router'
+import moment from 'moment'
 import MainContent from './MainContent'
 
 import type { Category } from '../services/categories'
@@ -12,6 +13,12 @@ const icons = {
   'Arithmetics': 'plus',
   'Chemistry': 'flask',
   'Physics': 'space-shuttle',
+}
+
+function TimeAgo({value}: {value: string}) {
+  const dt = moment(value)
+
+  return <span>{dt.fromNow()}</span>
 }
 
 function Card(props: {category: Category}) {
@@ -31,11 +38,20 @@ function Card(props: {category: Category}) {
 
 function ArticleSpan({article}: {article: Article}) {
   return (
-    <span>
-      <em>{article.title}</em>
-      {' by '}
-      <a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a>
-    </span>
+    <div style={{display: 'flex', flexDirection: 'row', marginBottom: '1em', alignItems: 'center'}}>
+      <Link to={`/article/${article.id}/${article.title}`}>
+        <i className="fa fa-newspaper-o" style={{fontSize: '1.7em'}}/>
+      </Link>
+      <div style={{marginLeft: '1em', lineHeight: '1.5em'}}>
+        <strong style={{fontFamily: 'PT Serif', fontSize: '1.3em', whiteSpace: 'nowrap', textOverflow: 'ellipsis', width: '100%'}}>{article.title}</strong>
+        <br/>
+        by
+        {' '}<a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a>
+        {' '}<TimeAgo value={article.publication_date}/>
+        {' '}<i className="fa fa-level-up"/> 8
+        {' '}<i className="fa fa-commenting-o"/> 101
+      </div>
+    </div>
   )
 }
 
