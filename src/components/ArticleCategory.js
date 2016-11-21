@@ -4,6 +4,7 @@ import { Link } from 'react-router'
 import MainContent from './MainContent'
 
 import type { Category } from '../services/categories'
+import type { Article } from '../services/articles'
 
 const icons = {
   'Mathematics': 'book',
@@ -28,10 +29,29 @@ function Card(props: {category: Category}) {
   )
 }
 
+function ArticleSpan({article}: {article: Article}) {
+  return (
+    <span>
+      <em>{article.title}</em>
+      {' by '}
+      <a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a>
+    </span>
+  )
+}
+
 export class ArticleCategory extends React.Component {
   props: {
     category: Category,
     categories: Array<Category>,
+    articles: Array<Article>,
+
+    loadArticles: (categoryId: number) => void,
+  }
+
+  componentDidMount() {
+    if (this.props.articles.length <= 0) {
+      this.props.loadArticles(this.props.category.id)
+    }
   }
 
   render() {
@@ -54,12 +74,7 @@ export class ArticleCategory extends React.Component {
           <h3>Trending Articles</h3>
 
           <ol>
-            <li>Hello, World!</li>
-            <li>Hello, World!</li>
-            <li>Hello, World!</li>
-            <li>Hello, World!</li>
-            <li>Hello, World!</li>
-            <li>Hello, World!</li>
+            {this.props.articles.map((x, i) => <li key={i}><ArticleSpan article={x}/></li>)}
           </ol>
         </div>
       </MainContent>

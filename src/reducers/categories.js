@@ -3,7 +3,7 @@
 import type { Category } from '../services/categories'
 import type { Action } from '../actions/category'
 
-type State = {
+export type State = {
   categories: Array<Category>,
   fetching: boolean,
   lastError: ?Error,
