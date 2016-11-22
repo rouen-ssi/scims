@@ -15,10 +15,10 @@ const icons = {
   'Physics': 'space-shuttle',
 }
 
-function TimeAgo({value}: {value: string}) {
+function TimeAgo({value, ...props}: {value: string}) {
   const dt = moment(value)
 
-  return <span>{dt.fromNow()}</span>
+  return <span {...props}>{dt.fromNow()}</span>
 }
 
 function Card(props: {category: Category}) {
@@ -38,20 +38,16 @@ function Card(props: {category: Category}) {
 
 function ArticleSpan({article}: {article: Article}) {
   return (
-    <div style={{display: 'flex', flexDirection: 'row', marginBottom: '1em', alignItems: 'center'}}>
-      <Link to={`/article/${article.id}/${article.title}`}>
-        <i className="fa fa-newspaper-o" style={{fontSize: '1.7em'}}/>
-      </Link>
-      <div style={{marginLeft: '1em', lineHeight: '1.5em'}}>
-        <strong style={{fontFamily: 'PT Serif', fontSize: '1.3em', whiteSpace: 'nowrap', textOverflow: 'ellipsis', width: '100%'}}>{article.title}</strong>
-        <br/>
-        by
-        {' '}<a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a>
-        {' '}<TimeAgo value={article.publication_date}/>
-        {' '}<i className="fa fa-level-up"/> 8
-        {' '}<i className="fa fa-commenting-o"/> 101
-      </div>
-    </div>
+    <span className="category-article-list-element">
+      <span className="name">{article.title}</span>
+      <br/>
+      <span className="details">
+        <span className="author">by <a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a></span>
+        <TimeAgo value={article.publication_date} className="publication_date"/>
+        <span className="popularity"><i className="fa fa-level-up fa-fw"/> 8</span>
+        <span className="comments"><i className="fa fa-commenting-o fa-fw"/> 101</span>
+      </span>
+    </span>
   )
 }
 
@@ -71,29 +67,48 @@ export class ArticleCategory extends React.Component {
   }
 
   render() {
-    const directChildren = this.props.categories.filter(x => x.parent_categories === this.props.category.id)
-
     return (
       <MainContent side="center">
         <div className="bloc">
           <h1>
             <i className={`fa fa-${icons[this.props.category.name]}`}/>
-            {this.props.category.name}
+            {' '}{this.props.category.name}
           </h1>
 
-          <h3>Sub-categories</h3>
-
-          <section className="article-category-cards">
-            {directChildren.map((x, i) => <Card key={i} category={x}/>)}
-          </section>
-
-          <h3>Trending Articles</h3>
-
-          <ol>
-            {this.props.articles.map((x, i) => <li key={i}><ArticleSpan article={x}/></li>)}
-          </ol>
+          {this.renderSubcategories()}
+          {this.renderArticles()}
         </div>
       </MainContent>
+    )
+  }
+
+  renderSubcategories() {
+    const directChildren = this.props.categories.filter(x => x.parent_categories === this.props.category.id)
+
+    if (directChildren.length <= 0) {
+      return null
+    }
+
+    return (
+      <div>
+        <h3 style={{margin: 0}}>Sub-categories</h3>
+
+        <section className="article-category-cards" style={{marginBottom: '1em'}}>
+          {directChildren.map((x, i) => <Card key={i} category={x}/>)}
+        </section>
+      </div>
+    )
+  }
+
+  renderArticles() {
+    return (
+      <div>
+        <h3>Trending Articles</h3>
+
+        <ol className="category-article-list">
+          {this.props.articles.map((x, i) => <li key={i}><ArticleSpan article={x}/></li>)}
+        </ol>
+      </div>
     )
   }
 }

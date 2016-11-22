@@ -1,36 +1,28 @@
+/** @flow */
 import React from 'react'
+import moment from 'moment'
 import { Link } from 'react-router'
+import type { Article as ArticleType } from '../services/articles'
 
-const Article = () => (
+const DateTime = ({value}: {value: string}) => {
+  const dt = moment(value)
+  return <span>{dt.format('ll')}</span>
+}
+
+export const Article = (props: {article: ArticleType}) => (
   <article className='bloc article'>
-    <h1>Lorem ipsum di amet super-title</h1>
+    <h1>{props.article.title}</h1>
 
     <div className='article-infos'>
       <ul>
-        <li><i className='fa fa-calendar'></i> 20/10/2016</li>
-        <li><i className='fa fa-user'></i> Mathieu</li>
+        <li><i className='fa fa-calendar'></i> <DateTime value={props.article.publication_date}/></li>
+        <li><i className='fa fa-user'></i> {props.article.user.first_name} {props.article.user.last_name}</li>
         <li><Link to='#'><i className='fa fa-share'></i>Share</Link></li>
       </ul>
     </div>
 
-    <h2>The standart ipsum</h2>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-    non proident, sunt in culpa qui officia deserunt mollit anim id est
-    laborum.</p>
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commod
-     consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-     cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
-     non proident, sunt in culpa qui officia deserunt mollit anim id est
-     laborum.</p>
+    <div className="article-body">
+      {props.article.content}
+    </div>
   </article>
 )
-
-export default Article

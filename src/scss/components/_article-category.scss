@@ -33,7 +33,7 @@
     flex-direction: column;
 
     background: #fff;
-    box-shadow: 0 5px 10px 0 #eee;
+    box-shadow: 0 2px 5px 0 #eee;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.1);
 
@@ -56,6 +56,56 @@
 
     .stat {
       margin-top: 1em;
+    }
+  }
+}
+
+ol.category-article-list {
+ margin: 0 0 1.5em;
+ padding: 0;
+ counter-reset: item;
+
+  & > li {
+    margin: 0 0 2em;
+    padding: 0 0 0 2em;
+    text-indent: -2em;
+    list-style-type: none;
+    counter-increment: item;
+
+    .fa {
+      display: inline;
+    }
+
+    .category-article-list-element {
+      line-height: 1.5em;
+
+      span:after {
+        content: ' ';
+      }
+
+      .name {
+        font-family: 'PT Serif', serif;
+        font-size: 1.3em;
+      }
+
+      .details {
+        color: #aaa;
+      }
+
+      .publication_date {
+        font-style: italic;
+      }
+    }
+
+    &:before {
+      display: inline-block;
+      width: 1em;
+      margin-right: 0.3em;
+      font-family: 'PT Serif', serif;
+      font-size: 1.5em;
+      font-weight: bold;
+      text-align: right;
+      content: counter(item) ".";
     }
   }
 }

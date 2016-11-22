@@ -2,7 +2,7 @@ import React from 'react'
 import Sidebar from '../components/Sidebar'
 import ArticleCategoryScreen from './ArticleCategoryScreen'
 import ArticleArchives from '../components/ArticleArchives'
-import Article from '../components/Article'
+import ArticleList from '../containers/ArticleList'
 import MainContent from '../components/MainContent'
 
 const Home = () => (
@@ -12,8 +12,7 @@ const Home = () => (
       <ArticleArchives />
     </Sidebar>
     <MainContent side="left">
-      <Article />
-      <Article />
+      <ArticleList/>
     </MainContent>
   </div>
 )
