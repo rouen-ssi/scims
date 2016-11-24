@@ -17,6 +17,14 @@ const initialState: State = {
 
 export default function reducer(state: State = initialState, action: Action): State {
   switch (action.type) {
+    case '@CATEGORY/RECEIVE':
+      return {
+        ...state,
+        categories: state.categories.concat(action.category),
+        fetching: false,
+        lastError: null,
+      }
+
     case '@CATEGORY/RECEIVE_ALL':
       return {
         ...state,

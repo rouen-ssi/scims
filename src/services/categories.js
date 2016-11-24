@@ -14,6 +14,10 @@ export type FetchCategoriesResponse = {
 }
 
 export class CategoryService extends JsonService {
+  fetchCategory(categoryId: number): Promise<Category> {
+    return this.request('GET', `/category/${categoryId}`)
+  }
+
   fetchAll(): Promise<FetchCategoriesResponse> {
     return this.request('GET', '/categories')
   }

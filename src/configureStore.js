@@ -11,7 +11,7 @@ export function configureStore() {
     combineReducers(reducers),
     compose(
       applyMiddleware(thunk, logger),
-      persistState(false, {
+      persistState('account', {
         key: '@@SCIMS/1.0',
       })
     )

@@ -1,4 +1,5 @@
 /** @flow */
+/* eslint-disable camelcase */
 import { JsonService } from './json'
 
 export type Article = {
@@ -17,11 +18,15 @@ export type Article = {
 }
 
 export type FetchResponse = {
+  pagination: {
+    current: number,
+    count: number,
+  },
   articles: Array<Article>,
 }
 
 export class ArticleService extends JsonService {
-  fetch(page?: number, categoryId?: number): Promise<FetchResponse> {
-    return this.request('GET', '/articles', { page, categoryId })
+  fetch(page?: number, category_id?: number): Promise<FetchResponse> {
+    return this.request('GET', '/articles', { page, category_id })
   }
 }

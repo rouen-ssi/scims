@@ -1,0 +1,32 @@
+.pagination {
+  margin-bottom: 2em;
+
+  & > a {
+    border-top: 1px solid #aaa;
+    padding: 0.5em 1.5em;
+    color: black !important;
+
+    &.active {
+      font-weight: bold;
+      border-top: 1px solid black;
+    }
+
+    &.next:before {
+      content: 'NEXT ';
+    }
+    &.previous:after {
+      content: ' PREV';
+    }
+
+    &:hover {
+      text-decoration: none;
+      border-top: 1px solid black;
+    }
+  }
+
+  &:hover {
+    a.active:not(:hover) {
+      border-top: 1px solid #aaa;
+    }
+  }
+}

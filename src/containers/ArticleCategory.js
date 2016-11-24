@@ -1,6 +1,7 @@
 /** @flow */
 import { connect } from 'react-redux'
-import type { State } from '../reducers/index'
+import type { State } from '../reducers'
+import * as categoryActions from '../actions/category'
 import * as articleActions from '../actions/article'
 
 import { ArticleCategory } from '../components/ArticleCategory'
@@ -13,8 +14,8 @@ type Props = {
 
 function mapStateToProps(state: State, props: Props): Object {
   const categoryId = parseInt(props.routeParams.categoryId, 10)
-  const category = state.categories.categories.find(x => x.id === categoryId)
-  const articles = state.articles.articles.filter(x => x.category_id === categoryId)
+  const category = state.categories.categories.find(x => x.id === categoryId) || null
+  const articles = (state.articles.articles[categoryId] || {})[state.articles.currentPage] || []
 
   return {
     category,
@@ -25,8 +26,11 @@ function mapStateToProps(state: State, props: Props): Object {
 
 function mapDispatchToProps(dispatch: (action: any) => void): Object {
   return {
+    loadCategory(categoryId: number) {
+      dispatch(categoryActions.fetchCategory(categoryId))
+    },
     loadArticles(categoryId: number) {
-      dispatch(articleActions.fetchArticlesByCategory(categoryId))
+      dispatch(articleActions.fetchArticles(categoryId))
     },
   }
 }

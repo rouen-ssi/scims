@@ -53,20 +53,37 @@ function ArticleSpan({article}: {article: Article}) {
 
 export class ArticleCategory extends React.Component {
   props: {
-    category: Category,
+    category: ?Category,
     categories: Array<Category>,
     articles: Array<Article>,
 
+    routeParams: {
+      categoryId: number,
+    },
+
+    loadCategory: (categoryId: number) => void,
     loadArticles: (categoryId: number) => void,
   }
 
   componentDidMount() {
+    if (!this.props.category) {
+      this.props.loadCategory(this.props.routeParams.categoryId)
+    }
+  }
+
+  componentDidUpdate() {
     if (this.props.articles.length <= 0) {
       this.props.loadArticles(this.props.category.id)
     }
   }
 
   render() {
+    if (!this.props.category) {
+      return (
+        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
+      )
+    }
+
     return (
       <MainContent side="center">
         <div className="bloc">
