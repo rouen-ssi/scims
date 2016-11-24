@@ -1,34 +1,41 @@
 /** @flow */
 import React from 'react'
-import { Article as ArticleComponent } from '../components/Article'
-import { Pagination } from '../components/Pagination'
+import { Article as ArticleComponent } from './Article'
+import { Pagination } from './Pagination'
+import { Spinner } from './Spinner'
+
 import type { Article } from '../services/articles'
 
 export class ArticleList extends React.Component {
   props: {
-    currentPage: number,
-    pageCount: number,
+    loading: boolean,
     articles: Array<Article>,
+    pagination: { current: number, count: number },
 
-    loadPage: (page: number) => void,
-    setPage: (page: number) => void,
+    loadArticles: (page: number) => void,
   }
 
   componentDidMount() {
-    if (this.props.articles.length <= 0) {
-      this.props.loadPage(this.props.currentPage)
-    }
+    this.props.loadArticles(this.props.pagination.current)
   }
 
   render() {
     return (
       <div>
-        <Pagination currentPage={this.props.currentPage} pageCount={this.props.pageCount}/>
+        <Pagination {...this.props.pagination}/>
 
-        {this.props.articles.map((article, i) => (
-          <ArticleComponent key={i} article={article}/>
-        ))}
+        {this.renderArticles()}
       </div>
     )
+  }
+
+  renderArticles() {
+    if (this.props.loading) {
+      return <Spinner />
+    }
+
+    return this.props.articles.map((article, i) => (
+      <ArticleComponent key={i} article={article}/>
+    ))
   }
 }

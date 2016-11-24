@@ -24,6 +24,7 @@ ReactDOM.render((
     <Router history={ hashHistory }>
       <Route path="/" component={App}>
         <IndexRoute component={Home}/>
+        <Route path="/page/:page" component={Home}/>
         <Route path="/signup" component={Signup}/>
         <Route path="/signin" component={Signin}/>
         <Route path="/signout" component={Signout}/>

@@ -6,27 +6,21 @@
     padding: 0.5em 1.5em;
     color: black !important;
 
-    &.active {
+    &[rel="current"] {
       font-weight: bold;
-      border-top: 1px solid black;
+      border-top: 2px solid #aaa;
     }
 
-    &.next:before {
+    &[rel="next"]:before {
       content: 'NEXT ';
     }
-    &.previous:after {
+    &[rel="previous"]:after {
       content: ' PREV';
     }
 
     &:hover {
       text-decoration: none;
-      border-top: 1px solid black;
-    }
-  }
-
-  &:hover {
-    a.active:not(:hover) {
-      border-top: 1px solid #aaa;
+      border-top: 2px solid black;
     }
   }
 }
