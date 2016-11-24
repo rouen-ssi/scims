@@ -2,7 +2,6 @@
 import { connect } from 'react-redux'
 import type { State } from '../reducers'
 import * as categoryActions from '../actions/category'
-import * as articleActions from '../actions/article'
 
 import { ArticleCategory } from '../components/ArticleCategory'
 
@@ -29,8 +28,8 @@ function mapDispatchToProps(dispatch: (action: any) => void): Object {
     loadCategory(categoryId: number) {
       dispatch(categoryActions.fetchCategory(categoryId))
     },
-    loadArticles(categoryId: number) {
-      dispatch(articleActions.fetchArticles(categoryId))
+    loadArticles(_categoryId: number) {
+
     },
   }
 }
