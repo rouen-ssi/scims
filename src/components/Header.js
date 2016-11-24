@@ -3,13 +3,13 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 const LoggedHeader = [
-  <li><Link to="/me">MY PROFILE</Link></li>,
-  <li><Link to="/signout">SIGN OUT</Link></li>,
+  <li key="/me"><Link to="/me">MY PROFILE</Link></li>,
+  <li key="/signout"><Link to="/signout">SIGN OUT</Link></li>,
 ]
 
 const GuestHeader = [
-  <li><Link to="/signup">SIGN UP</Link></li>,
-  <li><Link to="/signin">SIGN IN</Link></li>,
+  <li key="/signup"><Link to="/signup">SIGN UP</Link></li>,
+  <li key="/signin"><Link to="/signin">SIGN IN</Link></li>,
 ]
 
 const Header = ({logged}) => (

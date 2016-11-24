@@ -79,15 +79,15 @@ export class ArticleCategory extends React.Component {
             {' '}{this.props.category.name}
           </h1>
 
-          {this.renderSubcategories()}
+          {this.renderSubcategories(this.props.category)}
           {this.renderArticles()}
         </div>
       </MainContent>
     )
   }
 
-  renderSubcategories() {
-    const directChildren = this.props.categories.filter(x => x.parent_categories === this.props.category.id)
+  renderSubcategories(category: Category) {
+    const directChildren = this.props.categories.filter(x => x.parent_categories === category.id)
 
     if (directChildren.length <= 0) {
       return null

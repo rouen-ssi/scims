@@ -18,7 +18,7 @@ function mapStateToProps(state: State, props: Props): Object {
 
   return {
     category,
-    categories: state.categories.categories.valueSeq(),
+    categories: state.categories.categories.valueSeq().toJS(),
     articles,
   }
 }
