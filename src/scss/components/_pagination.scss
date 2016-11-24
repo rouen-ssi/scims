@@ -1,26 +1,102 @@
+// .pagination {
+//   margin-bottom: 2em;
+//
+//   a {
+//     border-top: 1px solid #aaa;
+//     padding: 0.5em 1.4em;
+//     color: black !important;
+//
+//     &[rel="current"] {
+//       font-weight: bold;
+//       border-top: 2px solid #aaa;
+//     }
+//
+//     &[rel="next"]:before {
+//       content: 'NEXT ';
+//     }
+//     &[rel="previous"]:after {
+//       content: ' PREV';
+//     }
+//
+//     &.ellipsis {
+//       padding: 0.5em 0;
+//     }
+//
+//     &:hover {
+//       text-decoration: none;
+//
+//       &:not([disabled]) {
+//         border-top: 2px solid black;
+//       }
+//       &[disabled] {
+//         cursor: not-allowed;
+//       }
+//     }
+//   }
+// }
+
 .pagination {
-  margin-bottom: 2em;
+  min-height: 5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 
-  & > a {
-    border-top: 1px solid #aaa;
-    padding: 0.5em 1.5em;
-    color: black !important;
-
-    &[rel="current"] {
-      font-weight: bold;
-      border-top: 2px solid #aaa;
-    }
-
-    &[rel="next"]:before {
-      content: 'NEXT ';
-    }
-    &[rel="previous"]:after {
-      content: ' PREV';
-    }
+  a {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 3em;
+    height: 3em;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 
     &:hover {
       text-decoration: none;
-      border-top: 2px solid black;
     }
+
+    &[rel="current"] {
+      // border: 1px solid #ccc;
+      background: #363636;
+      color: white;
+    }
+
+    &[disabled] {
+      cursor: not-allowed;
+    }
+    &.ellipsis {
+      cursor: default;
+    }
+
+    &:not([disabled]) {
+      -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+
+      &::after {
+        content: "";
+        border-radius: 50%;
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      &:hover {
+        -webkit-transform: scale(1.25, 1.25);
+        transform: scale(1.25, 1.25);
+      }
+
+      &:hover::after {
+        opacity: 1;
+      }
+    }
+
   }
 }

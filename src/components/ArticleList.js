@@ -22,9 +22,9 @@ export class ArticleList extends React.Component {
   render() {
     return (
       <div>
-        <Pagination {...this.props.pagination} loadPage={this.props.loadArticles}/>
-
         {this.renderArticles()}
+
+        <Pagination {...this.props.pagination} loadPage={this.props.loadArticles}/>
       </div>
     )
   }
