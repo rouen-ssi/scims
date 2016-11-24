@@ -13,23 +13,20 @@ type Props = {
 
 function mapStateToProps(state: State, props: Props): Object {
   const categoryId = parseInt(props.routeParams.categoryId, 10)
-  const category = state.categories.categories.find(x => x.id === categoryId) || null
-  const articles = (state.articles.articles[categoryId] || {})[state.articles.currentPage] || []
+  const category = state.categories.categories.get(categoryId)
+  const articles = state.categories.articles.get(categoryId, [])
 
   return {
     category,
-    categories: state.categories.categories,
+    categories: state.categories.categories.valueSeq(),
     articles,
   }
 }
 
-function mapDispatchToProps(dispatch: (action: any) => void): Object {
+function mapDispatchToProps(dispatch: (action: any) => void, props: Props): Object {
   return {
-    loadCategory(categoryId: number) {
-      dispatch(categoryActions.fetchCategory(categoryId))
-    },
-    loadArticles(_categoryId: number) {
-
+    loadCategory() {
+      dispatch(categoryActions.fetchCategory(parseInt(props.routeParams.categoryId, 10)))
     },
   }
 }

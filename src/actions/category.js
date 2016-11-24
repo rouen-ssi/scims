@@ -3,9 +3,14 @@
 import { CategoryService } from '../services/categories'
 import type { Category } from '../services/categories'
 
+import { ArticleService } from '../services/articles'
+import type { Article } from '../services/articles'
+
+import type { State } from '../reducers'
+
 export type Action
   = { type: '@CATEGORY/RECEIVE_ALL', categories: Array<Category> }
-  | { type: '@CATEGORY/RECEIVE', category: Category }
+  | { type: '@CATEGORY/RECEIVE', category: Category, articles: Array<Article> }
   | { type: '@CATEGORY/FETCHING' }
   | { type: '@CATEGORY/FETCH_ERROR', error: Error }
 
@@ -13,8 +18,8 @@ export function receiveAll(categories: Array<Category>): Action {
   return { type: '@CATEGORY/RECEIVE_ALL', categories }
 }
 
-export function receive(category: Category): Action {
-  return { type: '@CATEGORY/RECEIVE', category }
+export function receive(category: Category, articles: Array<Article>): Action {
+  return { type: '@CATEGORY/RECEIVE', category, articles }
 }
 
 export function fetching(): Action {
@@ -27,12 +32,20 @@ export function fetchError(error: Error): Action {
 
 export function fetchCategory(categoryId: number): Function {
   const categories = new CategoryService('http://127.0.0.1:3000')
+  const articles = new ArticleService('http://127.0.0.1:3000')
 
-  return async function(dispatch: (action: Action) => void) {
+  return async function(dispatch: (action: Action) => void, getState: () => State) {
+    const state = getState()
+
+    if (state.categories.articles.has(categoryId)) {
+      return
+    }
+
     dispatch(fetching())
     try {
       const category = await categories.fetchCategory(categoryId)
-      dispatch(receive(category))
+      const {articles: articleList} = await articles.fetch(undefined, categoryId)
+      dispatch(receive(category, articleList))
     } catch (err) {
       dispatch(fetchError(err))
     }
@@ -42,7 +55,13 @@ export function fetchCategory(categoryId: number): Function {
 export function fetchAll(): Function {
   const categories = new CategoryService('http://127.0.0.1:3000')
 
-  return async function(dispatch: (action: Action) => void) {
+  return async function(dispatch: (action: Action) => void, getState: () => State) {
+    const state = getState()
+
+    if (!state.categories.categories.isEmpty()) {
+      return
+    }
+
     try {
       dispatch(fetching())
       const resp = await categories.fetchAll()

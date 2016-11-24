@@ -24,6 +24,7 @@
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
     "font-awesome": "^4.7.0",
+    "immutable": "^3.8.1",
     "mathjax": "^2.7.0",
     "moment": "^2.16.0",
     "querystring": "^0.2.0",

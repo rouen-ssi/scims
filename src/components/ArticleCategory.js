@@ -57,24 +57,11 @@ export class ArticleCategory extends React.Component {
     categories: Array<Category>,
     articles: Array<Article>,
 
-    routeParams: {
-      categoryId: number,
-    },
-
-    loadCategory: (categoryId: number) => void,
-    loadArticles: (categoryId: number) => void,
+    loadCategory: () => void,
   }
 
   componentDidMount() {
-    if (!this.props.category) {
-      this.props.loadCategory(this.props.routeParams.categoryId)
-    }
-  }
-
-  componentDidUpdate() {
-    if (this.props.articles.length <= 0) {
-      this.props.loadArticles(this.props.category.id)
-    }
+    this.props.loadCategory()
   }
 
   render() {
