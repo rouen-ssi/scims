@@ -51,7 +51,7 @@ export default function reducer(state: State = initialState, action: Action): St
         loading: false,
         lastError: null,
 
-        articlesById: action.articles.reduce((acc, x) => acc.set(x.id, x), state.articlesById),
+        articlesById: action.articles.reduce((acc, x) => acc.set(x.id, {...x, comments: []}), state.articlesById),
         articlesByPage: state.articlesByPage.set(action.pagination.current, action.articles),
         pagination: action.pagination,
       }

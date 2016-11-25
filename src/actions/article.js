@@ -4,8 +4,6 @@ import { ArticleService } from '../services/articles'
 import type { Article } from '../services/articles'
 import type { State } from '../reducers'
 
-export type Thunk<State, Action> = (dispatch: (state: Action) => void, getState: () => State) => any;
-
 export type Action
   = { type: '@ARTICLES/LOAD', articles: Array<Article>, pagination: { current: number, count: number } }
   | { type: '@ARTICLES/LOAD_ONE', article: Article }

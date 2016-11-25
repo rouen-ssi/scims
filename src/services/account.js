@@ -14,9 +14,11 @@ type SuccessResponse = {
 }
 
 export type User = {
+  uid: string,
+  email: string,
   first_name: string,
   last_name: string,
-  biography?: string,
+  biography: string,
 }
 
 export type LoginSuccess = SuccessResponse & User & {

@@ -1,0 +1,67 @@
+.article-comments {
+  margin-top: 2em;
+
+  // handle two unrelated comments
+  .comment + .comment {
+    margin-top: 1em;
+    padding-top: 1em;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  // handle replies
+  .comment > .comments {
+    margin: 1em 0 0 60px;
+
+    &:before {
+      @include fa-icon;
+      content: $fa-var-quote-left;
+      font-size: 2em;
+      float: left;
+      margin-left: -60px;
+      text-align: right;
+      width: 50px;
+      color: $body-background-color;
+    }
+  }
+
+  // style the shit of the comment component
+  .comment {
+    .avatar {
+      float: left;
+      border-radius: 10%;
+    }
+
+    .details {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 0 0 0.5em 60px;
+
+      > * {
+        margin-right: 1em;
+      }
+
+      .author {
+        font-weight: bold;
+      }
+
+      .avatar {
+        border-radius: 50%;
+      }
+
+      .publication_date {
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .content {
+      margin-left: 60px;
+      line-height: 1.3em;
+    }
+
+    .actions {
+      margin-left: 60px;
+      padding: 0.8em 0 1em;
+    }
+  }
+}

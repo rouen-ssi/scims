@@ -6,6 +6,8 @@ import { Spinner } from './Spinner'
 import { DateTime } from './DateTime'
 import { Link } from 'react-router'
 
+import ArticleCommentList from '../containers/ArticleCommentList'
+
 import type { Article } from '../services/articles'
 
 export class ArticleScreen extends React.Component {
@@ -44,6 +46,8 @@ export class ArticleScreen extends React.Component {
         <div className="article-body">
           {this.props.article.content}
         </div>
+
+        <ArticleCommentList article={this.props.article}/>
       </article>
     )
   }

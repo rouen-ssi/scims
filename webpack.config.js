@@ -27,7 +27,7 @@ module.exports = {
       API_URL: JSON.stringify('http://127.0.0.1:3000'),
     }),
   ],
-  entry: ['babel-polyfill', './src/index.js'],
+  entry: ['whatwg-fetch', 'babel-polyfill', './src/index.js'],
   output: {
     path: './build',
     filename: 'bundle.[hash].js',
