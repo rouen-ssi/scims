@@ -29,6 +29,7 @@ export const Article = (props: {article: ArticleType}) => (
       <ul>
         <li><i className='fa fa-calendar'></i> <DateTime value={props.article.publication_date}/></li>
         <li><i className='fa fa-user'></i> {props.article.user.first_name} {props.article.user.last_name}</li>
+        <li><i className="fa fa-comments"/> {props.article.comments_count}</li>
         <li><Link to='#'><i className='fa fa-share'></i>Share</Link></li>
       </ul>
     </div>

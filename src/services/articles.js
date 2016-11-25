@@ -15,6 +15,7 @@ export type Article = {
   category_id: number,
   subcategory_id: number,
   publication_date: string,
+  comments_count: number,
 }
 
 export type FetchResponse = {
