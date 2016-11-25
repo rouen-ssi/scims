@@ -31,8 +31,8 @@ export function fetchError(error: Error): Action {
 }
 
 export function fetchCategory(categoryId: number): Function {
-  const categories = new CategoryService('http://127.0.0.1:3000')
-  const articles = new ArticleService('http://127.0.0.1:3000')
+  const categories = new CategoryService(API_URL)
+  const articles = new ArticleService(API_URL)
 
   return async function(dispatch: (action: Action) => void, getState: () => State) {
     const state = getState()
@@ -53,7 +53,7 @@ export function fetchCategory(categoryId: number): Function {
 }
 
 export function fetchAll(): Function {
-  const categories = new CategoryService('http://127.0.0.1:3000')
+  const categories = new CategoryService(API_URL)
 
   return async function(dispatch: (action: Action) => void, getState: () => State) {
     const state = getState()

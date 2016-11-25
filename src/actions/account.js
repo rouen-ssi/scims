@@ -57,7 +57,7 @@ export function profileUpdateError(errors: Array<UpdateProfileError>): Action {
 }
 
 export function sendSignupRequest(email: string, firstName: string, lastName: string, password: string): Function {
-  const accounts = new AccountService('http://127.0.0.1:3000')
+  const accounts = new AccountService(API_URL)
 
   return async function(dispatch: (action: Action) => void) {
     dispatch(signingUp())
@@ -77,7 +77,7 @@ export function sendSignupRequest(email: string, firstName: string, lastName: st
 }
 
 export function sendLoginRequest(email: string, password: string): Function {
-  const accounts = new AccountService('http://127.0.0.1:3000')
+  const accounts = new AccountService(API_URL)
 
   return async function(dispatch: (action: Action) => void) {
     dispatch(loggingIn())
@@ -104,7 +104,7 @@ export function sendUpdateProfileRequest(): Function {
       return
     }
 
-    const accounts = new AccountService('http://127.0.0.1:3000', token)
+    const accounts = new AccountService('API_URL', token)
 
     try {
       dispatch(profileUpdating())

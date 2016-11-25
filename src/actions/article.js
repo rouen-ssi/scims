@@ -34,7 +34,7 @@ export function loadError(error: Error): Action {
 }
 
 export function fetchOne(articleId: number): Thunk<State, Action> {
-  const articles = new ArticleService('http://127.0.0.1:3000')
+  const articles = new ArticleService(API_URL)
 
   return async function(dispatch, getState) {
     const state = getState()
@@ -54,7 +54,7 @@ export function fetchOne(articleId: number): Thunk<State, Action> {
 }
 
 export function fetchPage(page: number): Thunk<State, Action> {
-  const articles = new ArticleService('http://127.0.0.1:3000')
+  const articles = new ArticleService(API_URL)
 
   return async function(dispatch, getState) {
     const state = getState()

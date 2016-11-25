@@ -22,6 +22,10 @@ module.exports = {
       title: 'SciMS - Le CMS pour les scientifiques',
     }),
     new webpack.IgnorePlugin(/unicode|locale/),
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.DefinePlugin({
+      API_URL: JSON.stringify('http://127.0.0.1:3000'),
+    }),
   ],
   entry: ['babel-polyfill', './src/index.js'],
   output: {
