@@ -1,3 +1,4 @@
+var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -20,6 +21,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'SciMS - Le CMS pour les scientifiques',
     }),
+    new webpack.IgnorePlugin(/unicode|locale/),
   ],
   entry: ['babel-polyfill', './src/index.js'],
   output: {
