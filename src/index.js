@@ -11,6 +11,7 @@ import Signup from './containers/Signup'
 import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import ArticleCategory from './containers/ArticleCategory'
+import ArticleScreen from './containers/ArticleScreen'
 
 import './scss/scims.scss'
 
@@ -24,11 +25,11 @@ ReactDOM.render((
     <Router history={ hashHistory }>
       <Route path="/" component={App}>
         <IndexRoute component={Home}/>
-        <Route path="/page/:page" component={Home}/>
         <Route path="/signup" component={Signup}/>
         <Route path="/signin" component={Signin}/>
         <Route path="/signout" component={Signout}/>
         <Route path="/category/:categoryId/:categorySlug" component={ArticleCategory}/>
+        <Route path="/article/:articleId/:articleSlug" component={ArticleScreen}/>
       </Route>
     </Router>
   </Provider>

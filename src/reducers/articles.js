@@ -5,12 +5,14 @@ import * as Immutable from 'immutable'
 import type { Action } from '../actions/article'
 import type { Article } from '../services/articles'
 
+type ArticleId = number
 type PageNumber = number
 
 export type State = {
   loading: boolean,
   lastError: ?Error,
-  articles: Immutable.Map<PageNumber, Array<Article>>,
+  articlesById: Immutable.Map<ArticleId, Article>,
+  articlesByPage: Immutable.Map<PageNumber, Array<Article>>,
   pagination: {
     current: number,
     count: number,
@@ -20,7 +22,8 @@ export type State = {
 const initialState: State = {
   loading: false,
   lastError: null,
-  articles: new Immutable.Map(),
+  articlesById: new Immutable.Map(),
+  articlesByPage: new Immutable.Map(),
   pagination: {
     current: 1,
     count: 1,
@@ -48,8 +51,18 @@ export default function reducer(state: State = initialState, action: Action): St
         loading: false,
         lastError: null,
 
-        articles: state.articles.set(action.pagination.current, action.articles),
+        articlesById: action.articles.reduce((acc, x) => acc.set(x.id, x), state.articlesById),
+        articlesByPage: state.articlesByPage.set(action.pagination.current, action.articles),
         pagination: action.pagination,
+      }
+
+    case '@ARTICLES/LOAD_ONE':
+      return {
+        ...state,
+        loading: false,
+        lastError: null,
+
+        articlesById: state.articlesById.set(action.article.id, action.article),
       }
 
     case '@ARTICLES/PAGINATE':

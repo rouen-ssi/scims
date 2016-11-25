@@ -1,17 +1,29 @@
 /** @flow */
 import React from 'react'
-import moment from 'moment'
+import slugify from 'slug'
 import { Link } from 'react-router'
+import { DateTime } from './DateTime'
 import type { Article as ArticleType } from '../services/articles'
 
-const DateTime = ({value}: {value: string}) => {
-  const dt = moment(value)
-  return <span>{dt.format('ll')}</span>
+const ArticleLink = ({article}: {article: ArticleType}) => (
+  <Link to={`/article/${article.id}/${slugify(article.title, {lower: true})}`}>
+    {article.title}
+  </Link>
+)
+
+function truncateText(text: string, length: number): string {
+  if (text.length <= length) {
+    return text
+  }
+
+  return text.substring(0, length) + ' …'
 }
 
 export const Article = (props: {article: ArticleType}) => (
   <article className='bloc article'>
-    <h1>{props.article.title}</h1>
+    <h2>
+      <ArticleLink article={props.article}/>
+    </h2>
 
     <div className='article-infos'>
       <ul>
@@ -22,7 +34,7 @@ export const Article = (props: {article: ArticleType}) => (
     </div>
 
     <div className="article-body">
-      {props.article.content}
+      {truncateText(props.article.content, 500)}
     </div>
   </article>
 )

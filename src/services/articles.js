@@ -25,8 +25,16 @@ export type FetchResponse = {
   articles: Array<Article>,
 }
 
+export type FetchOneResponse = {
+  article: Article,
+}
+
 export class ArticleService extends JsonService {
   fetch(page?: number, category_id?: number): Promise<FetchResponse> {
     return this.request('GET', '/articles', { page, category_id })
+  }
+
+  fetchOne(articleId: number): Promise<FetchOneResponse> {
+    return this.request('GET', `/article/${articleId}`)
   }
 }

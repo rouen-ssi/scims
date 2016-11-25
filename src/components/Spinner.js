@@ -16,5 +16,5 @@ const defaultProps: Props = {
 }
 
 export const Spinner = (props: Props = defaultProps) => (
-  <i className={cx('fa', 'fa-spinner', 'fa-fw', props.pulse && 'fa-pulse', `fa-${props.size || 3}x`)}/>
+  <i className={cx('fa', 'fa-spinner', 'fa-fw', props.pulse ? 'fa-pulse' : 'fa-spin', `fa-${props.size || 3}x`)}/>
 )

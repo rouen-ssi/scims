@@ -1,7 +1,14 @@
+/** @flow */
+
 import React from 'react'
 import classNames from 'classnames'
 
-const MainContent = ({ children, side }) => {
+type Props = {
+  side?: 'left' | 'center',
+  children?: React$Element<*>[] | React$Element<*>,
+}
+
+const MainContent = ({ children, side }: Props) => {
   let classes = classNames('main-content', side)
   return (
     <div className={classes}>

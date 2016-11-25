@@ -8,7 +8,7 @@ import type { State } from '../reducers'
 function mapStateToProps(state: State): Object {
   return {
     loading: state.articles.loading,
-    articles: state.articles.articles.get(state.articles.pagination.current, []),
+    articles: state.articles.articlesByPage.get(state.articles.pagination.current, []),
     pagination: state.articles.pagination,
   }
 }

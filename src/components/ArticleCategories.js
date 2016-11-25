@@ -1,5 +1,5 @@
 /** @flow */
-import slugify from 'slugify'
+import slugify from 'slug'
 import React from 'react'
 
 import { Link } from 'react-router'
@@ -11,7 +11,7 @@ import type { Category } from '../services/categories'
  * Displays a navigable category name
  */
 export const ArticleCategory = (props: {category: Category}) => (
-  <Link to={`/category/${props.category.id}/${slugify(props.category.name)}`}>{props.category.name}</Link>
+  <Link to={`/category/${props.category.id}/${slugify(props.category.name, {lower: true})}`}>{props.category.name}</Link>
 )
 
 /**
