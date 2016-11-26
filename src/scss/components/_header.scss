@@ -23,6 +23,7 @@
 
     li {
       display: inline-block;
+      color: $nav-color;
 
       &:not(:last-child) {
         margin-right: 20px;
