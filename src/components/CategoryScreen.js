@@ -1,8 +1,10 @@
 /** @flow */
 import React from 'react'
 import { Link } from 'react-router'
-import moment from 'moment'
+
 import MainContent from './MainContent'
+import { TimeAgo } from './DateTime'
+import { ArticleLink } from './Link'
 
 import type { Category } from '../services/categories'
 import type { Article } from '../services/articles'
@@ -13,12 +15,6 @@ const icons = {
   'Arithmetics': 'plus',
   'Chemistry': 'flask',
   'Physics': 'space-shuttle',
-}
-
-function TimeAgo({value, ...props}: {value: string}) {
-  const dt = moment(value)
-
-  return <span {...props}>{dt.fromNow()}</span>
 }
 
 function Card(props: {category: Category}) {
@@ -39,7 +35,7 @@ function Card(props: {category: Category}) {
 function ArticleSpan({article}: {article: Article}) {
   return (
     <span className="category-article-list-element">
-      <span className="name">{article.title}</span>
+      <span className="name"><ArticleLink article={article}/></span>
       <br/>
       <span className="details">
         <span className="author">by <a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a></span>
@@ -51,7 +47,7 @@ function ArticleSpan({article}: {article: Article}) {
   )
 }
 
-export class ArticleCategory extends React.Component {
+export class CategoryScreen extends React.Component {
   props: {
     category: ?Category,
     categories: Array<Category>,

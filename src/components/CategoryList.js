@@ -1,18 +1,10 @@
 /** @flow */
-import slugify from 'slug'
 import React from 'react'
 
-import { Link } from 'react-router'
 import { Spinner } from './Spinner'
+import { CategoryLink } from './Link'
 
 import type { Category } from '../services/categories'
-
-/**
- * Displays a navigable category name
- */
-export const CategoryLink = (props: {category: Category}) => (
-  <Link to={`/category/${props.category.id}/${slugify(props.category.name, {lower: true})}`}>{props.category.name}</Link>
-)
 
 /**
  * Displays an evolving list of categories

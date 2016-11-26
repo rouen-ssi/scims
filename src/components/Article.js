@@ -1,15 +1,11 @@
 /** @flow */
 import React from 'react'
-import slugify from 'slug'
+
 import { Link } from 'react-router'
 import { DateTime } from './DateTime'
-import type { Article as ArticleType } from '../services/articles'
+import { ArticleLink } from './Link'
 
-const ArticleLink = ({article}: {article: ArticleType}) => (
-  <Link to={`/article/${article.id}/${slugify(article.title, {lower: true})}`}>
-    {article.title}
-  </Link>
-)
+import type { Article as ArticleType } from '../services/articles'
 
 function truncateText(text: string, length: number): string {
   if (text.length <= length) {

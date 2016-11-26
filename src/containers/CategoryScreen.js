@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import type { State } from '../reducers'
 import * as categoryActions from '../actions/category'
 
-import { ArticleCategory } from '../components/ArticleCategory'
+import { CategoryScreen } from '../components/CategoryScreen'
 
 type Props = {
   routeParams: {
@@ -31,4 +31,4 @@ function mapDispatchToProps(dispatch: (action: any) => void, props: Props): Obje
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleCategory)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryScreen)
