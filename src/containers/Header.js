@@ -1,6 +1,10 @@
+/** @flow */
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+
+import type { State } from '../reducers'
 
 const HeaderLink = ({to, icon, label}) => (
   <span>
@@ -21,7 +25,7 @@ const GuestHeader = [
   <li key="/signin"><HeaderLink to="/signin" label="SIGN IN" icon="sign-in"/></li>,
 ]
 
-const Header = ({logged}) => (
+const Header = ({logged}: {logged: boolean}) => (
   <header className='header'>
     <div className='header-wrap'>
       <h1 className='logo'>SciMS</h1>
@@ -41,7 +45,7 @@ const Header = ({logged}) => (
   </header>
 )
 
-function mapStateToProps(state) {
+function mapStateToProps(state: State) {
   return {
     logged: !!state.account.currentUser,
   }

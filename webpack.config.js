@@ -22,12 +22,12 @@ module.exports = {
       title: 'SciMS - Le CMS pour les scientifiques',
     }),
     new webpack.IgnorePlugin(/unicode|locale/),
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
     new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       API_URL: JSON.stringify('http://127.0.0.1:3000'),
     }),
   ],
-  entry: ['whatwg-fetch', 'babel-polyfill', './src/index.js'],
+  entry: ['whatwg-fetch', 'babel-polyfill', './src/index.js', './src/scss/scims.scss'],
   output: {
     path: './build',
     filename: 'bundle.[hash].js',

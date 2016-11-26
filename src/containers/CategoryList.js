@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux'
 
-import { ArticleCategories } from '../components/ArticleCategories'
+import { CategoryList } from '../components/CategoryList'
 import * as categoryActions from '../actions/category'
 
 import type { State } from '../reducers'
@@ -21,4 +21,4 @@ function mapDispatchToProps(dispatch: (_: any) => void): Object {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticleCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryList)
