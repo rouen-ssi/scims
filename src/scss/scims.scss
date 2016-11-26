@@ -3,6 +3,7 @@
 @import 'reset';
 
 @import '~font-awesome/scss/font-awesome.scss';
+@import "~react-day-picker/lib/style.css";
 
 @import 'components/header';
 @import 'components/sidebar';
@@ -14,6 +15,7 @@
 @import 'components/article-category';
 @import 'components/pagination';
 @import 'components/comment';
+@import 'components/draft';
 
 @import url('https://fonts.googleapis.com/css?family=PT+Serif');
 

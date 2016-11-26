@@ -11,6 +11,7 @@ import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import CategoryScreen from './containers/CategoryScreen'
 import ArticleScreen from './containers/ArticleScreen'
+import DraftScreen from './containers/DraftScreen'
 
 export function configureRouter(history: any): React$Element<*> {
   return (
@@ -22,6 +23,7 @@ export function configureRouter(history: any): React$Element<*> {
         <Route path="/signout" component={Signout}/>
         <Route path="/category/:categoryId/:categorySlug" component={CategoryScreen}/>
         <Route path="/article/:articleId/:articleSlug" component={ArticleScreen}/>
+        <Route path="/draft" component={DraftScreen}/>
       </Route>
     </Router>
   )

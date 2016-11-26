@@ -1,0 +1,24 @@
+.draft {
+  @extend .article;
+  width: 100%;
+
+  h2 {
+    span {
+      display: block;
+      width: 100%;
+    }
+
+    input {
+      border: none;
+      font-size: 1em;
+      width: 100%;
+      font: inherit;
+      margin: -2px 0 -1px 0;
+      padding: 0;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
