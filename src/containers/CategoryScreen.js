@@ -26,6 +26,7 @@ function mapStateToProps(state: State, props: Props): Object {
 function mapDispatchToProps(dispatch: (action: any) => void, props: Props): Object {
   return {
     loadCategory() {
+      dispatch(categoryActions.fetchAll())
       dispatch(categoryActions.fetchCategory(parseInt(props.routeParams.categoryId, 10)))
     },
   }
