@@ -6,8 +6,9 @@ import { Link } from 'react-router'
 import { Icon } from '../components/icons/FontAwesome'
 
 import type { State } from '../reducers'
+import type { IconType } from '../components/icons/FontAwesome'
 
-const HeaderLink = ({to, icon, label}) => (
+const HeaderLink = ({to, icon, label}: {to: string, label: string, icon: IconType}) => (
   <span>
     <Icon type={icon}/>
     {' '}

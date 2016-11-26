@@ -3,6 +3,7 @@
 import React from 'react'
 import cx from 'classnames'
 
+import { Spinner } from './Spinner'
 import { Icon } from './icons/FontAwesome'
 
 export function HtmlInput({type = 'text', ...props}: Object) {
