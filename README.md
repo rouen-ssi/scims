@@ -1,4 +1,4 @@
-# SciMS - Le CMS open-source pour les scientifiques
+# SciMS - Le CMS open-source pour les scientifiques [![Build Status](https://travis-ci.org/rouenssi-tnp/scims.svg?branch=master)](https://travis-ci.org/rouenssi-tnp/scims)
 
 ## Installation
 
