@@ -21,4 +21,57 @@
       }
     }
   }
+
+  .content-input {
+    .toolbar {
+      margin-bottom: 1em;
+
+      > * {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(0, 0, 0, 0.6);
+        cursor: pointer;
+
+        height: 2em;
+        width: 2em;
+
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-right: none;
+
+        &:first-child {
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 5px;
+        }
+
+        &:last-child {
+          border-right: 1px solid rgba(0, 0, 0, 0.1);
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+
+        &:hover {
+          background: #eee;
+          text-decoration: none;
+        }
+
+        .fa {
+          @extend .fa-fw;
+        }
+
+        .compound {
+          .fa {
+            // position: relative;
+            // left: -3px;
+          }
+          span {
+            font-size: 0.9em;
+            font-weight: bold;
+            position: relative;
+            right: 3px;
+          }
+        }
+      }
+    }
+  }
 }

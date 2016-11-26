@@ -9,7 +9,7 @@ import { TextInput, DateInput, ContentInput } from './Input'
 
 import type { User } from '../../services/account'
 
-const loremContentState = ContentState.createFromText('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum quaerat illum incidunt odit voluptatem delectus. Rem aperiam, placeat dolor hic facilis quo! Sunt, deserunt quam excepturi placeat unde velit sequi!')
+const loremContentState = ContentState.createFromText('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex animi repellat cum accusantium tempore, earum quas placeat, odio itaque pariatur. Fuga maxime, repudiandae, dignissimos dolore itaque ipsa vitae magni maiores. Sunt ut veritatis dignissimos corrupti natus porro sed repellat reprehenderit doloribus officia ea culpa ipsum harum labore minima voluptatum repudiandae vero dolor veniam quo obcaecati, aperiam molestiae voluptatem aliquam! Ipsa! Hic at vel deserunt culpa reiciendis repellat quis perspiciatis minima placeat. Aspernatur consectetur aliquid assumenda mollitia, quos maxime. Sint, quia facilis nulla, quae suscipit deserunt. Iste sunt, dolores voluptates quibusdam. Tempora officiis pariatur quas tempore excepturi unde nemo, quis dolores accusantium id. Facilis fugiat quaerat delectus quidem, debitis dicta, eum dolore quo maxime consequuntur quod deleniti eligendi doloremque similique eius. Ullam repudiandae et, sint soluta eos quaerat illum? Suscipit, nesciunt. Aperiam tenetur minus nam nulla numquam, obcaecati harum est. Incidunt natus sunt nostrum odit recusandae, eveniet adipisci esse, quisquam asperiores.')
 
 export class DraftScreen extends React.Component {
   props: {
