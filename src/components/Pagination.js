@@ -2,6 +2,8 @@
 import React from 'react'
 import { Range } from 'immutable'
 
+import { Icon } from './icons/FontAwesome'
+
 class PageLink extends React.Component {
   props: {
     page: number,
@@ -21,16 +23,16 @@ class PageLink extends React.Component {
   renderBody() {
     switch (this.props.type) {
       case 'previous':
-        return <i className="fa fa-step-backward"/>
+        return <Icon type="step-backward"/>
 
       case 'next':
-        return <i className="fa fa-step-forward"/>
+        return <Icon type="step-forward"/>
 
       case 'first':
-        return <i className="fa fa-fast-backward"/>
+        return <Icon type="fast-backward"/>
 
       case 'last':
-        return <i className="fa fa-fast-forward"/>
+        return <Icon type="fast-forward"/>
 
       default:
         return this.props.page
@@ -68,13 +70,13 @@ export class Pagination extends React.Component {
         {this.renderFirst()}
         {this.renderPrevious()}
 
-        {start > 1 && <a disabled className="ellipsis"><i className="fa fa-ellipsis-h"/></a>}
+        {start > 1 && <a disabled className="ellipsis"><Icon type="ellipsis-h"/></a>}
 
         {Range(start, end).map(i => (
           <PageLink key={i} page={i} type={current === i && 'current'} loadPage={this.props.loadPage}/>
         ))}
 
-        {end < count && <a disabled className="ellipsis"><i className="fa fa-ellipsis-h"/></a>}
+        {end < count && <a disabled className="ellipsis"><Icon type="ellipsis-h"/></a>}
 
         {this.renderNext()}
         {this.renderLast()}

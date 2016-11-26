@@ -5,6 +5,7 @@ import React from 'react'
 import { Spinner } from './Spinner'
 import { DateTime } from './DateTime'
 import { Link } from 'react-router'
+import { Icon } from './icons/FontAwesome'
 
 import ArticleCommentList from '../containers/ArticleCommentList'
 
@@ -37,9 +38,9 @@ export class ArticleScreen extends React.Component {
 
         <div className='article-infos'>
           <ul>
-            <li><i className='fa fa-calendar'></i> <DateTime value={this.props.article.publication_date}/></li>
-            <li><i className='fa fa-user'></i> {this.props.article.user.first_name} {this.props.article.user.last_name}</li>
-            <li><Link to='#'><i className='fa fa-share'></i>Share</Link></li>
+            <li><Icon type="calendar"/> <DateTime value={this.props.article.publication_date}/></li>
+            <li><Icon type="user"/> {this.props.article.user.first_name} {this.props.article.user.last_name}</li>
+            <li><Link to='#'><Icon type="share"/> Share</Link></li>
           </ul>
         </div>
 

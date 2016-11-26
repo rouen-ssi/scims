@@ -5,6 +5,8 @@ import { Link } from 'react-router'
 import MainContent from './MainContent'
 import { TimeAgo } from './DateTime'
 import { ArticleLink } from './Link'
+import { Spinner } from './Spinner'
+import { Icon } from './icons/FontAwesome'
 
 import type { Category } from '../services/categories'
 import type { Article } from '../services/articles'
@@ -40,8 +42,8 @@ function ArticleSpan({article}: {article: Article}) {
       <span className="details">
         <span className="author">by <a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a></span>
         <TimeAgo value={article.publication_date} className="publication_date"/>
-        <span className="popularity"><i className="fa fa-level-up fa-fw"/> 8</span>
-        <span className="comments"><i className="fa fa-commenting-o fa-fw"/> 101</span>
+        <span className="popularity"><Icon type="level-up" fixed/> 8</span>
+        <span className="comments"><Icon type="comments" fixed/> 101</span>
       </span>
     </span>
   )
@@ -62,9 +64,7 @@ export class CategoryScreen extends React.Component {
 
   render() {
     if (!this.props.category) {
-      return (
-        <i className="fa fa-spinner fa-pulse fa-3x fa-fw"/>
-      )
+      return <Spinner/>
     }
 
     return (

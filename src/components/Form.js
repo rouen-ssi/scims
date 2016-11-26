@@ -3,6 +3,8 @@
 import React from 'react'
 import cx from 'classnames'
 
+import { Icon } from './icons/FontAwesome'
+
 export function HtmlInput({type = 'text', ...props}: Object) {
   return <input type={type} {...props}/>
 }
@@ -14,7 +16,7 @@ export function Field({label, id, Widget = HtmlInput, errors = [], ...props}: Ob
       <td>
         <Widget id={id} placeholder={label} {...props}/>
         <ul className="form-field-errors">
-          <i className="fa fa-exclamation-triangle"></i>
+          <Icon type="exclamation-triangle"/>
           {errors.map((error, i) => <li key={i}>{error}</li>)}
         </ul>
       </td>
@@ -38,7 +40,7 @@ export function Button({children, loading, ...props}: Object) {
       <td/>
       <td>
         <button {...props}>
-          {loading ? <i className="fa fa-spinner fa-pulse fa-fw"/> : children}
+          {loading ? <Spinner small/> : children}
         </button>
       </td>
     </tr>

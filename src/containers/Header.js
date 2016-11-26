@@ -3,12 +3,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { Icon } from '../components/icons/FontAwesome'
 
 import type { State } from '../reducers'
 
 const HeaderLink = ({to, icon, label}) => (
   <span>
-    <i className={`fa fa-${icon}`}/>
+    <Icon type={icon}/>
     {' '}
     <Link to={to}>{label}</Link>
   </span>
