@@ -1,3 +1,6 @@
+const NODE_ENV = process.env.NODE_ENV || 'development'
+
+var config = refineConfig(require('./config/' + NODE_ENV + '.json'))
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -22,10 +25,9 @@ module.exports = {
       title: 'SciMS - Le CMS pour les scientifiques',
     }),
     new webpack.IgnorePlugin(/unicode|locale/),
-    new webpack.DefinePlugin({
+    new webpack.DefinePlugin(Object.assign({}, config, {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      API_URL: JSON.stringify('http://127.0.0.1:3000'),
-    }),
+    })),
   ],
   entry: ['whatwg-fetch', 'babel-polyfill', './src/index.js', './src/scss/scims.scss'],
   output: {
@@ -38,4 +40,12 @@ module.exports = {
       chunks: false,
     },
   },
+}
+
+function refineConfig(config) {
+  const result = {}
+  for (const key in config) {
+    result[key] = JSON.stringify(config[key])
+  }
+  return result
 }

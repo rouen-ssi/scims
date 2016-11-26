@@ -4,10 +4,11 @@
   "description": "Le CMS open-source pour les scientifiques",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server -d -w",
-    "build": "webpack -p --progress",
+    "start": "webpack-dev-server -d -w --progress",
+    "build": "rm -rf build && NODE_ENV=production webpack -p --progress",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
+    "check": "flow && eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
