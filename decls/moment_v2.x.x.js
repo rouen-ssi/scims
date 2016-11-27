@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 type moment$MomentOptions = {
   y?: number|string,
   year?: number|string,

@@ -4,6 +4,7 @@
 
 @import '~font-awesome/scss/font-awesome.scss';
 @import "~react-day-picker/lib/style.css";
+@import "~draft-js/dist/Draft.css";
 
 @import 'components/header';
 @import 'components/sidebar';
@@ -17,7 +18,7 @@
 @import 'components/comment';
 @import 'components/draft';
 
-@import url('https://fonts.googleapis.com/css?family=PT+Serif');
+@import url('https://fonts.googleapis.com/css?family=PT+Serif:400,400i,700,700i');
 
 body {
   font-family: $font-family;

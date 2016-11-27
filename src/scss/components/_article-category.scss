@@ -48,7 +48,7 @@
       }
 
       span {
-        font-family: 'PT Serif', serif;
+        font-family: $font-serif;
         font-size: 1.5em;
       }
 
@@ -84,7 +84,7 @@ ol.category-article-list {
       }
 
       .name {
-        font-family: 'PT Serif', serif;
+        font-family: $font-serif;
         font-size: 1.3em;
         a { color: black; }
       }
@@ -102,7 +102,7 @@ ol.category-article-list {
       display: inline-block;
       width: 1em;
       margin-right: 0.3em;
-      font-family: 'PT Serif', serif;
+      font-family: $font-serif;
       font-size: 1.5em;
       font-weight: bold;
       text-align: right;
