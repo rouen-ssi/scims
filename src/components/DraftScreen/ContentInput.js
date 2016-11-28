@@ -4,8 +4,9 @@ import React from 'react'
 import cx from 'classnames'
 import { Map as ImmutableMap } from 'immutable'
 
-import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap } from 'draft-js'
+import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, Entity } from 'draft-js'
 import { Icon } from '../icons/FontAwesome'
+import { Modal } from '../Modal'
 
 class Toolbar extends React.Component {
   props: {
@@ -23,7 +24,7 @@ class Toolbar extends React.Component {
     }
 
     const children = this.props.children.map((x, i) => (
-      <a key={i} href="#" onClick={this.onClick(x.props.command, !!x.props.commandInline)} className={cx({active: currentInlineStyles.has(x.props.command) || currentBlock.getType() === x.props.command, disabled: !x.props.command})}>
+      <a key={i} href="#" onClick={x.props.onClick || this.onClick(x.props.command, !!x.props.commandInline)} className={cx({active: currentInlineStyles.has(x.props.command) || currentBlock.getType() === x.props.command, disabled: !x.props.onClick && !x.props.command})}>
         {x}
       </a>
     ))
@@ -52,7 +53,7 @@ function IconCompound({ text, ...props }) {
   return <span className="compound"><Icon {...props}/><span>{text}</span></span>
 }
 
-export const EditorToolbar = (props: {editorState: EditorState, onClick: (command: string, commandInline: boolean) => void}) => (
+export const EditorToolbar = (props: {editorState: EditorState, onNewLink: () => void, onClick: (command: string, commandInline: boolean) => void}) => (
   <Toolbar {...props}>
     {/* typo */}
     <Icon type="font"/>
@@ -74,18 +75,78 @@ export const EditorToolbar = (props: {editorState: EditorState, onClick: (comman
     <Icon type="align-right" command="align-right"/>
 
     {/* components */}
-    <Icon type="link"/>
+    <Icon type="link" onClick={wrapClickEvent(props.onNewLink)} command="link" commandInline/>
     <Icon type="table"/>
     <Icon type="list-ul" command="unordered-list-item"/>
     <Icon type="list-ol" command="ordered-list-item"/>
   </Toolbar>
 )
 
+function wrapClickEvent(fun: () => void): (event: Event) => false {
+  return e => {
+    e.preventDefault()
+    fun()
+    return false
+  }
+}
+
+class NewLinkModal extends React.Component {
+  props: {
+    active: boolean,
+    onClose: () => void,
+    onSubmit: (url: string) => void,
+  }
+
+  state = {
+    url: '',
+  }
+
+  refs: {
+    input: HTMLInputElement,
+  }
+
+  render() {
+    return (
+      <Modal active={this.props.active} title="New Link" onClose={this.props.onClose}>
+        <p>Please enter link's URL :</p>
+        <input ref="input" type="text" value={this.state.url} placeholder={document.location.origin} onKeyDown={this._onKeyDown} onChange={this._onChange}/>
+      </Modal>
+    )
+  }
+
+  componentDidUpdate() {
+    if (this.props.active) {
+      this.refs.input.focus()
+    }
+  }
+
+  _onKeyDown = (e: KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      this.props.onSubmit(this.state.url)
+      this.setState({ url: '' })
+      return false
+    }
+  }
+
+  _onChange = (e: Event) => {
+    if (e.target instanceof HTMLInputElement) {
+      this.setState({
+        url: e.target.value,
+      })
+    }
+  }
+}
+
 export class ContentInput extends React.Component {
   props: {
     value: EditorState,
     placeholder: string,
     onChange: (_: EditorState, callback?: () => void) => void,
+  }
+
+  state = {
+    newLink: false,
   }
 
   refs: {
@@ -95,7 +156,17 @@ export class ContentInput extends React.Component {
   render() {
     return (
       <div className="content-input">
-        <EditorToolbar editorState={this.props.value} onClick={this._onToolbar}/>
+        <NewLinkModal
+          active={this.state.newLink}
+          onClose={() => this.setState({ newLink: false })}
+          onSubmit={this._onNewLink}
+        />
+
+        <EditorToolbar
+          editorState={this.props.value}
+          onClick={this._onToolbar}
+          onNewLink={() => this.setState({ newLink: true })}
+        />
 
         <Editor
           ref="editor"
@@ -133,5 +204,22 @@ export class ContentInput extends React.Component {
       : RichUtils.toggleBlockType(this.props.value, command)
 
     this._onChange(value, () => this.refs.editor.focus())
+  }
+
+  _onNewLink = (url: string) => {
+    const value = this.props.value
+
+    const entityKey = Entity.create('LINK', 'MUTABLE', {url})
+    const newValue =
+      EditorState.forceSelection(
+        RichUtils.toggleLink(value, value.getSelection(), entityKey),
+        value.getSelection(),
+      )
+
+    this._onChange(newValue, () => {
+      this.setState({ newLink: false }, () => {
+        this.refs.editor.focus()
+      })
+    })
   }
 }

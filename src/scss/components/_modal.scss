@@ -1,0 +1,88 @@
+.modal {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  box-shadow: 0 5px 15px 5px rgba(0, 0, 0, 0.2);
+  background: white;
+  z-index: 999;
+  position: fixed;
+  width: 30vw;
+  left: 35vw;
+  top: 10vw;
+
+  font-family: $font-family;
+  font-size: 1rem;
+  line-height: 1rem;
+
+  display: none;
+  &.active {
+    display: block;
+  }
+
+  .modal-title {
+    padding: 0.5em 1em;
+    position: relative;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+    cursor: pointer;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+      font-size: 0.9em;
+      user-select: none;
+    }
+
+    .fa.fa-close {
+      @extend .fa-fw;
+      float: right;
+      font-size: 1.1em;
+      color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .modal-body {
+    padding: 1em 1em 0 1em;
+    text-align: center;
+
+    > * {
+      margin-bottom: 0.3em;
+    }
+
+    input {
+      width: 95%;
+      font-size: 1em;
+      padding: 0.5em;
+      border-radius: 3px;
+      border: 1px solid $border-color;
+      &:focus {
+        outline: none;
+        border: 1px solid $border-active-color;
+        box-shadow: 0 0 5px 2px $shadow-color;
+      }
+    }
+  }
+
+  .modal-buttons {
+    padding: 0.5em;
+    text-align: right;
+
+    button {
+      border: 2px solid black;
+      background: white;
+      border-radius: 5px;
+      margin: 0.1em;
+      padding: 0.2em 0.8em;
+      font-size: 1em;
+      cursor: pointer;
+
+      // &.confirm {
+      //   border-color: #307BDC;
+      //   color: #307BDC;
+      // }
+
+      &.cancel {
+        border-color: #B51E19;
+        color: #B51E19;
+      }
+    }
+  }
+}
