@@ -95,3 +95,10 @@
     }
   }
 }
+
+$aligns: center, left, right, justify;
+@each $align in $aligns {
+  .align-#{$align} div {
+    text-align: $align;
+  }
+}

@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import { EditorState, ContentState } from 'draft-js'
+import { EditorState, ContentState, convertFromRaw, convertToRaw } from 'draft-js'
 import { Link } from 'react-router'
 import { Icon } from '../../components/icons/FontAwesome'
 import { TextInput, DateInput, ContentInput } from './Input'
@@ -16,10 +16,36 @@ export class DraftScreen extends React.Component {
     currentUser: User,
   }
 
-  state = {
-    title: '',
-    publication_date: '',
-    content: EditorState.createWithContent(loremContentState),
+  state: {
+    title: string,
+    publication_date: string,
+    content: EditorState,
+  }
+
+  constructor(props: *, context: *) {
+    super(props, context)
+
+    let state = window.localStorage.getItem('@SCIMS/DraftScreen')
+    if (state) {
+      state = JSON.parse(state)
+      this.state = {
+        ...state,
+        content: EditorState.createWithContent(convertFromRaw(state.content)),
+      }
+    } else {
+      this.state = {
+        title: '',
+        publication_date: '',
+        content: EditorState.createWithContent(loremContentState),
+      }
+    }
+  }
+
+  componentDidUpdate() {
+    window.localStorage.setItem('@SCIMS/DraftScreen', JSON.stringify({
+      ...this.state,
+      content: convertToRaw(this.state.content.getCurrentContent()),
+    }))
   }
 
   render() {
@@ -45,8 +71,12 @@ export class DraftScreen extends React.Component {
   }
 
   onChange<T>(fieldName: string): (_: T) => void {
-    return (value) => {
-      this.setState({ [fieldName]: value })
+    return (value: T, callback?: () => void) => {
+      this.setState({ [fieldName]: value }, () => {
+        if (callback) {
+          callback()
+        }
+      })
     }
   }
 }

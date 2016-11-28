@@ -32,7 +32,7 @@ export class DateInput extends React.Component {
             fixedWeeks
             onDayClick={this._onDayClick}
             selectedDays={day => moment(day).format('ll') === this.state.value.format('ll')}
-            style={{position: 'absolute', background: 'white'}}/>
+            style={{position: 'absolute', background: 'white', zIndex: 2, boxShadow: '0px 10px 15px 2px rgba(0, 0, 0, 0.3)'}}/>
         </span>
       )
     }
@@ -62,7 +62,8 @@ export class DateInput extends React.Component {
     }
   }
 
-  _onDayClick = (e: Event, value: string) => {
+  _onDayClick = (e: Event, value: Date) => {
     this.setState({ value: moment(value) })
+    this.props.onChange(moment(value).toISOString())
   }
 }

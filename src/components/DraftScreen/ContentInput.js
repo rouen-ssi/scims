@@ -2,8 +2,9 @@
 
 import React from 'react'
 import cx from 'classnames'
+import { Map as ImmutableMap } from 'immutable'
 
-import { Editor, EditorState, RichUtils } from 'draft-js'
+import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap } from 'draft-js'
 import { Icon } from '../icons/FontAwesome'
 
 class Toolbar extends React.Component {
@@ -15,13 +16,14 @@ class Toolbar extends React.Component {
 
   render() {
     const currentInlineStyles = this.props.editorState.getCurrentInlineStyle()
+    const currentBlock = this.props.editorState.getCurrentContent().getBlockForKey(this.props.editorState.getSelection().getStartKey())
 
     if (!this.props.children) {
       throw new Error('smth went wrong')
     }
 
     const children = this.props.children.map((x, i) => (
-      <a key={i} href="#" onClick={this.onClick(x.props.command, !!x.props.commandInline)} className={cx({active: currentInlineStyles.has(x.props.command), disabled: !x.props.command})}>
+      <a key={i} href="#" onClick={this.onClick(x.props.command, !!x.props.commandInline)} className={cx({active: currentInlineStyles.has(x.props.command) || currentBlock.getType() === x.props.command, disabled: !x.props.command})}>
         {x}
       </a>
     ))
@@ -66,10 +68,10 @@ export const EditorToolbar = (props: {editorState: EditorState, onClick: (comman
     <IconCompound command="header-three" type="header" text="3"/>
 
     {/* align */}
-    <Icon type="align-center"/>
-    <Icon type="align-justify"/>
-    <Icon type="align-left"/>
-    <Icon type="align-right"/>
+    <Icon type="align-center" command="align-center"/>
+    <Icon type="align-justify" command="align-justify"/>
+    <Icon type="align-left" command="align-left"/>
+    <Icon type="align-right" command="align-right"/>
 
     {/* components */}
     <Icon type="link"/>
@@ -83,11 +85,7 @@ export class ContentInput extends React.Component {
   props: {
     value: EditorState,
     placeholder: string,
-    onChange: (_: EditorState) => void,
-  }
-
-  state = {
-    value: this.props.value,
+    onChange: (_: EditorState, callback?: () => void) => void,
   }
 
   refs: {
@@ -97,32 +95,43 @@ export class ContentInput extends React.Component {
   render() {
     return (
       <div className="content-input">
-        <EditorToolbar editorState={this.state.value} onClick={this._onToolbar}/>
+        <EditorToolbar editorState={this.props.value} onClick={this._onToolbar}/>
 
         <Editor
           ref="editor"
-          editorState={this.state.value}
+          editorState={this.props.value}
           onChange={this._onChange}
           customStyleMap={{
             'STRIKETROUGH': { textDecoration: 'line-through' },
           }}
+          blockRenderMap={DefaultDraftBlockRenderMap.merge(ImmutableMap({
+            'align-center': {
+              wrapper: <div className="align-center"/>,
+            },
+            'align-left': {
+              wrapper: <div className="align-left"/>,
+            },
+            'align-right': {
+              wrapper: <div className="align-right"/>,
+            },
+            'align-justify': {
+              wrapper: <div className="align-justify"/>,
+            },
+          }))}
         />
       </div>
     )
   }
 
-  _onChange = (value: EditorState) => {
-    console.log(value.getSelection().serialize())
-    this.setState({ value })
+  _onChange = (value: EditorState, callback?: () => void) => {
+    this.props.onChange(value, callback)
   }
 
   _onToolbar = (command: string, commandInline: boolean) => {
     const value = commandInline
-      ? RichUtils.toggleInlineStyle(this.state.value, command)
-      : RichUtils.toggleBlockType(this.state.value, command)
+      ? RichUtils.toggleInlineStyle(this.props.value, command)
+      : RichUtils.toggleBlockType(this.props.value, command)
 
-    this.setState({ value }, () => {
-      this.refs.editor.focus()
-    })
+    this._onChange(value, () => this.refs.editor.focus())
   }
 }
