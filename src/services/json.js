@@ -11,9 +11,11 @@ export type HttpHeaders = {[key: string]: string}
  */
 export class JsonService {
   baseURL: string;
+  token: ?string;
 
-  constructor(baseURL: string) {
+  constructor(baseURL: string, token?: ?string) {
     this.baseURL = baseURL
+    this.token = token
   }
 
   /**
@@ -45,5 +47,15 @@ export class JsonService {
 
     const respBody = JSON.parse(text)
     return {...respBody, success: !respBody.errors}
+  }
+
+  /**
+   * Perform an authenticated HTTP request to a remote REST service
+   */
+  authRequest<T>(method: HttpMethod, path: string, params?: HttpParams = {}, headers?: HttpHeaders): Promise<T> {
+    if (this.token) {
+      return this.request(method, path, params, { ...headers, 'Authorization': `Bearer ${this.token}` })
+    }
+    return this.request(method, path, params, headers)
   }
 }

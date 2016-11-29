@@ -3,7 +3,7 @@
 import * as Immutable from 'immutable'
 
 import type { Action } from '../actions/article'
-import type { Article } from '../services/articles'
+import type { Article, ArticleError } from '../services/articles'
 
 type ArticleId = number
 type PageNumber = number
@@ -11,6 +11,11 @@ type PageNumber = number
 export type State = {
   loading: boolean,
   lastError: ?Error,
+  drafts: Array<Article>,
+  currentDraft: {
+    draft: ?Article,
+    errors: Array<ArticleError>,
+  },
   articlesById: Immutable.Map<ArticleId, Article>,
   articlesByPage: Immutable.Map<PageNumber, Array<Article>>,
   pagination: {
@@ -22,6 +27,11 @@ export type State = {
 const initialState: State = {
   loading: false,
   lastError: null,
+  drafts: [],
+  currentDraft: {
+    draft: null,
+    errors: [],
+  },
   articlesById: new Immutable.Map(),
   articlesByPage: new Immutable.Map(),
   pagination: {
@@ -71,6 +81,24 @@ export default function reducer(state: State = initialState, action: Action): St
         pagination: {
           ...state.pagination,
           current: action.page,
+        },
+      }
+
+    case '@ARTICLES/LOAD_DRAFTS':
+      return {
+        ...state,
+        drafts: action.drafts,
+      }
+
+    case '@ARTICLES/DRAFT':
+      return {
+        ...state,
+        loading: false,
+        lastError: null,
+
+        currentDraft: {
+          draft: action.draft,
+          errors: action.errors,
         },
       }
 

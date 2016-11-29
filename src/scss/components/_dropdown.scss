@@ -1,0 +1,29 @@
+.dropdown, .header .dropdown, .header .nav .dropdown {
+  position: absolute;
+  margin-top: 1em;
+
+  background: white;
+  box-shadow: 0 5px 15px 5px rgba(0, 0, 0, 0.2);
+
+  ul {
+    li {
+      display: block;
+      text-align: left;
+      margin: 0;
+      a {
+        display: block;
+        color: black;
+        padding: 1em 1.3em;
+        &:hover {
+          text-decoration: none;
+          background: rgba(0, 0, 0, 0.1);
+        }
+
+        .fa {
+          @extend .fa-fw;
+          margin-right: 1em;
+        }
+      }
+    }
+  }
+}

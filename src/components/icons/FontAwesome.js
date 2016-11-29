@@ -188,6 +188,7 @@ export type IconType
 | 'female'
 | 'fighter'
 | 'file'
+| 'file-text-o'
 | 'files'
 | 'film'
 | 'filter'

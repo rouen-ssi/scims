@@ -24,6 +24,7 @@ export function configureRouter(history: any): React$Element<*> {
         <Route path="/category/:categoryId/:categorySlug" component={CategoryScreen}/>
         <Route path="/article/:articleId/:articleSlug" component={ArticleScreen}/>
         <Route path="/draft" component={DraftScreen}/>
+        <Route path="/draft/:draftId" component={DraftScreen}/>
       </Route>
     </Router>
   )

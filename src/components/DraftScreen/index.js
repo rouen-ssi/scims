@@ -1,68 +1,95 @@
 /** @flow */
 
 import React from 'react'
+import { deepEqual, wrapPreventDefault } from '../../utils'
 
 import { Link } from 'react-router'
-import { Icon } from '../../components/icons/FontAwesome'
+import { Icon } from '../icons/FontAwesome'
+import { Spinner } from '../Spinner'
 import { TextInput, DateInput, ContentInput } from './Input'
 
 import type { User } from '../../services/account'
+import type { Article } from '../../services/articles'
+
+type Props = {
+  currentUser: User,
+  draft: ?Article,
+  loadDraft: () => void,
+  saveDraft: (article: Article) => void,
+  publishDraft: (article: Article) => void,
+}
 
 export class DraftScreen extends React.Component {
-  props: {
-    currentUser: User,
+  props: Props
+
+  state = {
+    currentDraft: this.props.draft,
   }
 
-  state: {
-    title: string,
-    publication_date: string,
-    content: string,
+  componentDidMount() {
+    this.props.loadDraft()
   }
 
-  constructor(props: *, context: *) {
-    super(props, context)
-
-    let state = window.localStorage.getItem('@SCIMS/DraftScreen')
-    if (state) {
-      this.state = JSON.parse(state)
-    } else {
-      this.state = {
-        title: '',
-        publication_date: '',
-        content: '',
-      }
-    }
-  }
-
-  componentDidUpdate() {
-    window.localStorage.setItem('@SCIMS/DraftScreen', JSON.stringify(this.state))
+  componentWillReceiveProps(props: Props) {
+    this.setState({ currentDraft: props.draft })
   }
 
   render() {
+    if (this.props.loading || !this.state.currentDraft) {
+      return <Spinner/>
+    }
+
+    const { currentDraft } = this.state
+
     return (
       <article className='bloc draft'>
         <h2>
-          <TextInput value={this.state.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/>
+          <TextInput value={currentDraft.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/>
         </h2>
 
         <div className='article-infos'>
           <ul>
-            <li><Icon type="calendar"/> <DateInput value={this.state.publication_date} onChange={this.onChange('publication_date')}/></li>
+            <li><Icon type="calendar"/> <DateInput value={currentDraft.publication_date} onChange={this.onChange('publication_date')}/></li>
             <li><Icon type="user"/> {this.props.currentUser.first_name} {this.props.currentUser.last_name}</li>
-            <li><Link to='#'><Icon type="share"/> Share</Link></li>
+            {this.renderSaveButton(currentDraft)}
+            {this.renderPublishButton(currentDraft)}
           </ul>
         </div>
 
         <div className="article-body">
-          <ContentInput value={this.state.content} onChange={this.onChange('content')} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat temporibus sint, minima exercitationem. Praesentium enim eveniet dolor expedita quia, ea ab, iusto unde in facere perspiciatis molestias officiis consequatur tempora."/>
+          <ContentInput value={currentDraft.content} onChange={this.onChange('content')} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat temporibus sint, minima exercitationem. Praesentium enim eveniet dolor expedita quia, ea ab, iusto unde in facere perspiciatis molestias officiis consequatur tempora."/>
         </div>
       </article>
     )
   }
 
-  onChange<T>(fieldName: string): (_: T) => void {
-    return (value: T, callback?: () => void) => {
-      this.setState({ [fieldName]: value }, () => {
+  renderSaveButton(draft: Article) {
+    if (deepEqual(draft, this.props.draft)) {
+      return
+    }
+    return <li><Link to="#" onClick={wrapPreventDefault(this.props.saveDraft.bind(this, draft))}><Icon type="save"/> Save</Link></li>
+  }
+
+  renderPublishButton(draft: Article) {
+    if (!draft.is_draft) {
+      return
+    }
+    return <li><Link to="#" onClick={wrapPreventDefault(this.props.publishDraft.bind(this, draft))}><Icon type="feed"/> Publish</Link></li>
+  }
+
+  onChange(fieldName: 'title' | 'publication_date' | 'content'): (_: string) => void {
+    return (value: string, callback?: () => void) => {
+      const draft = this.state.currentDraft
+      if (!draft) {
+        return
+      }
+
+      const newDraft: Article = {
+        ...draft,
+        [fieldName]: value,
+      }
+
+      this.setState({ currentDraft: newDraft }, () => {
         if (callback) {
           callback()
         }

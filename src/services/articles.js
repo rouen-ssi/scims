@@ -16,6 +16,7 @@ export type Article = {
   category_id: number,
   subcategory_id: number,
   publication_date: string,
+  last_modification_date: string,
   comments_count: number,
 }
 
@@ -56,15 +57,19 @@ export class ArticleService extends JsonService {
     return this.request('GET', `/article/${articleId}`)
   }
 
-  create(article: Article): Promise<CreateResponse> {
-    return this.request('POST', '/article', article)
+  fetchDrafts(): Promise<{ drafts: Array<Article> }> {
+    return this.authRequest('GET', '/drafts')
+  }
+
+  create(article: $Shape<Article>): Promise<CreateResponse> {
+    return this.authRequest('POST', '/article', article)
   }
 
   update(articleId: number, article: $Shape<Article>): Promise<UpdateResponse> {
-    return this.request('PUT', `/article/${articleId}`, article)
+    return this.authRequest('PUT', `/article/${articleId}`, article)
   }
 
   delete(articleId: number): Promise<DeleteResponse> {
-    return this.request('DELETE', `/article/${articleId}`)
+    return this.authRequest('DELETE', `/article/${articleId}`)
   }
 }

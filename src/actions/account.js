@@ -86,7 +86,7 @@ export function sendLoginRequest(email: string, password: string): Function {
       const resp = await accounts.login(email, password)
 
       if (resp.success) {
-        dispatch(loginSuccess(resp, resp.token))
+        dispatch(loginSuccess(resp.user, resp.token))
       } else {
         dispatch(loginError(resp.errors))
       }
