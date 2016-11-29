@@ -22,83 +22,18 @@
     }
   }
 
-  .content-input {
-    .toolbar {
-      margin-bottom: 1em;
+  textarea {
+    width: 100%;
+    max-width: 100%;
+    min-height: 200px;
+    border: none;
+    font-family: $font-serif;
+    font-size: 1em;
+    resize: none;
+    overflow: hidden;
 
-      > * {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        color: rgba(0, 0, 0, 0.6);
-        cursor: pointer;
-
-        height: 2em;
-        width: 2em;
-
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        border-right: none;
-
-        &.active {
-          background: #eee;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          & + * {
-            border-left: none;
-          }
-        }
-
-        &.disabled {
-          opacity: 0.5;
-          &:hover {
-            cursor: not-allowed;
-          }
-        }
-
-        &:first-child {
-          border-top-left-radius: 5px;
-          border-bottom-left-radius: 5px;
-        }
-
-        &:last-child {
-          border-right: 1px solid rgba(0, 0, 0, 0.1);
-          border-top-right-radius: 5px;
-          border-bottom-right-radius: 5px;
-        }
-
-        &:hover {
-          text-decoration: none;
-        }
-
-        &:hover:not(.disabled) {
-          background: #eee;
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          text-decoration: none;
-        }
-
-        .fa {
-          @extend .fa-fw;
-        }
-
-        .compound {
-          .fa {
-            // position: relative;
-            // left: -3px;
-          }
-          span {
-            font-size: 0.9em;
-            font-weight: bold;
-            position: relative;
-            right: 3px;
-          }
-        }
-      }
+    &:focus {
+      outline: none;
     }
-  }
-}
-
-$aligns: center, left, right, justify;
-@each $align in $aligns {
-  .align-#{$align} div {
-    text-align: $align;
   }
 }

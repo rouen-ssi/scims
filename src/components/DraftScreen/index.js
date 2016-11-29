@@ -2,14 +2,11 @@
 
 import React from 'react'
 
-import { EditorState, ContentState, convertFromRaw, convertToRaw } from 'draft-js'
 import { Link } from 'react-router'
 import { Icon } from '../../components/icons/FontAwesome'
 import { TextInput, DateInput, ContentInput } from './Input'
 
 import type { User } from '../../services/account'
-
-const loremContentState = ContentState.createFromText('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex animi repellat cum accusantium tempore, earum quas placeat, odio itaque pariatur. Fuga maxime, repudiandae, dignissimos dolore itaque ipsa vitae magni maiores. Sunt ut veritatis dignissimos corrupti natus porro sed repellat reprehenderit doloribus officia ea culpa ipsum harum labore minima voluptatum repudiandae vero dolor veniam quo obcaecati, aperiam molestiae voluptatem aliquam! Ipsa! Hic at vel deserunt culpa reiciendis repellat quis perspiciatis minima placeat. Aspernatur consectetur aliquid assumenda mollitia, quos maxime. Sint, quia facilis nulla, quae suscipit deserunt. Iste sunt, dolores voluptates quibusdam. Tempora officiis pariatur quas tempore excepturi unde nemo, quis dolores accusantium id. Facilis fugiat quaerat delectus quidem, debitis dicta, eum dolore quo maxime consequuntur quod deleniti eligendi doloremque similique eius. Ullam repudiandae et, sint soluta eos quaerat illum? Suscipit, nesciunt. Aperiam tenetur minus nam nulla numquam, obcaecati harum est. Incidunt natus sunt nostrum odit recusandae, eveniet adipisci esse, quisquam asperiores.')
 
 export class DraftScreen extends React.Component {
   props: {
@@ -19,7 +16,7 @@ export class DraftScreen extends React.Component {
   state: {
     title: string,
     publication_date: string,
-    content: EditorState,
+    content: string,
   }
 
   constructor(props: *, context: *) {
@@ -27,25 +24,18 @@ export class DraftScreen extends React.Component {
 
     let state = window.localStorage.getItem('@SCIMS/DraftScreen')
     if (state) {
-      state = JSON.parse(state)
-      this.state = {
-        ...state,
-        content: EditorState.createWithContent(convertFromRaw(state.content)),
-      }
+      this.state = JSON.parse(state)
     } else {
       this.state = {
         title: '',
         publication_date: '',
-        content: EditorState.createWithContent(loremContentState),
+        content: '',
       }
     }
   }
 
   componentDidUpdate() {
-    window.localStorage.setItem('@SCIMS/DraftScreen', JSON.stringify({
-      ...this.state,
-      content: convertToRaw(this.state.content.getCurrentContent()),
-    }))
+    window.localStorage.setItem('@SCIMS/DraftScreen', JSON.stringify(this.state))
   }
 
   render() {
@@ -64,7 +54,7 @@ export class DraftScreen extends React.Component {
         </div>
 
         <div className="article-body">
-          <ContentInput value={this.state.content} onChange={this.onChange('content')}/>
+          <ContentInput value={this.state.content} onChange={this.onChange('content')} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat temporibus sint, minima exercitationem. Praesentium enim eveniet dolor expedita quia, ea ab, iusto unde in facere perspiciatis molestias officiis consequatur tempora."/>
         </div>
       </article>
     )
