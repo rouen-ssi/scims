@@ -6,6 +6,7 @@ import { Map as ImmutableMap } from 'immutable'
 
 import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, Entity } from 'draft-js'
 import { Icon } from '../icons/FontAwesome'
+import { Icon as TexIcon } from '../icons/Tex'
 import { Modal } from '../Modal'
 
 class Toolbar extends React.Component {
@@ -53,7 +54,7 @@ function IconCompound({ text, ...props }) {
   return <span className="compound"><Icon {...props}/><span>{text}</span></span>
 }
 
-export const EditorToolbar = (props: {editorState: EditorState, onNewLink: () => void, onClick: (command: string, commandInline: boolean) => void}) => (
+export const EditorToolbar = (props: {editorState: EditorState, onNewLink: () => void, onNewTexBlock: () => void, onClick: (command: string, commandInline: boolean) => void}) => (
   <Toolbar {...props}>
     {/* typo */}
     <Icon type="font"/>
@@ -75,6 +76,7 @@ export const EditorToolbar = (props: {editorState: EditorState, onNewLink: () =>
     <Icon type="align-right" command="align-right"/>
 
     {/* components */}
+    <TexIcon width={30} height={12} command="tex-block" onClick={wrapClickEvent(props.onNewTexBlock)}/>
     <Icon type="link" onClick={wrapClickEvent(props.onNewLink)} command="link" commandInline/>
     <Icon type="table"/>
     <Icon type="list-ul" command="unordered-list-item"/>
@@ -138,6 +140,49 @@ class NewLinkModal extends React.Component {
   }
 }
 
+class NewTexBlockModal extends React.Component {
+  props: {
+    active: boolean,
+    onClose: () => void,
+    onSubmit: (expression: string) => void,
+  }
+
+  state = {
+    expression: '',
+  }
+
+  render() {
+    return (
+      <Modal active={this.props.active} onClose={this.props.onClose} title="New TeX Expression">
+        <input ref="input" type="text" value={this.state.expression} placeholder="y = ax + b" onKeyDown={this._onKeyDown} onChange={this._onChange}/>
+      </Modal>
+    )
+  }
+
+  componentDidUpdate() {
+    if (this.props.active) {
+      this.refs.input.focus()
+    }
+  }
+
+  _onKeyDown = (e: KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      this.props.onSubmit(this.state.expression)
+      this.setState({ expression: '' })
+      return false
+    }
+  }
+
+  _onChange = (e: Event) => {
+    if (e.target instanceof HTMLInputElement) {
+      this.setState({
+        expression: e.target.value,
+      })
+    }
+  }
+}
+
 export class ContentInput extends React.Component {
   props: {
     value: EditorState,
@@ -147,6 +192,7 @@ export class ContentInput extends React.Component {
 
   state = {
     newLink: false,
+    newTexBlock: false,
   }
 
   refs: {
@@ -162,10 +208,17 @@ export class ContentInput extends React.Component {
           onSubmit={this._onNewLink}
         />
 
+        <NewTexBlockModal
+          active={this.state.newTexBlock}
+          onClose={() => this.setState({ newTexBlock: false })}
+          onSubmit={this._onNewTexBlock}
+        />
+
         <EditorToolbar
           editorState={this.props.value}
           onClick={this._onToolbar}
           onNewLink={() => this.setState({ newLink: true })}
+          onNewTextBlock={() => this.setState({ newTexBlock: true })}
         />
 
         <Editor
@@ -221,5 +274,9 @@ export class ContentInput extends React.Component {
         this.refs.editor.focus()
       })
     })
+  }
+
+  _onNewTexBlock = (expression: string) => {
+
   }
 }
