@@ -10,25 +10,24 @@ import type { State } from '../reducers'
 
 type Props = {
   routeParams: {
-    draftId: ?number,
+    draftId: ?string,
   },
 }
 
-function mapStateToProps(state: State): any {
+function mapStateToProps(state: State, props: Props): any {
   const draft: ?Article = state.articles.currentDraft.draft
 
   return {
+    requestDraftId: props.routeParams.draftId && parseInt(props.routeParams.draftId, 10),
     loading: !draft || state.articles.loading,
     currentUser: state.account.currentUser,
     draft,
   }
 }
 
-function mapDispatchToProps(dispatch: (_: any) => void, props: Props): any {
+function mapDispatchToProps(dispatch: (_: any) => void): any {
   return {
-    loadDraft() {
-      const { routeParams: { draftId } } = props
-
+    loadDraft(draftId: ?number) {
       if (!draftId) {
         dispatch(articleActions.createDraft({}))
       } else {

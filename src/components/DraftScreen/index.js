@@ -13,8 +13,9 @@ import type { Article } from '../../services/articles'
 
 type Props = {
   currentUser: User,
+  requestDraftId: ?number,
   draft: ?Article,
-  loadDraft: () => void,
+  loadDraft: (draftId: ?number) => void,
   saveDraft: (article: Article) => void,
   publishDraft: (article: Article) => void,
 }
@@ -27,11 +28,15 @@ export class DraftScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadDraft()
+    this.props.loadDraft(this.props.requestDraftId)
   }
 
   componentWillReceiveProps(props: Props) {
-    this.setState({ currentDraft: props.draft })
+    if (props.draft && props.draft.id !== props.requestDraftId) {
+      props.loadDraft(props.requestDraftId)
+    } else if (!deepEqual(props.draft, this.state.currentDraft)) {
+      this.setState({ currentDraft: props.draft })
+    }
   }
 
   render() {

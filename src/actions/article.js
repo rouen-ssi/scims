@@ -86,7 +86,7 @@ export function fetchDrafts(): Thunk<State, Action> {
   return async function(dispatch, getState) {
     const state = getState()
 
-    if (state.articles.drafts.length > 0) {
+    if (!state.articles.drafts.isEmpty()) {
       return
     }
 
@@ -131,8 +131,11 @@ export function fetchDraft(articleId: number): Thunk<State, Action> {
   return async function(dispatch, getState) {
     const state = getState()
     const articles = new ArticleService(API_URL, state.account.token)
-    const article = state.articles.drafts.find(x => x.id === articleId)
+    const article = state.articles.drafts.get(articleId)
 
+    if (state.articles.currentDraft.draft && state.articles.currentDraft.draft.id === articleId) {
+      return
+    }
     if (article) {
       dispatch(draft(article))
     } else {

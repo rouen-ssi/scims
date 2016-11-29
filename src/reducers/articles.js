@@ -11,7 +11,7 @@ type PageNumber = number
 export type State = {
   loading: boolean,
   lastError: ?Error,
-  drafts: Array<Article>,
+  drafts: Immutable.Map<ArticleId, Article>,
   currentDraft: {
     draft: ?Article,
     errors: Array<ArticleError>,
@@ -27,7 +27,7 @@ export type State = {
 const initialState: State = {
   loading: false,
   lastError: null,
-  drafts: [],
+  drafts: new Immutable.Map(),
   currentDraft: {
     draft: null,
     errors: [],
@@ -87,7 +87,7 @@ export default function reducer(state: State = initialState, action: Action): St
     case '@ARTICLES/LOAD_DRAFTS':
       return {
         ...state,
-        drafts: action.drafts,
+        drafts: action.drafts.reduce((acc, x) => acc.set(x.id, x), new Immutable.Map()),
       }
 
     case '@ARTICLES/DRAFT':
@@ -96,6 +96,7 @@ export default function reducer(state: State = initialState, action: Action): St
         loading: false,
         lastError: null,
 
+        drafts: action.draft ? state.drafts.set(action.draft.id, action.draft) : state.drafts,
         currentDraft: {
           draft: action.draft,
           errors: action.errors,
