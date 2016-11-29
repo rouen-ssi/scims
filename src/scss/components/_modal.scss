@@ -1,6 +1,5 @@
 .modal {
   border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
   box-shadow: 0 5px 15px 5px rgba(0, 0, 0, 0.2);
   background: white;
   z-index: 999;
@@ -21,21 +20,22 @@
   .modal-title {
     padding: 0.5em 1em;
     position: relative;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.15));
+    background: $header-background-color;
     cursor: pointer;
     text-align: center;
 
     span {
-      font-weight: bold;
       font-size: 0.9em;
       user-select: none;
+      color: $nav-color;
+      text-transform: uppercase;
     }
 
     .fa.fa-close {
       @extend .fa-fw;
       float: right;
       font-size: 1.1em;
-      color: rgba(0, 0, 0, 0.4);
+      color: $nav-color;
     }
   }
 
