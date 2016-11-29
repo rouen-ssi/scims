@@ -24,7 +24,9 @@ export class ContentInput extends React.Component {
   _onChange = (e: Event) => {
     e.preventDefault()
 
+    /* eslint-disable no-undef */
     if (e.target instanceof HTMLTextAreaElement) {
+    /* eslint-enable no-undef */
       this.props.onChange(e.target.value)
     }
 
