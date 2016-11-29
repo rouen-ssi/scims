@@ -58,6 +58,9 @@
         border: 1px solid $border-active-color;
         box-shadow: 0 0 5px 2px $shadow-color;
       }
+      &.monospace {
+        font-family: 'Fira Mono', $font-monospace;
+      }
     }
   }
 

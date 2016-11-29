@@ -4,7 +4,7 @@ import React from 'react'
 import cx from 'classnames'
 import { Map as ImmutableMap } from 'immutable'
 
-import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, Entity } from 'draft-js'
+import { Editor, EditorState, RichUtils, DefaultDraftBlockRenderMap, Entity, AtomicBlockUtils } from 'draft-js'
 import { Icon } from '../icons/FontAwesome'
 import { Icon as TexIcon } from '../icons/Tex'
 import { Modal } from '../Modal'
@@ -154,7 +154,7 @@ class NewTexBlockModal extends React.Component {
   render() {
     return (
       <Modal active={this.props.active} onClose={this.props.onClose} title="New TeX Expression">
-        <input ref="input" type="text" value={this.state.expression} placeholder="y = ax + b" onKeyDown={this._onKeyDown} onChange={this._onChange}/>
+        <input ref="input" type="text" value={this.state.expression} placeholder="y = ax + b" onKeyDown={this._onKeyDown} onChange={this._onChange} className="monospace"/>
       </Modal>
     )
   }
@@ -180,6 +180,20 @@ class NewTexBlockModal extends React.Component {
         expression: e.target.value,
       })
     }
+  }
+}
+
+class AtomicBlock extends React.Component {
+  props: {
+    block: ContentBlock,
+  }
+
+  render() {
+    const { block } = this.props
+    const entity = Entity.get(block.getEntityAt(0))
+    const { type, expression } = entity.data
+
+    return <span>💩</span>
   }
 }
 
@@ -218,7 +232,7 @@ export class ContentInput extends React.Component {
           editorState={this.props.value}
           onClick={this._onToolbar}
           onNewLink={() => this.setState({ newLink: true })}
-          onNewTextBlock={() => this.setState({ newTexBlock: true })}
+          onNewTexBlock={() => this.setState({ newTexBlock: true })}
         />
 
         <Editor
@@ -242,6 +256,18 @@ export class ContentInput extends React.Component {
               wrapper: <div className="align-justify"/>,
             },
           }))}
+          blockRendererFn={block => {
+            switch (block.getType()) {
+              case 'atomic':
+                return {
+                  component: AtomicBlock,
+                  editable: true,
+                }
+
+              default:
+                return null
+            }
+          }}
         />
       </div>
     )
@@ -277,6 +303,8 @@ export class ContentInput extends React.Component {
   }
 
   _onNewTexBlock = (expression: string) => {
-
+    const entityKey = Entity.create('TOKEN', 'IMMUTABLE', { type: 'tex-block', expression })
+    const value = AtomicBlockUtils.insertAtomicBlock(this.props.value, entityKey, ' ')
+    this._onChange(value, () => this.refs.editor.focus())
   }
 }
