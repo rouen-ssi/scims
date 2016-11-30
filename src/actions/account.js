@@ -2,7 +2,7 @@
 
 import { AccountService } from '../services/account'
 import type { SignUpError, LoginError, UpdateProfileError, User } from '../services/account'
-import type { State } from '../reducers/account'
+import type { State } from '../reducers'
 
 export type Action
   = { type: '@ACCOUNT/SIGNING_UP' }
@@ -56,10 +56,10 @@ export function profileUpdateError(errors: Array<UpdateProfileError>): Action {
   return { type: '@ACCOUNT/PROFILE_UPDATE_ERROR', errors }
 }
 
-export function sendSignupRequest(email: string, firstName: string, lastName: string, password: string): Function {
+export function sendSignupRequest(email: string, firstName: string, lastName: string, password: string): Thunk<State, Action> {
   const accounts = new AccountService(API_URL)
 
-  return async function(dispatch: (action: Action) => void) {
+  return async function(dispatch) {
     dispatch(signingUp())
 
     try {
@@ -76,17 +76,17 @@ export function sendSignupRequest(email: string, firstName: string, lastName: st
   }
 }
 
-export function sendLoginRequest(email: string, password: string): Function {
+export function sendLoginRequest(email: string, password: string): Thunk<State, Action> {
   const accounts = new AccountService(API_URL)
 
-  return async function(dispatch: (action: Action) => void) {
+  return async function(dispatch) {
     dispatch(loggingIn())
 
     try {
       const resp = await accounts.login(email, password)
 
       if (resp.success) {
-        dispatch(loginSuccess(resp.user, resp.token))
+        dispatch(loginSuccess(resp.account, resp.token))
       } else {
         dispatch(loginError(resp.errors))
       }
@@ -96,9 +96,9 @@ export function sendLoginRequest(email: string, password: string): Function {
   }
 }
 
-export function sendUpdateProfileRequest(): Function {
-  return async function(dispatch: (action: Action) => void, getState: () => { account: State }) {
-    const {currentUser, token} = getState().account
+export function sendUpdateProfileRequest(): Thunk<State, Action> {
+  return async function(dispatch, getState) {
+    const {account: {currentUser, token}} = getState()
 
     if (!currentUser || !token) {
       return
@@ -117,6 +117,25 @@ export function sendUpdateProfileRequest(): Function {
       }
     } catch (err) {
       dispatch(profileUpdateError([err.message]))
+    }
+  }
+}
+
+export function fetchProfile(): Thunk<State, Action> {
+  return async function(dispatch, getState) {
+    const {account: {token}} = getState()
+
+    if (!token) {
+      return
+    }
+
+    const accounts = new AccountService(API_URL, token)
+    dispatch(loggingIn())
+    try {
+      const resp = await accounts.profile()
+      dispatch(loginSuccess(resp.user, token))
+    } catch (err) {
+      dispatch(loginError(err))
     }
   }
 }

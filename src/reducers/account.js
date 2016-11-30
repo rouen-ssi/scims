@@ -17,7 +17,7 @@ export type State = {
 
 const initialState: State = {
   currentUser: null,
-  token: null,
+  token: loadToken(),
 
   loggingIn: false,
   signingUp: false,
@@ -69,7 +69,7 @@ export default function reducer(state: State = initialState, action: Action): St
       return {
         ...state,
         currentUser: action.user,
-        token: action.token,
+        token: persistToken(action.token),
 
         loggingIn: false,
         loginError: undefined,
@@ -86,4 +86,20 @@ export default function reducer(state: State = initialState, action: Action): St
     default:
       return state
   }
+}
+
+function loadToken(): ?string {
+  const data = window.localStorage['@@SCIMS/1.0/reducers/account']
+
+  if (data) {
+    const { token } = JSON.parse(data)
+    return token
+  }
+
+  return null
+}
+
+function persistToken(token: ?string): ?string {
+  window.localStorage['@@SCIMS/1.0/reducers/account'] = JSON.stringify({ token })
+  return token
 }

@@ -22,7 +22,7 @@ export type User = {
 
 export type LoginSuccess = SuccessResponse & {
   token: string,
-  user: User,
+  account: User,
 }
 
 export type LoginError = 'INVALID_CREDENTIALS' // Invalid e-mail or password
@@ -49,6 +49,10 @@ export type UpdateProfileResponse = SuccessResponse | ErrorResponse<UpdateProfil
 export class AccountService extends JsonService {
   login(email: string, password: string): Promise<LoginResponse> {
     return this.request('POST', '/account/login', { email, password })
+  }
+
+  profile(): Promise<{user: User}> {
+    return this.authRequest('GET', '/account/me')
   }
 
   signUp(email: string, first_name: string, last_name: string, password: string): Promise<SignUpResponse> {

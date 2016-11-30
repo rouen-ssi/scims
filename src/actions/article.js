@@ -89,6 +89,9 @@ export function fetchDrafts(): Thunk<State, Action> {
     if (!state.articles.drafts.isEmpty()) {
       return
     }
+    if (!state.account.token) {
+      return
+    }
 
     const articles = new ArticleService(API_URL, state.account.token)
 
