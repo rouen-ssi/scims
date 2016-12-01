@@ -91,6 +91,10 @@ export default function reducer(state: State = initialState, action: Action): St
 }
 
 function loadToken(): ?string {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
   const data = window.localStorage['@@SCIMS/1.0/reducers/account']
 
   if (data) {

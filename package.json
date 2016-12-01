@@ -24,10 +24,13 @@
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "classnames": "^2.2.5",
+    "express": "^4.14.0",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
     "mathjax": "^2.7.0",
+    "mime-types": "^2.1.13",
     "moment": "^2.16.0",
+    "node-fetch": "^1.6.3",
     "react": "^15.3.2",
     "react-day-picker": "^3.1.1",
     "react-dom": "^15.3.2",
@@ -41,6 +44,7 @@
     "whatwg-fetch": "^2.0.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.18.0",
     "babel-core": "^6.17.0",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.5",
