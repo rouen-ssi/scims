@@ -7,23 +7,16 @@ import { TimeAgo } from './DateTime'
 import { ArticleLink } from './Link'
 import { Spinner } from './Spinner'
 import { Icon } from './icons/FontAwesome'
+import { Icons as CategoryIcons } from './icons/Categories'
 
 import type { Category } from '../services/categories'
 import type { Article } from '../services/articles'
-
-const icons = {
-  'Mathematics': 'book',
-  'Statistics': 'line-chart',
-  'Arithmetics': 'plus',
-  'Chemistry': 'flask',
-  'Physics': 'space-shuttle',
-}
 
 function Card(props: {category: Category}) {
   return (
     <Link to={`/category/${props.category.id}/${props.category.name}`} className="article-category-card">
       <span className="name">
-        <i className={`fa fa-${icons[props.category.name]}`}/>
+        {CategoryIcons[props.category.name]}
         <span>{props.category.name}</span>
       </span>
 
@@ -71,7 +64,7 @@ export class CategoryScreen extends React.Component {
       <MainContent side="center">
         <div className="bloc">
           <h1>
-            <i className={`fa fa-${icons[this.props.category.name]}`}/>
+            {CategoryIcons[this.props.category.name]}
             {' '}{this.props.category.name}
           </h1>
 

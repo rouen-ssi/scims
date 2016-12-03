@@ -6,18 +6,22 @@ import { deepEqual, wrapPreventDefault } from '../../utils'
 import { Link } from 'react-router'
 import { Icon } from '../icons/FontAwesome'
 import { Spinner } from '../Spinner'
-import { TextInput, DateInput, ContentInput } from './Input'
+import { TextInput, DateInput, ContentInput, CategoryInput } from './Input'
 
 import type { User } from '../../services/account'
 import type { Article } from '../../services/articles'
+import type { Category } from '../../services/categories'
 
 type Props = {
   currentUser: User,
   requestDraftId: ?number,
   draft: ?Article,
+  categories: Array<Category>,
   loadDraft: (draftId: ?number) => void,
+  unloadDraft: () => void,
   saveDraft: (article: Article) => void,
   publishDraft: (article: Article) => void,
+  loadCategories: () => void,
 }
 
 export class DraftScreen extends React.Component {
@@ -29,6 +33,11 @@ export class DraftScreen extends React.Component {
 
   componentDidMount() {
     this.props.loadDraft(this.props.requestDraftId)
+    this.props.loadCategories()
+  }
+
+  componentWillUnmount() {
+    this.props.unloadDraft()
   }
 
   componentWillReceiveProps(props: Props) {
@@ -56,6 +65,7 @@ export class DraftScreen extends React.Component {
           <ul>
             <li><Icon type="calendar"/> <DateInput value={currentDraft.publication_date} onChange={this.onChange('publication_date')}/></li>
             <li><Icon type="user"/> {this.props.currentUser.first_name} {this.props.currentUser.last_name}</li>
+            {this.renderCategory(currentDraft)}
             {this.renderSaveButton(currentDraft)}
             {this.renderPublishButton(currentDraft)}
           </ul>
@@ -65,6 +75,15 @@ export class DraftScreen extends React.Component {
           <ContentInput value={currentDraft.content} onChange={this.onChange('content')} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat temporibus sint, minima exercitationem. Praesentium enim eveniet dolor expedita quia, ea ab, iusto unde in facere perspiciatis molestias officiis consequatur tempora."/>
         </div>
       </article>
+    )
+  }
+
+  renderCategory(draft: Article) {
+    return (
+      <li>
+        <Icon type="database"/>{' '}
+        <CategoryInput value={draft.category_id} placeholder="Category" categories={this.props.categories} onChange={this.onChange('category_id')}/>
+      </li>
     )
   }
 
@@ -82,8 +101,8 @@ export class DraftScreen extends React.Component {
     return <li><Link to="#" onClick={wrapPreventDefault(this.props.publishDraft.bind(this, draft))}><Icon type="feed"/> Publish</Link></li>
   }
 
-  onChange(fieldName: 'title' | 'publication_date' | 'content'): (_: string) => void {
-    return (value: string, callback?: () => void) => {
+  onChange<T>(fieldName: string): (_: T) => void {
+    return (value: T, callback?: () => void) => {
       const draft = this.state.currentDraft
       if (!draft) {
         return

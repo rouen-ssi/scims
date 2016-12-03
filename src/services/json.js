@@ -35,7 +35,7 @@ export class JsonService {
       body,
     })
 
-    if (res >= 500) {
+    if (res.status >= 500 || res.status === 401) {
       throw new Error(res.statusText)
     }
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { DraftScreen } from '../components/DraftScreen'
 
 import * as articleActions from '../actions/article'
+import * as categoryActions from '../actions/category'
 import type { Article } from '../services/articles'
 import type { State } from '../reducers'
 
@@ -22,6 +23,7 @@ function mapStateToProps(state: State, props: Props): any {
     loading: !draft || state.articles.loading,
     currentUser: state.account.currentUser,
     draft,
+    categories: state.categories.categories.valueSeq().toJS(),
   }
 }
 
@@ -35,6 +37,10 @@ function mapDispatchToProps(dispatch: (_: any) => void): any {
       }
     },
 
+    unloadDraft() {
+      dispatch(articleActions.draft(null, []))
+    },
+
     saveDraft(article: Article) {
       dispatch(articleActions.updateDraft(article))
     },
@@ -44,6 +50,10 @@ function mapDispatchToProps(dispatch: (_: any) => void): any {
         ...article,
         is_draft: false,
       }))
+    },
+
+    loadCategories() {
+      dispatch(categoryActions.fetchAll())
     },
   }
 }

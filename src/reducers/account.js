@@ -63,6 +63,8 @@ export default function reducer(state: State = initialState, action: Action): St
         loggingIn: false,
         loginError: action.errors,
         loginSuccess: false,
+        token: null,
+        currentUser: null,
       }
 
     case '@ACCOUNT/LOGIN_SUCCESS':
