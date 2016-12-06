@@ -19,7 +19,6 @@ import { renderToString } from 'react-dom/server'
 
 import { configureStore } from './src/configureStore'
 import { configureRouter } from './src/routes'
-import * as articleActions from './src/actions/article'
 
 const PORT = 8080
 const app = express()
@@ -44,7 +43,7 @@ for (const bundle of bundles) {
 
 app.all('*', (req, res) => {
   const store = configureStore()
-  const routes = configureRouter(createMemoryHistory())
+  const routes = configureRouter(createMemoryHistory(), store)
 
   match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -59,15 +58,13 @@ app.all('*', (req, res) => {
 
     console.log(`${req.method} ${req.url}`)
 
-    articleActions.fetchOne(66)(store.dispatch, store.getState).then(() => {
-      const html = renderToString(
-        <Provider store={store}>
-          <RouterContext {...renderProps}/>
-        </Provider>
-      )
-      res.set('Content-Type', 'text/html')
-      res.send(indexHtml.replace('<body>', '<body><div id="scims-app">' + html + '</div>'))
-    })
+    const html = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps}/>
+      </Provider>
+    )
+    res.set('Content-Type', 'text/html')
+    res.send(indexHtml.replace('<body>', '<body><div id="scims-app">' + html + '</div><script>window.INITIAL_STATE=' + JSON.stringify(store.getState()) + ';</script>'))
   })
 })
 

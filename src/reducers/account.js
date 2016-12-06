@@ -90,7 +90,7 @@ export default function reducer(state: State = initialState, action: Action): St
   }
 }
 
-function loadToken(): ?string {
+export function loadToken(): ?string {
   if (typeof window === 'undefined') {
     return null
   }

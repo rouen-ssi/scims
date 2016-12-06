@@ -1,5 +1,6 @@
 /** @flow */
 
+import { loadToken } from '../reducers/account'
 import { AccountService } from '../services/account'
 import type { SignUpError, LoginError, UpdateProfileError, User } from '../services/account'
 import type { State } from '../reducers'
@@ -123,9 +124,14 @@ export function sendUpdateProfileRequest(): Thunk<State, Action> {
 
 export function fetchProfile(): Thunk<State, Action> {
   return async function(dispatch, getState) {
-    const {account: {token}} = getState()
+    let {account: {token}} = getState()
 
     if (!token) {
+      token = loadToken()
+    }
+
+    if (!token) {
+      console.log('!token', {token})
       return
     }
 
