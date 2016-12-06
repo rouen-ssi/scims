@@ -99,7 +99,13 @@ export default function reducer(state: State = initialState, action: Action): St
         loading: false,
         lastError: null,
 
-        drafts: action.draft ? state.drafts.set(action.draft.id, action.draft) : state.drafts,
+        drafts: (
+          action.draft
+          ? action.draft.is_draft
+            ? state.drafts.set(action.draft.id, action.draft)
+            : state.drafts.remove(action.draft.id)
+          : state.drafts
+        ),
         currentDraft: {
           draft: action.draft,
           errors: action.errors,
