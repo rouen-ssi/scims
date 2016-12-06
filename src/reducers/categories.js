@@ -3,21 +3,18 @@
 import { Map as ImmutableMap } from 'immutable'
 
 import type { Category } from '../services/categories'
-import type { Article } from '../services/articles'
 import type { Action } from '../actions/category'
 
 type CategoryId = number
 
 export type State = {
   categories: ImmutableMap<CategoryId, Category>,
-  articles: ImmutableMap<CategoryId, Array<Article>>,
   fetching: boolean,
   lastError: ?Error,
 }
 
 const initialState: State = {
   categories: new ImmutableMap(),
-  articles: new ImmutableMap(),
   fetching: false,
   lastError: null,
 }
@@ -42,8 +39,7 @@ export default function reducer(state: State = initialState, action: Action): St
     case '@CATEGORY/RECEIVE':
       return {
         ...state,
-        categories: state.categories.set(action.category.id, action.category),
-        articles: state.articles.merge(groupBy(action.articles, x => x.category_id)),
+        categories: action.category ? state.categories.set(action.category.id, action.category) : state.categories,
         fetching: false,
         lastError: null,
       }

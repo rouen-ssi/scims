@@ -14,11 +14,6 @@ export class CategoryList extends React.Component {
     loading: boolean,
     categories: Array<Category>,
     lastError: ?Error,
-    fetchCategories: () => void,
-  };
-
-  componentDidMount() {
-    this.props.fetchCategories()
   }
 
   render() {
@@ -38,6 +33,15 @@ export class CategoryList extends React.Component {
     }
 
     const categories = this.props.categories.filter(x => x.parent_categories === -1)
+
+    if (categories.length <= 0) {
+      return (
+        <span>
+          No child categories.
+        </span>
+      )
+    }
+
     return (
       <ul>
         {categories.map((x, i) => <li key={i}><CategoryLink category={x}/></li>)}

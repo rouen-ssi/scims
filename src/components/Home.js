@@ -1,9 +1,9 @@
 /** @flow */
 import React from 'react'
 
-import Sidebar from './Sidebar'
-import ArticleArchives from './ArticleArchives'
 import MainContent from './MainContent'
+import Sidebar from './Sidebar'
+import { ArchiveList } from './ArchiveList'
 
 import CategoryList from '../containers/CategoryList'
 import ArticleList from '../containers/ArticleList'
@@ -12,7 +12,7 @@ export const Home = () => (
   <div>
     <Sidebar side="right">
       <CategoryList />
-      <ArticleArchives />
+      <ArchiveList />
     </Sidebar>
     <MainContent side="left">
       <ArticleList/>

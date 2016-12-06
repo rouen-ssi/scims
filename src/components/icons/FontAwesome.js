@@ -45,6 +45,8 @@ export type IconType
 | 'android'
 | 'angellist'
 | 'angle'
+| 'angle-right'
+| 'angle-double-right'
 | 'apple'
 | 'archive'
 | 'area'

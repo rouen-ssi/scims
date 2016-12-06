@@ -19,6 +19,7 @@ export type State = {
   articlesById: Immutable.Map<ArticleId, Article>,
   articlesByPage: Immutable.Map<PageNumber, Array<Article>>,
   pagination: {
+    categoryId: ?number,
     current: number,
     count: number,
   },
@@ -35,7 +36,8 @@ const initialState: State = {
   articlesById: new Immutable.Map(),
   articlesByPage: new Immutable.Map(),
   pagination: {
-    current: 1,
+    categoryId: null,
+    current: 0,
     count: 1,
   },
 }
@@ -81,6 +83,7 @@ export default function reducer(state: State = initialState, action: Action): St
         pagination: {
           ...state.pagination,
           current: action.page,
+          categoryId: action.categoryId,
         },
       }
 

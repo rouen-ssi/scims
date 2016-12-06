@@ -2,37 +2,46 @@
 import { connect } from 'react-redux'
 import type { State } from '../reducers'
 import * as categoryActions from '../actions/category'
+import * as articleActions from '../actions/article'
 
 import { CategoryScreen } from '../components/CategoryScreen'
 
 type Props = {
   routeParams: {
-    categoryId: string,
+    categoryId?: string,
   },
 }
 
 function mapStateToProps(state: State, props: Props): Object {
-  const categoryId = parseInt(props.routeParams.categoryId, 10)
-  const category = state.categories.categories.get(categoryId)
-  const articles = state.categories.articles.get(categoryId, [])
+  const categoryId = parseInt(props.routeParams.categoryId, 10) || null
+  const category = categoryId && state.categories.categories.get(categoryId)
+  const pagination = state.articles.pagination
+  const articles = state.articles.articlesByPage.get(pagination.current, [])
 
   return {
-    loading: state.categories.fetching,
-    category,
+    loadingCategory: state.categories.fetching,
+    loadingArticles: state.articles.loading,
     categories: state.categories.categories.valueSeq().toJS(),
+    category,
+    pagination,
     articles,
   }
 }
 
 function mapDispatchToProps(dispatch: (action: any) => void, props: Props): Object {
-  const categoryId = parseInt(props.routeParams.categoryId, 10)
+  const categoryId = parseInt(props.routeParams.categoryId, 10) || null
 
   return {
+    loadCategory() {
+      if (categoryId) {
+        dispatch(categoryActions.fetchCategory(categoryId))
+      }
+    },
     loadCategories() {
       dispatch(categoryActions.fetchAll())
     },
-    loadCategory() {
-      dispatch(categoryActions.fetchCategory(categoryId))
+    loadArticles(page: number) {
+      dispatch(articleActions.fetchPage(page, categoryId))
     },
   }
 }

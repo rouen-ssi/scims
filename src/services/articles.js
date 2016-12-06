@@ -49,7 +49,7 @@ export type DeleteResponse
   | { success: false, errors: Array<'ARTICLE_NOT_FOUND'> }
 
 export class ArticleService extends JsonService {
-  fetch(page?: number, category_id?: number): Promise<FetchResponse> {
+  fetch(page?: number, category_id?: ?number): Promise<FetchResponse> {
     return this.request('GET', '/articles', { page, category_id })
   }
 

@@ -4,16 +4,22 @@ import { ArticleService } from '../services/articles'
 import type { Article, ArticleError } from '../services/articles'
 import type { State } from '../reducers'
 
+export type Pagination = {
+  categoryId: ?number,
+  current: number,
+  count: number,
+}
+
 export type Action
-  = { type: '@ARTICLES/LOAD', articles: Array<Article>, pagination: { current: number, count: number } }
+  = { type: '@ARTICLES/LOAD', articles: Array<Article>, pagination: Pagination }
   | { type: '@ARTICLES/LOAD_ONE', article: Article }
-  | { type: '@ARTICLES/PAGINATE', page: number }
+  | { type: '@ARTICLES/PAGINATE', page: number, categoryId: ?number }
   | { type: '@ARTICLES/LOAD_DRAFTS', drafts: Array<Article> }
   | { type: '@ARTICLES/DRAFT', draft: ?Article, errors: Array<ArticleError> }
   | { type: '@ARTICLES/LOADING' }
   | { type: '@ARTICLES/LOAD_ERROR', error: Error }
 
-export function load(articles: Array<Article>, pagination: { current: number, count: number }): Action {
+export function load(articles: Array<Article>, pagination: Pagination): Action {
   return { type: '@ARTICLES/LOAD', articles, pagination }
 }
 
@@ -21,8 +27,8 @@ export function loadOne(article: Article): Action {
   return { type: '@ARTICLES/LOAD_ONE', article }
 }
 
-export function paginate(page: number): Action {
-  return { type: '@ARTICLES/PAGINATE', page }
+export function paginate(page: number, categoryId: ?number): Action {
+  return { type: '@ARTICLES/PAGINATE', page, categoryId }
 }
 
 export function loadDrafts(drafts: Array<Article>): Action {
@@ -65,21 +71,33 @@ export function fetchOne(articleId: number): Thunk<State, Action> {
   }
 }
 
-export function fetchPage(page: number): Thunk<State, Action> {
+export function fetchPage(page: number, categoryId: ?number): Thunk<State, Action> {
   const articles = new ArticleService(API_URL)
 
   return async function(dispatch, getState) {
     const state = getState()
 
-    if (state.articles.articlesByPage.has(page)) {
-      dispatch(paginate(page))
-      return
+    // if we are navigating in the same category
+    if (state.articles.pagination.categoryId === categoryId) {
+      // and navigating to same page
+      if (state.articles.pagination.current === page) {
+        return // do nothing
+      }
+
+      // or navigating to an already cached page
+      if (state.articles.articlesByPage.has(page)) {
+        dispatch(paginate(page, categoryId))
+        return // but do nothing
+      }
     }
 
     dispatch(loading())
     try {
-      const resp = await articles.fetch(page)
-      dispatch(load(resp.articles, resp.pagination))
+      const resp = await articles.fetch(page, categoryId)
+      dispatch(load(resp.articles, {
+        ...resp.pagination,
+        categoryId,
+      }))
     } catch (err) {
       dispatch(loadError(err))
     }
