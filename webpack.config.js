@@ -4,6 +4,7 @@ var config = refineConfig(require('./config/' + NODE_ENV + '.json'))
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var UnusedFilesWebpackPlugin = require('unused-files-webpack-plugin')['default']
 
 module.exports = {
   module: {
@@ -28,6 +29,9 @@ module.exports = {
     new webpack.DefinePlugin(Object.assign({}, config, {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     })),
+    new UnusedFilesWebpackPlugin({
+      pattern: 'src/**/*.*',
+    }),
   ],
   entry: ['whatwg-fetch', 'babel-polyfill', './src/index.js', './src/scss/scims.scss'],
   output: {
