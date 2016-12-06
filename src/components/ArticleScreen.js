@@ -7,38 +7,23 @@ import { DateTime } from './DateTime'
 import { Link, DraftLink } from './Link'
 import { Icon } from './icons/FontAwesome'
 import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
-
-import ArticleCommentList from '../containers/ArticleCommentList'
+import { CommentList } from './CommentList'
 
 import type { Article } from '../services/articles'
 import type { Category } from '../services/categories'
 import type { User } from '../services/account'
+import type { Comment } from '../services/comments'
 
 type Props = {
   loading: boolean,
   article: ?Article,
   categories: Array<Category>,
+  comments: Array<Comment>,
   currentUser: ?User,
-
-  loadArticle: () => void,
 }
 
 export class ArticleScreen extends React.Component {
   props: Props
-
-  componentWillMount() {
-    this.props.loadArticle()
-  }
-
-  componentDidMount() {
-    window.scrollTo(0, 0)
-  }
-
-  componentWillUpdate(nextProps: Props) {
-    if (!nextProps.loading) {
-      nextProps.loadArticle()
-    }
-  }
 
   render() {
     if (this.props.loading) {
@@ -85,7 +70,9 @@ export class ArticleScreen extends React.Component {
             {article.content}
           </div>
 
-          <ArticleCommentList article={article}/>
+          <div className="article-comments">
+            <CommentList comments={this.props.comments} parentCommentId={-1} />
+          </div>
         </article>
       </div>
     )

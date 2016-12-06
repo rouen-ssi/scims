@@ -1,7 +1,6 @@
 /** @flow */
 import { connect } from 'react-redux'
 import type { State } from '../reducers'
-import * as categoryActions from '../actions/category'
 import * as articleActions from '../actions/article'
 
 import { CategoryScreen } from '../components/CategoryScreen'
@@ -32,14 +31,6 @@ function mapDispatchToProps(dispatch: (action: any) => void, props: Props): Obje
   const categoryId = parseInt(props.routeParams.categoryId, 10) || null
 
   return {
-    loadCategory() {
-      if (categoryId) {
-        dispatch(categoryActions.fetchCategory(categoryId))
-      }
-    },
-    loadCategories() {
-      dispatch(categoryActions.fetchAll())
-    },
     loadArticles(page: number) {
       dispatch(articleActions.fetchPage(page, categoryId))
     },

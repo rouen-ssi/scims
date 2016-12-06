@@ -20,29 +20,11 @@ type Props = {
   articles: Array<Article>,
   pagination: {current: number, count: number, categoryId: ?number},
 
-  loadCategories: () => void,
-  loadCategory: () => void,
   loadArticles: (page: number) => void,
 }
 
 export class CategoryScreen extends React.Component {
   props: Props
-
-  componentDidMount() {
-    this.props.loadCategories()
-    this.props.loadCategory()
-    this.props.loadArticles(this.props.pagination.current || 1)
-  }
-
-  componentDidUpdate() {
-    if (!this.props.loadingCategory) {
-      this.props.loadCategory()
-    }
-
-    if (!this.props.loadingArticles) {
-      this.props.loadArticles(this.props.pagination.current || 1)
-    }
-  }
 
   render() {
     if (this.props.loadingCategory) {

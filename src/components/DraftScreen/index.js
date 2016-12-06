@@ -31,21 +31,6 @@ export class DraftScreen extends React.Component {
     currentDraft: this.props.draft,
   }
 
-  componentDidMount() {
-    this.props.loadCategories()
-    this.props.loadDraft()
-  }
-
-  componentWillUnmount() {
-    this.props.unloadDraft()
-  }
-
-  componentDidUpdate() {
-    if (!this.props.loading) {
-      this.props.loadDraft()
-    }
-  }
-
   componentWillReceiveProps(nextProps: Props) {
     if (!deepEqual(nextProps.draft, this.state.currentDraft)) {
       this.setState({ currentDraft: nextProps.draft })
@@ -71,7 +56,7 @@ export class DraftScreen extends React.Component {
 
     const { currentUser } = this.props
 
-    if (!currentUser || currentDraft.user.uid !== currentUser.uid) {
+    if (!currentUser || currentDraft.user.uid !== currentUser.uid && currentDraft.id !== 0) {
       return (
         <div className="main-content center">
           <div className="block">
@@ -85,7 +70,6 @@ export class DraftScreen extends React.Component {
       <article className='bloc draft'>
         <h2>
           <ContentInput value={currentDraft.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/>
-          {/* <TextInput value={currentDraft.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/> */}
         </h2>
 
         <div className='article-infos'>
@@ -122,7 +106,7 @@ export class DraftScreen extends React.Component {
   }
 
   renderPublishButton(currentDraft: Article) {
-    if (!currentDraft.is_draft) {
+    if (!currentDraft.is_draft || currentDraft.id === 0) {
       return
     }
     return <li><Link to="#" onClick={wrapPreventDefault(this.props.publishDraft.bind(this, currentDraft))}><Icon type="feed"/> Publish</Link></li>

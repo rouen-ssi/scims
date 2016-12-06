@@ -28,3 +28,9 @@ declare class Router {
 
   isActive(dest: Path|Location, indexOnly?: boolean): boolean;
 }
+
+declare type Store<S, A> = {
+  dispatch: (action: any) => void,
+  getState: () => S,
+  subscribe: (listener: () => void) => (() => void),
+}

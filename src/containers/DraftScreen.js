@@ -28,19 +28,17 @@ function mapStateToProps(state: State): any {
 }
 
 function mapDispatchToProps(dispatch: (_: any) => void, props: Props): any {
-  const draftId = parseInt(props.routeParams.draftId, 10)
+  const draftId = parseInt(props.routeParams.draftId, 10) || null
 
   return {
     loadDraft() {
       if (draftId) {
         dispatch(articleActions.fetchDraft(draftId))
-      } else {
-        dispatch(articleActions.createDraft())
       }
     },
 
     unloadDraft() {
-      dispatch(articleActions.draft(null, []))
+      dispatch(articleActions.unloadDraft())
     },
 
     saveDraft(article: Article) {

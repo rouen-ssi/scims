@@ -15,7 +15,8 @@ export type Action
   | { type: '@ARTICLES/LOAD_ONE', article: Article }
   | { type: '@ARTICLES/PAGINATE', page: number, categoryId: ?number }
   | { type: '@ARTICLES/LOAD_DRAFTS', drafts: Array<Article> }
-  | { type: '@ARTICLES/DRAFT', draft: ?Article, errors: Array<ArticleError> }
+  | { type: '@ARTICLES/DRAFT', draft: Article, errors: Array<ArticleError> }
+  | { type: '@ARTICLES/UNLOAD_DRAFT' }
   | { type: '@ARTICLES/LOADING' }
   | { type: '@ARTICLES/LOAD_ERROR', error: Error }
 
@@ -35,8 +36,12 @@ export function loadDrafts(drafts: Array<Article>): Action {
   return { type: '@ARTICLES/LOAD_DRAFTS', drafts }
 }
 
-export function draft(draft: ?Article, errors: Array<ArticleError> = []): Action {
+export function draft(draft: Article, errors: Array<ArticleError> = []): Action {
   return { type: '@ARTICLES/DRAFT', draft, errors }
+}
+
+export function unloadDraft(): Action {
+  return { type: '@ARTICLES/UNLOAD_DRAFT' }
 }
 
 export function loading(): Action {
@@ -127,31 +132,6 @@ export function fetchDrafts(): Thunk<State, Action> {
   }
 }
 
-export function createDraft(): Thunk<State, Action> {
-  return async function(dispatch, getState) {
-    const state = getState()
-    const articles = new ArticleService(API_URL, state.account.token)
-
-    dispatch(loading())
-    try {
-      const resp1 = await articles.create({})
-      if (resp1.success) {
-        const resp2 = await articles.fetchOne(resp1.id)
-        const article = resp2.article
-        if (article.is_draft) {
-          dispatch(draft(article))
-        } else {
-          throw new Error('the newly created draft has already been published')
-        }
-      } else {
-        dispatch(draft(null, resp1.errors))
-      }
-    } catch (err) {
-      dispatch(loadError(err))
-    }
-  }
-}
-
 export function fetchDraft(articleId: number): Thunk<State, Action> {
   return async function(dispatch, getState) {
     const state = getState()
@@ -180,7 +160,9 @@ export function updateDraft(article: Article): Thunk<State, Action> {
     const state = getState()
     const articles = new ArticleService(API_URL, state.account.token)
 
-    const resp = await articles.update(article.id, article)
+    const resp = await (article.id === 0
+                       ? articles.create(article)
+                       : articles.update(article.id, article))
     if (resp.success) {
       dispatch(draft(article))
     } else {
@@ -188,3 +170,18 @@ export function updateDraft(article: Article): Thunk<State, Action> {
     }
   }
 }
+
+// function emptyArticle(user: User): Article {
+//   return {
+//     id: 0,
+//     is_draft: true,
+//     user,
+//     title: '',
+//     content: '',
+//     category_id: 0,
+//     subcategory_id: 0,
+//     publication_date: '',
+//     last_modification_date: '',
+//     comments_count: 0,
+//   }
+// }

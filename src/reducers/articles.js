@@ -13,7 +13,7 @@ export type State = {
   lastError: ?Error,
   drafts: Immutable.Map<ArticleId, Article>,
   currentDraft: {
-    draft: ?Article,
+    draft: Article,
     errors: Array<ArticleError>,
   },
   articlesById: Immutable.Map<ArticleId, Article>,
@@ -30,7 +30,7 @@ const initialState: State = {
   lastError: null,
   drafts: new Immutable.Map(),
   currentDraft: {
-    draft: null,
+    draft: emptyArticle(),
     errors: [],
   },
   articlesById: new Immutable.Map(),
@@ -90,6 +90,8 @@ export default function reducer(state: State = initialState, action: Action): St
     case '@ARTICLES/LOAD_DRAFTS':
       return {
         ...state,
+        loading: false,
+        loadError: null,
         drafts: action.drafts.reduce((acc, x) => acc.set(x.id, x), new Immutable.Map()),
       }
 
@@ -118,7 +120,34 @@ export default function reducer(state: State = initialState, action: Action): St
         },
       }
 
+    case '@ARTICLES/UNLOAD_DRAFT':
+      return {
+        ...state,
+
+        currentDraft: initialState.currentDraft,
+      }
+
     default:
       return state
+  }
+}
+
+function emptyArticle() {
+  return {
+    id: 0,
+    is_draft: true,
+    user: {
+      uid: 0,
+      email: '',
+      first_name: '',
+      last_name: '',
+    },
+    title: '',
+    content: '',
+    category_id: 0,
+    subcategory_id: 0,
+    publication_date: '',
+    last_modification_date: '',
+    comments_count: 0,
   }
 }
