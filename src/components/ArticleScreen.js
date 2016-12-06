@@ -43,7 +43,7 @@ export class ArticleScreen extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{width: '100%'}}>
         <h2>
           <CategoryBreadcrumbs
             category={this.props.categories.find(x => x.id === article.category_id)}
