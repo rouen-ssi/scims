@@ -6,14 +6,17 @@ import { Spinner } from './Spinner'
 import { DateTime } from './DateTime'
 import { Link } from 'react-router'
 import { Icon } from './icons/FontAwesome'
+import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
 
 import ArticleCommentList from '../containers/ArticleCommentList'
 
 import type { Article } from '../services/articles'
+import type { Category } from '../services/categories'
 
 type Props = {
   loading: boolean,
   article: ?Article,
+  categories: Array<Category>,
 
   loadArticle: () => void,
 }
@@ -53,25 +56,35 @@ export class ArticleScreen extends React.Component {
     }
 
     return (
-      <article className='bloc article'>
+      <div>
         <h2>
-          {article.title}
+          <CategoryBreadcrumbs
+            category={this.props.categories.find(x => x.id === article.category_id)}
+            categories={this.props.categories}
+            article={article}
+          />
         </h2>
 
-        <div className='article-infos'>
-          <ul>
-            <li><Icon type="calendar"/> <DateTime value={article.publication_date}/></li>
-            <li><Icon type="user"/> {article.user.first_name} {article.user.last_name}</li>
-            <li><Link to='#'><Icon type="share"/> Share</Link></li>
-          </ul>
-        </div>
+        <article className='bloc article'>
+          <h2>
+            {article.title}
+          </h2>
 
-        <div className="article-body">
-          {article.content}
-        </div>
+          <div className='article-infos'>
+            <ul>
+              <li><Icon type="calendar"/> <DateTime value={article.publication_date}/></li>
+              <li><Icon type="user"/> {article.user.first_name} {article.user.last_name}</li>
+              <li><Link to='#'><Icon type="share"/> Share</Link></li>
+            </ul>
+          </div>
 
-        <ArticleCommentList article={article}/>
-      </article>
+          <div className="article-body">
+            {article.content}
+          </div>
+
+          <ArticleCommentList article={article}/>
+        </article>
+      </div>
     )
   }
 }

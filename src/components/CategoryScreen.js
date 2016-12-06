@@ -1,17 +1,14 @@
 /** @flow */
 import React from 'react'
-import cx from 'classnames'
 import deepDiff from 'deep-diff'
 
 import MainContent from './MainContent'
 import Sidebar from './Sidebar'
 import { Spinner } from './Spinner'
-import { Icon } from './icons/FontAwesome'
-import { Icons as CategoryIcons } from './icons/Categories'
 import { ArticleList } from './ArticleList'
 import { CategoryList } from './CategoryList'
 import { ArchiveList } from './ArchiveList'
-import { Link, CategoryLink } from './Link'
+import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
 
 import type { Category } from '../services/categories'
 import type { Article } from '../services/articles'
@@ -56,7 +53,12 @@ export class CategoryScreen extends React.Component {
 
     return (
       <div>
-        {this.renderHeader()}
+        <h2>
+          <CategoryBreadcrumbs
+            category={this.props.category}
+            categories={this.props.categories}
+          />
+        </h2>
 
         <Sidebar side="right">
           {this.renderSubcategories(this.props.category)}
@@ -67,49 +69,6 @@ export class CategoryScreen extends React.Component {
           {this.renderArticles()}
         </MainContent>
       </div>
-    )
-  }
-
-  renderHeader() {
-    const current = this.props.category
-    const categs = []
-    const breadcrumbs = []
-
-    // compute category family tree
-    let categ = current
-    while (categ) {
-      categs.push(categ)
-      // $FlowFixMe: Property cannot be accessed on possibly null value
-      categ = this.props.categories.find(x => x.id === categ.parent_categories)
-    }
-
-    // convert family tree into a displayable elements
-    for (let i = 0; i < categs.length; i++) {
-      const categ = categs[categs.length - i - 1]
-
-      breadcrumbs.push(
-        <li key={i * 2} className="separator">
-          <Icon type="angle-double-right"/>
-        </li>
-      )
-      breadcrumbs.push(
-        <li key={i * 2 + 1} className={cx({active: current && categ.id === current.id})}>
-          {CategoryIcons[categ.name]}
-          {' '}<CategoryLink category={categ} disabled={!!current && categ.id === current.id}/>
-        </li>
-      )
-    }
-
-    return (
-      <h2>
-        <ul className="breadcrumbs">
-          <li className={cx({active: !current})}>
-            <Icon type="home"/>
-            {' '}<Link to="/" disabled={!current}>Homepage</Link>
-          </li>
-          {breadcrumbs}
-        </ul>
-      </h2>
     )
   }
 

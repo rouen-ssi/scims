@@ -7,7 +7,7 @@ ul.breadcrumbs {
       padding: 0.5em 1em;
     }
 
-    &:not(.active, .separator) {
+    &:not(.current, .separator) {
       .fa {
         color: $link-color;
       }

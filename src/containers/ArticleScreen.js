@@ -14,11 +14,13 @@ type Props = {
 function mapStateToProps(state: State, props: Props): Object {
   const articleId = parseInt(props.routeParams.articleId, 10)
   const article = state.articles.articlesById.get(articleId)
+  const categories = state.categories.categories.valueSeq().toJS()
 
   return {
     loading: state.articles.loading,
     lastError: state.articles.lastError,
     article,
+    categories,
   }
 }
 
