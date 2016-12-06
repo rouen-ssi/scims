@@ -30,11 +30,11 @@ export function fetchError(error: Error): Action {
   return { type: '@CATEGORY/FETCH_ERROR', error }
 }
 
-export function fetchCategory(categoryId: number): Function {
+export function fetchCategory(categoryId: number): Thunk<State, Action> {
   const categories = new CategoryService(API_URL)
   const articles = new ArticleService(API_URL)
 
-  return async function(dispatch: (action: Action) => void, getState: () => State) {
+  return async function(dispatch, getState) {
     const state = getState()
 
     if (state.categories.articles.has(categoryId)) {

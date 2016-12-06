@@ -42,33 +42,56 @@ function ArticleSpan({article}: {article: Article}) {
   )
 }
 
-export class CategoryScreen extends React.Component {
-  props: {
-    category: ?Category,
-    categories: Array<Category>,
-    articles: Array<Article>,
+type Props = {
+  loading: boolean,
+  category: ?Category,
+  categories: Array<Category>,
+  articles: Array<Article>,
 
-    loadCategory: () => void,
-  }
+  loadCategories: () => void,
+  loadCategory: () => void,
+}
+
+export class CategoryScreen extends React.Component {
+  props: Props
 
   componentDidMount() {
+    this.props.loadCategories()
     this.props.loadCategory()
   }
 
+  componentDidUpdate() {
+    if (!this.props.loading) {
+      this.props.loadCategory()
+    }
+  }
+
   render() {
-    if (!this.props.category) {
+    if (this.props.loading) {
       return <Spinner/>
+    }
+
+    const { category } = this.props
+
+    if (!category) {
+      return (
+        <MainContent side="left">
+          <div className="bloc">
+            <h2>Category not found</h2>
+          </div>
+        </MainContent>
+      )
     }
 
     return (
       <MainContent side="center">
         <div className="bloc">
           <h1>
-            {CategoryIcons[this.props.category.name]}
-            {' '}{this.props.category.name}
+            {CategoryIcons[category.name]}
+            {' '}{category.name}
           </h1>
 
-          {this.renderSubcategories(this.props.category)}
+          {this.renderSubcategories(category)}
           {this.renderArticles()}
         </div>
       </MainContent>

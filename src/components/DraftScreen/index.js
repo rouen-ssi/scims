@@ -13,11 +13,11 @@ import type { Article } from '../../services/articles'
 import type { Category } from '../../services/categories'
 
 type Props = {
-  currentUser: User,
-  requestDraftId: ?number,
+  loading: boolean,
+  currentUser: ?User,
   draft: ?Article,
   categories: Array<Category>,
-  loadDraft: (draftId: ?number) => void,
+  loadDraft: () => void,
   unloadDraft: () => void,
   saveDraft: (article: Article) => void,
   publishDraft: (article: Article) => void,
@@ -32,28 +32,54 @@ export class DraftScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.props.loadDraft(this.props.requestDraftId)
     this.props.loadCategories()
+    this.props.loadDraft()
   }
 
   componentWillUnmount() {
     this.props.unloadDraft()
   }
 
-  componentWillReceiveProps(props: Props) {
-    if (props.draft && props.draft.id !== props.requestDraftId) {
-      props.loadDraft(props.requestDraftId)
-    } else if (!deepEqual(props.draft, this.state.currentDraft)) {
-      this.setState({ currentDraft: props.draft })
+  componentDidUpdate() {
+    if (!this.props.loading) {
+      this.props.loadDraft()
+    }
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (!deepEqual(nextProps.draft, this.state.currentDraft)) {
+      this.setState({ currentDraft: nextProps.draft })
     }
   }
 
   render() {
-    if (this.props.loading || !this.state.currentDraft) {
+    if (this.props.loading) {
       return <Spinner/>
     }
 
     const { currentDraft } = this.state
+
+    if (!currentDraft) {
+      return (
+        <div className="main-content center">
+          <div className="bloc">
+            <h2>Draft not found.</h2>
+          </div>
+        </div>
+      )
+    }
+
+    const { currentUser } = this.props
+
+    if (!currentUser || currentDraft.user.uid !== currentUser.uid) {
+      return (
+        <div className="main-content center">
+          <div className="block">
+            <h2>Access forbidden</h2>
+          </div>
+        </div>
+      )
+    }
 
     return (
       <article className='bloc draft'>
@@ -64,7 +90,7 @@ export class DraftScreen extends React.Component {
         <div className='article-infos'>
           <ul>
             <li><Icon type="calendar"/> <DateInput value={currentDraft.publication_date} onChange={this.onChange('publication_date')}/></li>
-            <li><Icon type="user"/> {this.props.currentUser.first_name} {this.props.currentUser.last_name}</li>
+            <li><Icon type="user"/> {currentUser.first_name} {currentUser.last_name}</li>
             {this.renderCategory(currentDraft)}
             {this.renderSaveButton(currentDraft)}
             {this.renderPublishButton(currentDraft)}
@@ -78,27 +104,27 @@ export class DraftScreen extends React.Component {
     )
   }
 
-  renderCategory(draft: Article) {
+  renderCategory(currentDraft: Article) {
     return (
       <li>
         <Icon type="database"/>{' '}
-        <CategoryInput value={draft.category_id} placeholder="Category" categories={this.props.categories} onChange={this.onChange('category_id')}/>
+        <CategoryInput value={currentDraft.category_id} placeholder="Category" categories={this.props.categories} onChange={this.onChange('category_id')}/>
       </li>
     )
   }
 
-  renderSaveButton(draft: Article) {
-    if (deepEqual(draft, this.props.draft)) {
+  renderSaveButton(currentDraft: Article) {
+    if (deepEqual(currentDraft, this.props.draft)) {
       return
     }
-    return <li><Link to="#" onClick={wrapPreventDefault(this.props.saveDraft.bind(this, draft))}><Icon type="save"/> Save</Link></li>
+    return <li><Link to="#" onClick={wrapPreventDefault(this.props.saveDraft.bind(this, currentDraft))}><Icon type="save"/> Save</Link></li>
   }
 
-  renderPublishButton(draft: Article) {
-    if (!draft.is_draft) {
+  renderPublishButton(currentDraft: Article) {
+    if (!currentDraft.is_draft) {
       return
     }
-    return <li><Link to="#" onClick={wrapPreventDefault(this.props.publishDraft.bind(this, draft))}><Icon type="feed"/> Publish</Link></li>
+    return <li><Link to="#" onClick={wrapPreventDefault(this.props.publishDraft.bind(this, currentDraft))}><Icon type="feed"/> Publish</Link></li>
   }
 
   onChange<T>(fieldName: string): (_: T) => void {

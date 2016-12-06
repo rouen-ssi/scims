@@ -16,7 +16,7 @@ function mapStateToProps(state: State, props: Props): Object {
   const article = state.articles.articlesById.get(articleId)
 
   return {
-    loading: !article || state.articles.loading,
+    loading: state.articles.loading,
     lastError: state.articles.lastError,
     article,
   }

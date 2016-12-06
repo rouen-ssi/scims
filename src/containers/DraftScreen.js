@@ -15,25 +15,27 @@ type Props = {
   },
 }
 
-function mapStateToProps(state: State, props: Props): any {
-  const draft: ?Article = state.articles.currentDraft.draft
+function mapStateToProps(state: State): any {
+  const draft = state.articles.currentDraft.draft
+  const currentUser = state.account.currentUser
 
   return {
-    requestDraftId: props.routeParams.draftId && parseInt(props.routeParams.draftId, 10),
-    loading: !draft || state.articles.loading,
-    currentUser: state.account.currentUser,
+    loading: state.articles.loading,
+    currentUser,
     draft,
     categories: state.categories.categories.valueSeq().toJS(),
   }
 }
 
-function mapDispatchToProps(dispatch: (_: any) => void): any {
+function mapDispatchToProps(dispatch: (_: any) => void, props: Props): any {
+  const draftId = parseInt(props.routeParams.draftId, 10)
+
   return {
-    loadDraft(draftId: ?number) {
-      if (!draftId) {
-        dispatch(articleActions.createDraft({}))
-      } else {
+    loadDraft() {
+      if (draftId) {
         dispatch(articleActions.fetchDraft(draftId))
+      } else {
+        dispatch(articleActions.createDraft())
       }
     },
 

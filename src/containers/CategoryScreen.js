@@ -17,6 +17,7 @@ function mapStateToProps(state: State, props: Props): Object {
   const articles = state.categories.articles.get(categoryId, [])
 
   return {
+    loading: state.categories.fetching,
     category,
     categories: state.categories.categories.valueSeq().toJS(),
     articles,
@@ -24,10 +25,14 @@ function mapStateToProps(state: State, props: Props): Object {
 }
 
 function mapDispatchToProps(dispatch: (action: any) => void, props: Props): Object {
+  const categoryId = parseInt(props.routeParams.categoryId, 10)
+
   return {
-    loadCategory() {
+    loadCategories() {
       dispatch(categoryActions.fetchAll())
-      dispatch(categoryActions.fetchCategory(parseInt(props.routeParams.categoryId, 10)))
+    },
+    loadCategory() {
+      dispatch(categoryActions.fetchCategory(categoryId))
     },
   }
 }

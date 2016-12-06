@@ -11,18 +11,28 @@ import ArticleCommentList from '../containers/ArticleCommentList'
 
 import type { Article } from '../services/articles'
 
-export class ArticleScreen extends React.Component {
-  props: {
-    loading: boolean,
-    lastError: ?Error,
-    article: Article,
+type Props = {
+  loading: boolean,
+  article: ?Article,
 
-    loadArticle: () => void,
+  loadArticle: () => void,
+}
+
+export class ArticleScreen extends React.Component {
+  props: Props
+
+  componentWillMount() {
+    this.props.loadArticle()
   }
 
   componentDidMount() {
-    this.props.loadArticle()
     window.scrollTo(0, 0)
+  }
+
+  componentWillUpdate(nextProps: Props) {
+    if (!nextProps.loading) {
+      nextProps.loadArticle()
+    }
   }
 
   render() {
@@ -30,25 +40,37 @@ export class ArticleScreen extends React.Component {
       return <Spinner />
     }
 
+    const { article } = this.props
+
+    if (!article) {
+      return (
+        <div className="main-content left">
+          <div className="bloc">
+            <h2>Article not found</h2>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <article className='bloc article'>
         <h2>
-          {this.props.article.title}
+          {article.title}
         </h2>
 
         <div className='article-infos'>
           <ul>
-            <li><Icon type="calendar"/> <DateTime value={this.props.article.publication_date}/></li>
-            <li><Icon type="user"/> {this.props.article.user.first_name} {this.props.article.user.last_name}</li>
+            <li><Icon type="calendar"/> <DateTime value={article.publication_date}/></li>
+            <li><Icon type="user"/> {article.user.first_name} {article.user.last_name}</li>
             <li><Link to='#'><Icon type="share"/> Share</Link></li>
           </ul>
         </div>
 
         <div className="article-body">
-          {this.props.article.content}
+          {article.content}
         </div>
 
-        <ArticleCommentList article={this.props.article}/>
+        <ArticleCommentList article={article}/>
       </article>
     )
   }

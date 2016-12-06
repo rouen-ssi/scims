@@ -47,6 +47,10 @@ export function fetchOne(articleId: number): Thunk<State, Action> {
   return async function(dispatch, getState) {
     const state = getState()
 
+    if (state.articles.loading) {
+      return
+    }
+
     if (state.articles.articlesById.has(articleId)) {
       return
     }
