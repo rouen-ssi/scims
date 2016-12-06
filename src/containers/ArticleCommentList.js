@@ -34,7 +34,7 @@ class ArticleCommentList extends React.Component<*, InProps & OutProps, *> {
 
     return (
       <div className="article-comments">
-        <CommentList comments={this.props.comments} parentCommentId={null} />
+        <CommentList comments={this.props.comments} parentCommentId={-1} />
       </div>
     )
   }

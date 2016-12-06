@@ -41,7 +41,7 @@ export class CommentComponent extends React.Component {
 export class CommentList extends React.Component {
   props: {
     comments: Array<Comment>,
-    parentCommentId: ?number,
+    parentCommentId: number | -1,
   }
 
   render() {
