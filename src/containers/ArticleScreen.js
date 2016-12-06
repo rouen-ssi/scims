@@ -21,6 +21,7 @@ function mapStateToProps(state: State, props: Props): Object {
     lastError: state.articles.lastError,
     article,
     categories,
+    currentUser: state.account.currentUser,
   }
 }
 

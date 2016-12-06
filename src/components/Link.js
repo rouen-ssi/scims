@@ -25,3 +25,9 @@ export const ArticleLink = (props: {article: Article, disabled?: boolean}) => (
     {props.article.title}
   </Link>
 )
+
+export const DraftLink = (props: {draft: Article, disabled?: boolean, children?: React$Element<*>}) => (
+  <Link to={`/draft/${props.draft.id}`} disabled={props.disabled}>
+    {props.children || props.draft.title}
+  </Link>
+)
