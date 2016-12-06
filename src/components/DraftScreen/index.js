@@ -6,7 +6,7 @@ import { deepEqual, wrapPreventDefault } from '../../utils'
 import { Link } from 'react-router'
 import { Icon } from '../icons/FontAwesome'
 import { Spinner } from '../Spinner'
-import { TextInput, DateInput, ContentInput, CategoryInput } from './Input'
+import { DateInput, ContentInput, CategoryInput } from './Input'
 
 import type { User } from '../../services/account'
 import type { Article } from '../../services/articles'
@@ -84,7 +84,8 @@ export class DraftScreen extends React.Component {
     return (
       <article className='bloc draft'>
         <h2>
-          <TextInput value={currentDraft.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/>
+          <ContentInput value={currentDraft.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/>
+          {/* <TextInput value={currentDraft.title} placeholder="Lorem ipsum dolor sit amet, consectetur adipisicing elit." onChange={this.onChange('title')}/> */}
         </h2>
 
         <div className='article-infos'>
