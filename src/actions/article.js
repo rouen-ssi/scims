@@ -158,13 +158,27 @@ export function fetchDraft(articleId: number): Thunk<State, Action> {
 export function updateDraft(article: Article): Thunk<State, Action> {
   return async function(dispatch, getState) {
     const state = getState()
+    const currentUser = state.account.currentUser
+
+    if (!currentUser) {
+      return
+    }
+
     const articles = new ArticleService(API_URL, state.account.token)
 
     const resp = await (article.id === 0
                        ? articles.create(article)
                        : articles.update(article.id, article))
     if (resp.success) {
-      dispatch(draft(article))
+      if (typeof resp.id === 'number') {
+        dispatch(draft({
+          ...article,
+          id: resp.id,
+          user: currentUser,
+        }))
+      } else {
+        dispatch(draft(article))
+      }
     } else {
       dispatch(draft(article, resp.errors))
     }

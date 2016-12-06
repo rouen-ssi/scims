@@ -137,7 +137,7 @@ function emptyArticle() {
     id: 0,
     is_draft: true,
     user: {
-      uid: 0,
+      uid: '',
       email: '',
       first_name: '',
       last_name: '',

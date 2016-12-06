@@ -6,7 +6,7 @@ export type Article = {
   id: number,
   is_draft: boolean,
   user: {
-    uid: number,
+    uid: string,
     email: string,
     first_name: string,
     last_name: string,
