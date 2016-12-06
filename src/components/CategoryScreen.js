@@ -1,6 +1,5 @@
 /** @flow */
 import React from 'react'
-import deepDiff from 'deep-diff'
 
 import MainContent from './MainContent'
 import Sidebar from './Sidebar'
@@ -35,8 +34,7 @@ export class CategoryScreen extends React.Component {
     this.props.loadArticles(this.props.pagination.current || 1)
   }
 
-  componentDidUpdate(prev: Props) {
-    console.log('update', deepDiff(prev, this.props))
+  componentDidUpdate() {
     if (!this.props.loadingCategory) {
       this.props.loadCategory()
     }
@@ -73,12 +71,8 @@ export class CategoryScreen extends React.Component {
   }
 
   renderSubcategories(category: ?Category) {
-    let directChildren = this.props.categories
-
-    if (category) {
-      // $FlowFixMe
-      directChildren = this.props.categories.filter(x => x.parent_categories === category.id)
-    }
+    const categoryId = category ? category.id : -1
+    const directChildren = this.props.categories.filter(x => x.parent_categories === categoryId)
 
     return (
       <CategoryList

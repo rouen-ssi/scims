@@ -32,9 +32,7 @@ export class CategoryList extends React.Component {
       return <em>{this.props.lastError.message}</em>
     }
 
-    const categories = this.props.categories.filter(x => x.parent_categories === -1)
-
-    if (categories.length <= 0) {
+    if (this.props.categories.length <= 0) {
       return (
         <span>
           No child categories.
@@ -44,7 +42,7 @@ export class CategoryList extends React.Component {
 
     return (
       <ul>
-        {categories.map((x, i) => <li key={i}><CategoryLink category={x}/></li>)}
+        {this.props.categories.map((x, i) => <li key={i}><CategoryLink category={x}/></li>)}
       </ul>
     )
   }
