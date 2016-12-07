@@ -90,7 +90,7 @@ export default function reducer(state: State = initialState, action: Action): St
   }
 }
 
-function loadToken(): ?string {
+export function loadToken(): ?string {
   const data = window.localStorage['@@SCIMS/1.0/reducers/account']
 
   if (data) {
@@ -101,7 +101,7 @@ function loadToken(): ?string {
   return null
 }
 
-function persistToken(token: ?string): ?string {
+export function persistToken(token: ?string): ?string {
   window.localStorage['@@SCIMS/1.0/reducers/account'] = JSON.stringify({ token })
   return token
 }

@@ -1,5 +1,6 @@
 /** @flow */
 
+import { persistToken } from '../reducers/account'
 import { AccountService } from '../services/account'
 import type { SignUpError, LoginError, UpdateProfileError, User } from '../services/account'
 import type { State } from '../reducers'
@@ -135,7 +136,8 @@ export function fetchProfile(): Thunk<State, Action> {
       const resp = await accounts.profile()
       dispatch(loginSuccess(resp.user, token))
     } catch (err) {
-      dispatch(loginError(err))
+      dispatch(loginError([err.message]))
+      persistToken(null)
     }
   }
 }
