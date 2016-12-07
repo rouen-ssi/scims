@@ -22,6 +22,7 @@ const HeaderLink = ({to, icon, label, onClick}: {to: string, label: string, icon
 class UserHeader extends React.Component {
   props: {
     drafts: Array<Article>,
+    loadDrafts: () => void,
   }
 
   static contextTypes = { router: React.PropTypes.any.isRequired }
@@ -31,6 +32,10 @@ class UserHeader extends React.Component {
 
   state = {
     openDraft: false,
+  }
+
+  componentDidMount() {
+    this.props.loadDrafts()
   }
 
   render() {
@@ -102,10 +107,6 @@ export class Header extends React.Component {
     loadDrafts: () => void,
   }
 
-  componentDidMount() {
-    this.props.loadDrafts()
-  }
-
   render() {
     return (
       <header className='header'>
@@ -130,7 +131,7 @@ export class Header extends React.Component {
 
   renderUserHeader() {
     if (this.props.logged) {
-      return <UserHeader drafts={this.props.drafts}/>
+      return <UserHeader drafts={this.props.drafts} loadDrafts={this.props.loadDrafts}/>
     } else {
       return <GuestHeader />
     }
