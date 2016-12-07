@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 
 import * as reducers from './reducers'
+import * as adminReducers from './reducers/admin'
 
 export function configureStore() {
   const middlewares = [thunk]
@@ -11,7 +12,10 @@ export function configureStore() {
   }
 
   return createStore(
-    combineReducers(reducers),
+    combineReducers({
+      ...reducers,
+      admin: combineReducers(adminReducers),
+    }),
     applyMiddleware(...middlewares),
   )
 }

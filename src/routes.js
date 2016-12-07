@@ -12,10 +12,12 @@ import Signout from './containers/Signout'
 import CategoryScreen from './containers/CategoryScreen'
 import ArticleScreen from './containers/ArticleScreen'
 import DraftScreen from './containers/DraftScreen'
+import AdminAccountScreen from './containers/admin/AccountScreen'
 
 import * as articleActions from './actions/article'
 import * as categoryActions from './actions/category'
 import * as commentActions from './actions/comment'
+import * as adminAccountActions from './actions/admin/account'
 
 import type { State } from './reducers'
 import type { Action } from './actions'
@@ -30,28 +32,35 @@ export function configureRouter<H>(history: H, store: Store<State, Action>): Rea
                       articleActions.fetchPage(1),
                     ]))}/>
 
-        <Route path="/signup" component={Signup}/>
-        <Route path="/signin" component={Signin}/>
-        <Route path="/signout" component={Signout}/>
+        <Route path="signup" component={Signup}/>
+        <Route path="signin" component={Signin}/>
+        <Route path="signout" component={Signout}/>
 
-        <Route path="/category/:categoryId/:categorySlug" component={CategoryScreen}
+        <Route path="category/:categoryId/:categorySlug" component={CategoryScreen}
                onEnter={onEnter(store, ({categoryId}) => ([
                  categoryActions.fetchAll(),
                  categoryActions.fetchCategory(parseInt(categoryId, 10)),
                  articleActions.fetchPage(1, parseInt(categoryId, 10)),
                ]))}/>
 
-        <Route path="/article/:articleId/:articleSlug" component={ArticleScreen}
+        <Route path="article/:articleId/:articleSlug" component={ArticleScreen}
                onEnter={onEnter(store, ({articleId}) => ([
                  articleActions.fetchOne(parseInt(articleId, 10)),
                  commentActions.fetch(parseInt(articleId, 10)),
                ]))}/>
 
-        <Route path="/draft" component={DraftScreen}
+        <Route path="draft" component={DraftScreen}
                onEnter={onEnter(store, () => articleActions.unloadDraft())}/>
 
-        <Route path="/draft/:draftId" component={DraftScreen}
+        <Route path="draft/:draftId" component={DraftScreen}
                onEnter={onEnter(store, ({draftId}) => articleActions.fetchDraft(parseInt(draftId, 10)))}/>
+
+        <Route path="admin">
+          <Route path="accounts" component={AdminAccountScreen}
+                 onEnter={onEnter(store, () => [
+                   adminAccountActions.fetchAll(),
+                 ])}/>
+        </Route>
       </Route>
     </Router>
   )

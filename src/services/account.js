@@ -18,6 +18,7 @@ export type User = {
   first_name: string,
   last_name: string,
   biography: string,
+  role: 'user' | 'admin',
 }
 
 export type LoginSuccess = SuccessResponse & {
@@ -65,5 +66,9 @@ export class AccountService extends JsonService {
 
   updateProfile(user: User): Promise<UpdateProfileResponse> {
     return this.authRequest('PUT', '/account', user)
+  }
+
+  fetchAccountsAsAdmin(): Promise<{results: Array<User>}> {
+    return this.authRequest('GET', '/admin/accounts')
   }
 }
