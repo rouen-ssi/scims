@@ -57,12 +57,15 @@ class UserHeader extends React.Component {
       return null
     }
 
+    const drafts = this.props.drafts.concat().sort((left, right) =>
+      right.last_modification_date.localeCompare(left.last_modification_date))
+
     return (
       <Dropdown open={this.state.openDraft} onClose={() => this.setState({ openDraft: false })}>
         <ul>
           <li><Link to="/draft"><Icon type="file-text-o"/> Draft</Link></li>
 
-          {this.props.drafts.map((draft, i) => (
+          {drafts.map((draft, i) => (
             <li key={i}>{this.renderDraft(draft)}</li>
           ))}
         </ul>
@@ -74,8 +77,8 @@ class UserHeader extends React.Component {
     return (
       <Link to={`/draft/${draft.id}`}>
         <Icon type="history"/>{' '}
-        “{truncateText(draft.title, 50)}”,{' '}
-        <strong><TimeAgo value={draft.publication_date}/></strong>
+        “{truncateText(draft.title, 25)}”,{' '}
+        <strong>edited <TimeAgo value={draft.last_modification_date}/></strong>
       </Link>
     )
   }
