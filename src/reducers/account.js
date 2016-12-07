@@ -83,6 +83,7 @@ export default function reducer(state: State = initialState, action: Action): St
       }
 
     case '@ACCOUNT/LOGOUT':
+      persistToken(null)
       return initialState
 
     default:
