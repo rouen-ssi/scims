@@ -29,3 +29,18 @@ export function maybeArray<T>(xs: Array<T>|T): Array<T> {
   return [xs]
   /* eslint-enable no-proto */
 }
+
+export function removeWhen<T>(xs: Array<T>, pred: (_: T) => boolean): Array<T> {
+  const result = xs.concat()
+
+  while (true) {
+    const idx = result.findIndex(pred)
+    if (idx < 0) {
+      break
+    }
+
+    result.splice(idx, 1)
+  }
+
+  return result
+}

@@ -1,6 +1,7 @@
 /** @flow */
 
 import * as Immutable from 'immutable'
+import { removeWhen } from '../utils'
 
 import type { Action } from '../actions/article'
 import type { Article, ArticleError } from '../services/articles'
@@ -125,6 +126,16 @@ export default function reducer(state: State = initialState, action: Action): St
         ...state,
 
         currentDraft: initialState.currentDraft,
+      }
+
+    case '@ARTICLES/DELETE':
+      const removeArticleId = action.articleId
+      return {
+        ...state,
+
+        drafts: state.drafts.remove(removeArticleId),
+        articlesById: state.articlesById.remove(removeArticleId),
+        articlesByPage: state.articlesByPage.map(articles => removeWhen(articles, x => x.id === removeArticleId)),
       }
 
     default:

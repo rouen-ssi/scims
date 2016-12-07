@@ -1,6 +1,7 @@
 /** @flow */
 
 import React from 'react'
+import { wrapPreventDefault } from '../utils'
 
 import { Spinner } from './Spinner'
 import { DateTime } from './DateTime'
@@ -20,6 +21,8 @@ type Props = {
   categories: Array<Category>,
   comments: Array<Comment>,
   currentUser: ?User,
+
+  deleteArticle: () => void,
 }
 
 export class ArticleScreen extends React.Component {
@@ -63,6 +66,7 @@ export class ArticleScreen extends React.Component {
               <li><Icon type="user"/> {article.user.first_name} {article.user.last_name}</li>
               <li><Link to='#'><Icon type="share"/> Share</Link></li>
               {this.renderEditButton(article)}
+              {this.renderDeleteButton(article)}
             </ul>
           </div>
 
@@ -88,6 +92,20 @@ export class ArticleScreen extends React.Component {
         <DraftLink draft={article}>
           <Icon type="pencil"/> Edit
         </DraftLink>
+      </li>
+    )
+  }
+
+  renderDeleteButton(article: Article) {
+    if (!this.props.currentUser || this.props.currentUser.uid !== article.user.uid) {
+      return null
+    }
+
+    return (
+      <li>
+        <a href="#" onClick={wrapPreventDefault(this.props.deleteArticle)}>
+          <Icon type="trash"/> Delete
+        </a>
       </li>
     )
   }

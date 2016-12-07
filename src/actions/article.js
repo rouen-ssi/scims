@@ -19,6 +19,7 @@ export type Action
   | { type: '@ARTICLES/UNLOAD_DRAFT' }
   | { type: '@ARTICLES/LOADING' }
   | { type: '@ARTICLES/LOAD_ERROR', error: Error }
+  | { type: '@ARTICLES/DELETE', articleId: number }
 
 export function load(articles: Array<Article>, pagination: Pagination): Action {
   return { type: '@ARTICLES/LOAD', articles, pagination }
@@ -50,6 +51,10 @@ export function loading(): Action {
 
 export function loadError(error: Error): Action {
   return { type: '@ARTICLES/LOAD_ERROR', error }
+}
+
+export function deleteArticle(articleId: number): Action {
+  return { type: '@ARTICLES/DELETE', articleId }
 }
 
 export function fetchOne(articleId: number): Thunk<State, Action> {
@@ -181,6 +186,23 @@ export function updateDraft(article: Article): Thunk<State, Action> {
       }
     } else {
       dispatch(draft(article, resp.errors))
+    }
+  }
+}
+
+export function requestArticleDeletion(articleId: number): Thunk<State, Action> {
+  return async function(dispatch, getState) {
+    const { account: { token } } = getState()
+
+    if (!token) {
+      return
+    }
+
+    const articles = new ArticleService(API_URL, token)
+
+    const resp = await articles.delete(articleId)
+    if (resp.success) {
+      dispatch(deleteArticle(articleId))
     }
   }
 }
