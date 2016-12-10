@@ -5,9 +5,13 @@ import createLogger from 'redux-logger'
 import * as reducers from './reducers'
 
 export function configureStore() {
-  const logger = createLogger()
+  const middlewares = [thunk]
+  if (process.env.NODE_ENV !== 'production') {
+    middlewares.push(createLogger())
+  }
+
   return createStore(
     combineReducers(reducers),
-    applyMiddleware(thunk, logger),
+    applyMiddleware(...middlewares),
   )
 }
