@@ -1,0 +1,61 @@
+table {
+  width: 100%;
+  background: $page-background-color;
+  border-collapse: separate;
+  border: 1px solid darken($page-background-color, 10%);
+  border-radius: 3px;
+
+  th {
+    font-weight: bold;
+    text-align: left;
+  }
+  td.action {
+    text-align: center;
+    .fa, a .fa {
+      font-size: 1.3em;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  td, th {
+    vertical-align: middle;
+    padding: 1em;
+    border-bottom: 1px solid darken($page-background-color, 10%);
+  }
+  tr:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+  thead tr {
+    background: darken($page-background-color, 3%)
+  }
+  tbody tr:hover {
+    background: darken($page-background-color, 2%);
+  }
+
+  tr.editing {
+    td:not(.action) {
+      border-right: 1px solid darken($page-background-color, 10%);
+    }
+
+    input {
+      border: none;
+      font-family: inherit;
+      font-size: 1em;
+      width: 100%;
+      outline: none;
+      background: transparent;
+      border-bottom: 1px solid darken($page-background-color, 20%);
+      padding-bottom: 0.2em;
+
+      &:focus {
+        border-color: hsla(217, 100%, 86%, 1);
+      }
+    }
+
+    select {
+      width: 100%;
+    }
+  }
+}

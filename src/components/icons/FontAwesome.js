@@ -201,7 +201,7 @@ export type IconType
 | 'flash'
 | 'flask'
 | 'flickr'
-| 'floppy'
+| 'floppy-o'
 | 'folder'
 | 'font'
 | 'fonticons'

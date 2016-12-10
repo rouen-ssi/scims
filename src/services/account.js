@@ -21,6 +21,17 @@ export type User = {
   role: 'user' | 'admin',
 }
 
+export function emptyAccount(): User {
+  return {
+    uid: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    biography: '',
+    role: 'user',
+  }
+}
+
 export type LoginSuccess = SuccessResponse & {
   token: string,
   account: User,
@@ -70,5 +81,17 @@ export class AccountService extends JsonService {
 
   fetchAccountsAsAdmin(): Promise<{results: Array<User>}> {
     return this.authRequest('GET', '/admin/accounts')
+  }
+
+  createAccountAsAdmin(account: User): Promise<{result: User}> {
+    return this.authRequest('POST', '/admin/accounts', account)
+  }
+
+  updateAccountAsAdmin(account: User): Promise<{result: User}> {
+    return this.authRequest('PUT', `/admin/accounts/${account.uid}`, account)
+  }
+
+  deleteAccountAsAdmin(userUid: string): Promise<void> {
+    return this.authRequest('DELETE', `/admin/accounts/${userUid}`)
   }
 }
