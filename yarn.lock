@@ -2843,10 +2843,6 @@ math-expression-evaluator@^1.2.14:
   dependencies:
     lodash.indexof "^4.0.5"
 
-mathjax@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/mathjax/-/mathjax-2.7.0.tgz#2c12cac72a7be2b8190f6b3344ca93801a0e5dff"
-
 media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
