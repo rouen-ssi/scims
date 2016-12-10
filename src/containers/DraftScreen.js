@@ -9,12 +9,6 @@ import * as categoryActions from '../actions/category'
 import type { Article } from '../services/articles'
 import type { State } from '../reducers'
 
-type Props = {
-  routeParams: {
-    draftId: ?string,
-  },
-}
-
 function mapStateToProps(state: State): any {
   const draft = state.articles.currentDraft.draft
   const currentUser = state.account.currentUser
@@ -27,20 +21,8 @@ function mapStateToProps(state: State): any {
   }
 }
 
-function mapDispatchToProps(dispatch: (_: any) => void, props: Props): any {
-  const draftId = parseInt(props.routeParams.draftId, 10) || null
-
+function mapDispatchToProps(dispatch: (_: any) => void): any {
   return {
-    loadDraft() {
-      if (draftId) {
-        dispatch(articleActions.fetchDraft(draftId))
-      }
-    },
-
-    unloadDraft() {
-      dispatch(articleActions.unloadDraft())
-    },
-
     saveDraft(article: Article) {
       dispatch(articleActions.updateDraft(article))
     },

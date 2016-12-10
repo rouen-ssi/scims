@@ -17,8 +17,6 @@ type Props = {
   currentUser: ?User,
   draft: ?Article,
   categories: Array<Category>,
-  loadDraft: () => void,
-  unloadDraft: () => void,
   saveDraft: (article: Article) => void,
   publishDraft: (article: Article) => void,
   loadCategories: () => void,
@@ -93,7 +91,7 @@ export class DraftScreen extends React.Component {
     return (
       <li>
         <Icon type="database"/>{' '}
-        <CategoryInput value={currentDraft.category_id} placeholder="Category" categories={this.props.categories} onChange={this.onChange('category_id')}/>
+        <CategoryInput value={currentDraft.category_id} placeholder="Category" categories={this.props.categories} onChange={this.onChange('category_id')} loadCategories={this.props.loadCategories}/>
       </li>
     )
   }
