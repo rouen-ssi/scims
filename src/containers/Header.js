@@ -9,7 +9,7 @@ import type { State } from '../reducers'
 
 function mapStateToProps(state: State) {
   return {
-    logged: !!state.account.currentUser,
+    user: state.account.currentUser,
     drafts: state.articles.drafts.valueSeq().toJS(),
   }
 }

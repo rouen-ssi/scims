@@ -1,7 +1,7 @@
 /** @flow */
 
 import React from 'react'
-import { truncateText } from '../utils'
+import { truncateText, wrapPreventDefault } from '../utils'
 
 import { Link } from 'react-router'
 import { Icon } from './icons/FontAwesome'
@@ -9,18 +9,40 @@ import type { IconType } from './icons/FontAwesome'
 import { Dropdown } from './Dropdown'
 import { TimeAgo } from './DateTime'
 
+import type { User } from '../services/account'
 import type { Article } from '../services/articles'
 
-const HeaderLink = ({to, icon, label, onClick}: {to: string, label: string, icon: IconType, onClick?: (_: Event) => boolean}) => (
+const HeaderLink = ({to, icon, label, onClick}: {to: string, label: string, icon: IconType, onClick?: () => void}) => (
   <span>
     <Icon type={icon}/>
     {' '}
-    <Link to={to} onClick={onClick}>{label}</Link>
+    <Link to={to} onClick={onClick && wrapPreventDefault(onClick)}>{label}</Link>
   </span>
 )
 
+class AdminHeaderLink extends React.Component {
+  state = {
+    active: false,
+  }
+
+  render() {
+    return (
+      <li>
+        <HeaderLink to="/admin" label="ADMIN" icon="shield" onClick={() => this.setState({ active: true })}/>
+        <Dropdown open={this.state.active} onClose={() => this.setState({ active: false })}>
+          <ul>
+            <li><Link to="/admin/accounts"><Icon type="users"/> Manage Users</Link></li>
+            <li><Link><Icon type="database"/> Manage Categories</Link></li>
+          </ul>
+        </Dropdown>
+      </li>
+    )
+  }
+}
+
 class UserHeader extends React.Component {
   props: {
+    user: User,
     drafts: Array<Article>,
     loadDrafts: () => void,
   }
@@ -47,6 +69,7 @@ class UserHeader extends React.Component {
           {this.renderDraftDropdown()}
         </li>
         <li key="/me"><HeaderLink to="/me" label="MY PROFILE" icon="user-circle"/></li>
+        {this.props.user.role === 'admin' && <AdminHeaderLink/>}
         <li key="/signout"><HeaderLink to="/signout" label="SIGN OUT" icon="sign-out"/></li>
       </span>
     )
@@ -83,16 +106,12 @@ class UserHeader extends React.Component {
     )
   }
 
-  _onClick = (e: Event) => {
-    e.preventDefault()
-
+  _onClick = () => {
     if (this.props.drafts.length <= 0) {
       this.context.router.push('/draft')
     } else {
       this.setState({ openDraft: !this.state.openDraft })
     }
-
-    return false
   }
 }
 
@@ -105,7 +124,7 @@ const GuestHeader = () => (
 
 export class Header extends React.Component {
   props: {
-    logged: boolean,
+    user: ?User,
     drafts: Array<Article>,
     loadDrafts: () => void,
   }
@@ -133,8 +152,10 @@ export class Header extends React.Component {
   }
 
   renderUserHeader() {
-    if (this.props.logged) {
-      return <UserHeader drafts={this.props.drafts} loadDrafts={this.props.loadDrafts}/>
+    const { user, drafts, loadDrafts } = this.props
+
+    if (user) {
+      return <UserHeader user={user} drafts={drafts} loadDrafts={loadDrafts}/>
     } else {
       return <GuestHeader />
     }
