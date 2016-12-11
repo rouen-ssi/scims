@@ -10,10 +10,10 @@ export function truncateText(text: string, length: number): string {
   return text.substring(0, length) + ' …'
 }
 
-export function wrapPreventDefault(fun: () => any): (e: Event) => boolean {
+export function wrapPreventDefault(fun?: () => any): (e: Event) => boolean {
   return e => {
     e.preventDefault()
-    fun()
+    fun && fun()
     return false
   }
 }
