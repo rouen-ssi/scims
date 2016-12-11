@@ -110,8 +110,9 @@ export class DraftScreen extends React.Component {
     return <li><Link to="#" onClick={wrapPreventDefault(this.props.publishDraft.bind(this, currentDraft))}><Icon type="feed"/> Publish</Link></li>
   }
 
-  onChange<T>(fieldName: string): (_: T) => void {
-    return (value: T, callback?: () => void) => {
+  // $FlowFixMe: expected object type and string literal as arguments to $PropertyType
+  onChange<K: $Enum<Article>>(fieldName: K): (value: $PropertyType<Article, K>, callback?: () => void) => void {
+    return (value, callback) => {
       const draft = this.state.currentDraft
       if (!draft) {
         return
