@@ -12,12 +12,14 @@ class Signin extends Component {
     'INVALID_CREDENTIALS': ['email', 'E-mail or password not found in our database'],
   }
 
-  render() {
-    if (this.props.success) {
-      this.props.router.push('/me')
-      return null
-    }
+  state = {
+    form: {
+      email: '',
+      password: '',
+    },
+  }
 
+  render() {
     return (
       <MainContent side="center">
         <div className="bloc">
@@ -32,8 +34,9 @@ class Signin extends Component {
     )
   }
 
-  onSubmit({ email, password }) {
-    this.props.account.sendLoginRequest(email, password)
+  async onSubmit({ email, password }) {
+    await this.props.account.sendLoginRequest(email, password)
+    this.props.router.push('/')
   }
 }
 

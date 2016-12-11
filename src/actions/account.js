@@ -2,7 +2,7 @@
 
 import { persistToken } from '../reducers/account'
 import { AccountService } from '../services/account'
-import type { SignUpError, LoginError, UpdateProfileError, User } from '../services/account'
+import type { SignUpError, LoginError, User } from '../services/account'
 import type { State } from '../reducers'
 
 export type Action
@@ -13,9 +13,6 @@ export type Action
   | { type: '@ACCOUNT/LOGIN_ERROR', errors: Array<LoginError> }
   | { type: '@ACCOUNT/LOGIN_SUCCESS', user: User, token: string }
   | { type: '@ACCOUNT/LOGOUT' }
-  | { type: '@ACCOUNT/PROFILE_UPDATING' }
-  | { type: '@ACCOUNT/PROFILE_UPDATED' }
-  | { type: '@ACCOUNT/PROFILE_UPDATE_ERROR', errors: Array<UpdateProfileError> }
 
 export function signingUp(): Action {
   return { type: '@ACCOUNT/SIGNING_UP' }
@@ -45,38 +42,6 @@ export function logout(): Action {
   return { type: '@ACCOUNT/LOGOUT' }
 }
 
-export function profileUpdating(): Action {
-  return { type: '@ACCOUNT/PROFILE_UPDATING' }
-}
-
-export function profileUpdated(): Action {
-  return { type: '@ACCOUNT/PROFILE_UPDATED' }
-}
-
-export function profileUpdateError(errors: Array<UpdateProfileError>): Action {
-  return { type: '@ACCOUNT/PROFILE_UPDATE_ERROR', errors }
-}
-
-export function sendSignupRequest(email: string, firstName: string, lastName: string, password: string): Thunk<State, Action> {
-  const accounts = new AccountService(API_URL)
-
-  return async function(dispatch) {
-    dispatch(signingUp())
-
-    try {
-      const resp = await accounts.signUp(email, firstName, lastName, password)
-
-      if (resp.success) {
-        dispatch(signupSuccess())
-      } else {
-        dispatch(signupError(resp.errors))
-      }
-    } catch (err) {
-      dispatch(signupError([err.message]))
-    }
-  }
-}
-
 export function sendLoginRequest(email: string, password: string): Thunk<State, Action> {
   const accounts = new AccountService(API_URL)
 
@@ -97,34 +62,10 @@ export function sendLoginRequest(email: string, password: string): Thunk<State, 
   }
 }
 
-export function sendUpdateProfileRequest(): Thunk<State, Action> {
+export function fetchProfile(newToken?: string): Thunk<State, Action> {
   return async function(dispatch, getState) {
-    const {account: {currentUser, token}} = getState()
-
-    if (!currentUser || !token) {
-      return
-    }
-
-    const accounts = new AccountService('API_URL', token)
-
-    try {
-      dispatch(profileUpdating())
-      const resp = await accounts.updateProfile(currentUser)
-
-      if (resp.success) {
-        dispatch(profileUpdated())
-      } else {
-        dispatch(profileUpdateError(resp.errors))
-      }
-    } catch (err) {
-      dispatch(profileUpdateError([err.message]))
-    }
-  }
-}
-
-export function fetchProfile(): Thunk<State, Action> {
-  return async function(dispatch, getState) {
-    const {account: {token}} = getState()
+    const state = getState()
+    const token = newToken || state.account.token
 
     if (!token) {
       return
@@ -138,6 +79,26 @@ export function fetchProfile(): Thunk<State, Action> {
     } catch (err) {
       dispatch(loginError([err.message]))
       persistToken(null)
+    }
+  }
+}
+
+export function requestRegistration(account: User, newPassword: string): Thunk<State, Action> {
+  return async function(dispatch, getState) {
+    const { account: { token } } = getState()
+
+    if (!token) {
+      return
+    }
+
+    const accounts = new AccountService(API_URL, token)
+
+    dispatch(loggingIn())
+    try {
+      await accounts.changePassword(newPassword)
+      await accounts.updateProfile(account)
+    } catch (err) {
+      dispatch(loginError([err.message]))
     }
   }
 }

@@ -6,7 +6,7 @@ import { maybeArray } from './utils'
 
 import { App } from './components/App'
 
-import Signup from './containers/Signup'
+import RegisterScreen from './containers/RegisterScreen'
 import Signin from './containers/Signin'
 import Signout from './containers/Signout'
 import CategoryScreen from './containers/CategoryScreen'
@@ -14,6 +14,7 @@ import ArticleScreen from './containers/ArticleScreen'
 import DraftScreen from './containers/DraftScreen'
 import AdminAccountScreen from './containers/admin/AccountScreen'
 
+import * as accountActions from './actions/account'
 import * as articleActions from './actions/article'
 import * as categoryActions from './actions/category'
 import * as commentActions from './actions/comment'
@@ -32,7 +33,10 @@ export function configureRouter<H>(history: H, store: Store<State, Action>): Rea
                       articleActions.fetchPage(1),
                     ]))}/>
 
-        <Route path="signup" component={Signup}/>
+        <Route path="register/:token" component={RegisterScreen}
+               onEnter={onEnter(store, ({token}) => ([
+                 accountActions.fetchProfile(token),
+               ]))}/>
         <Route path="signin" component={Signin}/>
         <Route path="signout" component={Signout}/>
 

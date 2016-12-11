@@ -71,7 +71,7 @@ export class AccountService extends JsonService {
     return this.request('POST', '/account/create', { email, first_name, last_name, password })
   }
 
-  changePassword(old_password: string, new_password: string): Promise<ChangePasswordResponse> {
+  changePassword(new_password: string, old_password?: string): Promise<ChangePasswordResponse> {
     return this.authRequest('PUT', '/account/password', { old_password, new_password })
   }
 

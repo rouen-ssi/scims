@@ -117,7 +117,6 @@ class UserHeader extends React.Component {
 
 const GuestHeader = () => (
   <span>
-    <li key="/signup"><HeaderLink to="/signup" label="SIGN UP" icon="user-plus"/></li>
     <li key="/signin"><HeaderLink to="/signin" label="SIGN IN" icon="sign-in"/></li>
   </span>
 )

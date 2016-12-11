@@ -221,7 +221,7 @@ export class AccountScreen extends React.Component {
       return <Spinner/>
     }
     return (
-      <table style={{marginBottom: '3em'}}>
+      <table style={{marginBottom: '3em'}} className="table">
         <thead>
           <tr>
             <th>Email</th>
