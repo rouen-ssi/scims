@@ -47,18 +47,18 @@ export function fetchCategory(categoryId: number): Thunk<State, Action> {
   }
 }
 
-export function fetchAll(): Function {
+export function fetchAll(): Thunk<State, Action> {
   const categories = new CategoryService(API_URL)
 
-  return async function(dispatch: (action: Action) => void, getState: () => State) {
-    const state = getState()
+  return async function(dispatch, getState) {
+    const { categories: { categories: categoryMap } } = getState()
 
-    if (!state.categories.categories.isEmpty()) {
+    if (!categoryMap.isEmpty()) {
       return
     }
 
+    dispatch(fetching())
     try {
-      dispatch(fetching())
       const resp = await categories.fetchAll()
       dispatch(receiveAll(resp.categories))
     } catch (err) {

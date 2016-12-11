@@ -32,7 +32,7 @@ class AdminHeaderLink extends React.Component {
         <Dropdown open={this.state.active} onClose={() => this.setState({ active: false })}>
           <ul>
             <li><Link to="/admin/accounts"><Icon type="users"/> Manage Users</Link></li>
-            <li><Link><Icon type="database"/> Manage Categories</Link></li>
+            <li><Link to="/admin/categories"><Icon type="database"/> Manage Categories</Link></li>
           </ul>
         </Dropdown>
       </li>

@@ -13,6 +13,7 @@ import CategoryScreen from './containers/CategoryScreen'
 import ArticleScreen from './containers/ArticleScreen'
 import DraftScreen from './containers/DraftScreen'
 import AdminAccountScreen from './containers/admin/AccountScreen'
+import AdminCategoryScreen from './containers/admin/CategoryScreen'
 
 import * as accountActions from './actions/account'
 import * as articleActions from './actions/article'
@@ -63,6 +64,10 @@ export function configureRouter<H>(history: H, store: Store<State, Action>): Rea
           <Route path="accounts" component={AdminAccountScreen}
                  onEnter={onEnter(store, () => [
                    adminAccountActions.fetchAll(),
+                 ])}/>
+          <Route path="categories" component={AdminCategoryScreen}
+                 onEnter={onEnter(store, () => [
+                   categoryActions.fetchAll(),
                  ])}/>
         </Route>
       </Route>
