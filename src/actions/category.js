@@ -8,6 +8,7 @@ import type { State } from '../reducers'
 export type Action
   = { type: '@CATEGORY/RECEIVE_ALL', categories: Array<Category> }
   | { type: '@CATEGORY/RECEIVE', category: Category }
+  | { type: '@CATEGORY/REMOVE', category: Category }
   | { type: '@CATEGORY/FETCHING' }
   | { type: '@CATEGORY/FETCH_ERROR', error: Error }
 
@@ -17,6 +18,10 @@ export function receiveAll(categories: Array<Category>): Action {
 
 export function receive(category: Category): Action {
   return { type: '@CATEGORY/RECEIVE', category }
+}
+
+export function remove(category: Category): Action {
+  return { type: '@CATEGORY/REMOVE', category }
 }
 
 export function fetching(): Action {

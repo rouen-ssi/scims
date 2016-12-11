@@ -7,18 +7,23 @@ import type { Category } from '../../services/categories'
 
 export class CategoryScreen extends React.Component {
   props: {
+    loading: boolean,
     categories: Array<Category>,
+
+    createCategory: (category: Category) => Promise<*>,
+    updateCategory: (category: Category) => Promise<*>,
+    deleteCategory: (category: Category) => Promise<*>,
   }
 
   render() {
     return (
       <Table
-        loading={false}
+        loading={this.props.loading}
         items={this.props.categories}
-        fields={{name: 'Name', parent_categories: 'Parent'}}
-        createItem={() => Promise.resolve(void 0)}
-        updateItem={() => Promise.resolve(void 0)}
-        deleteItem={() => Promise.resolve(void 0)}
+        fields={{id: 'ID', name: 'Name', parent_categories: 'Parent'}}
+        createItem={this.props.createCategory}
+        updateItem={this.props.updateCategory}
+        deleteItem={this.props.deleteCategory}
       />
     )
   }

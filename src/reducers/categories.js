@@ -39,7 +39,15 @@ export default function reducer(state: State = initialState, action: Action): St
     case '@CATEGORY/RECEIVE':
       return {
         ...state,
-        categories: action.category ? state.categories.set(action.category.id, action.category) : state.categories,
+        categories: state.categories.set(action.category.id, action.category),
+        fetching: false,
+        lastError: null,
+      }
+
+    case '@CATEGORY/REMOVE':
+      return {
+        ...state,
+        categories: state.categories.remove(action.category.id),
         fetching: false,
         lastError: null,
       }
