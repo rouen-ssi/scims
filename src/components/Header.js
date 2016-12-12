@@ -12,7 +12,7 @@ import { TimeAgo } from './DateTime'
 import type { User } from '../services/account'
 import type { Article } from '../services/articles'
 
-const HeaderLink = ({to, icon, label, onClick}: {to: string, label: string, icon: IconType, onClick?: () => void}) => (
+const HeaderLink = ({to = '#', icon, label, onClick}: {to?: string, label: string, icon: IconType, onClick?: () => void}) => (
   <span>
     <Icon type={icon}/>
     {' '}
@@ -63,14 +63,13 @@ class UserHeader extends React.Component {
   render() {
     return (
       <span>
-        <li key="/draft">
+        <li>
           <HeaderLink to="/draft" label="NEW ARTICLE" icon="plus" onClick={this._onClick}/>
-
           {this.renderDraftDropdown()}
         </li>
-        <li key="/me"><HeaderLink to="/me" label="MY PROFILE" icon="user-circle"/></li>
+        <li><HeaderLink label="MY PROFILE" icon="user-circle"/></li>
         {this.props.user.role === 'admin' && <AdminHeaderLink/>}
-        <li key="/signout"><HeaderLink to="/signout" label="SIGN OUT" icon="sign-out"/></li>
+        <li><HeaderLink to="/signout" label="SIGN OUT" icon="sign-out"/></li>
       </span>
     )
   }
@@ -137,8 +136,8 @@ export class Header extends React.Component {
           <nav className='nav'>
             <ul>
               <li><HeaderLink to="/" label="HOME" icon="home"/></li>
-              <li><HeaderLink to="/" label="CATEGORIES" icon="database"/></li>
-              <li><HeaderLink to="/" label="ARCHIVES" icon="archive"/></li>
+              {/* <li><HeaderLink to="/" label="CATEGORIES" icon="database"/></li> */}
+              {/* <li><HeaderLink to="/" label="ARCHIVES" icon="archive"/></li> */}
 
               {this.renderUserHeader()}
             </ul>
