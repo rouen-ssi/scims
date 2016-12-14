@@ -120,10 +120,10 @@ export class ToolBar extends React.Component<*, ToolBarProps, *> {
         <Command icon="globe" tooltip="Link"/>
         <Command icon="list-ul" tooltip="Unordered List" command={block('unordered-list-item')}/>
         <Command icon="list-ol" tooltip="Ordered List" command={block('ordered-list-item')}/>
-        <Command icon="align-left" tooltip="Align Left"/>
-        <Command icon="align-right" tooltip="Align Right"/>
-        <Command icon="align-center" tooltip="Center"/>
-        <Command icon="align-justify" tooltip="Justify"/>
+        <Command icon="align-left" tooltip="Align Left" command={block('align-left')}/>
+        <Command icon="align-right" tooltip="Align Right" command={block('align-right')}/>
+        <Command icon="align-center" tooltip="Center" command={block('align-center')}/>
+        <Command icon="align-justify" tooltip="Justify" command={block('align-justify')}/>
         <Command icon="header" tooltip="Header" command={block('header-two')}/>
         <Command icon="picture-o" tooltip="Picture"/>
         <Command tooltip="Formula">

@@ -1,5 +1,5 @@
 /** @flow */
-import type { OrderedSet } from 'immutable'
+import type { OrderedSet, Map } from 'immutable'
 
 declare module 'draft-js' {
   declare class Editor extends React$Component<*, *, *> {
@@ -36,4 +36,6 @@ declare module 'draft-js' {
     static toggleInlineStyle(editorState: EditorState, inlineStyle: string): EditorState;
     static toggleBlockType(editorState: EditorState, blockType: string): EditorState;
   }
+
+  declare var DefaultDraftBlockRenderMap: Map<string, {}>;
 }

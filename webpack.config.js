@@ -18,6 +18,9 @@ module.exports = {
     }, {
       test: /\.(eot|svg|ttf|woff2?).*$/,
       loader: 'url?limit=10000',
+    }, {
+      test: /\.(png|jpe?g)$/,
+      loader: 'url?limit=10000',
     }],
   },
   plugins: [

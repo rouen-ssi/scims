@@ -10,6 +10,10 @@ export type BlockType
   | 'blockquote'
   | 'unordered-list-item'
   | 'ordered-list-item'
+  | 'align-center'
+  | 'align-justify'
+  | 'align-left'
+  | 'align-right'
 
 export function block(blockType: BlockType): Command {
   return {

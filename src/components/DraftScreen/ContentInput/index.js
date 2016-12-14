@@ -3,6 +3,7 @@ import React from 'react'
 
 import { Editor, EditorState, ContentState } from 'draft-js'
 import { ToolBar } from './ToolBar'
+import { blockRenderMap, blockStyleFn } from './blockRenderMap'
 
 export type Props = {
   value: string | ContentState | void,
@@ -59,6 +60,8 @@ export class ContentInput extends React.Component<{}, Props, State> {
           editorState={this.state.editorState}
           placeholder={this.props.placeholder}
           onChange={this._onChange}
+          blockRenderMap={blockRenderMap}
+          blockStyleFn={blockStyleFn}
           customStyleMap={{
             'STRIKETHROUGH': {
               textDecoration: 'line-through',

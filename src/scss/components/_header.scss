@@ -7,18 +7,17 @@
 
   .header-wrap {
     width: $page-width;
-    margin: 25px auto auto auto;
+    margin: 0 auto auto auto;
   }
 
   .logo {
     float: left;
-    color: white;
-    font-size: 2em;
+    max-height: 80px;
   }
 
   .nav {
     float: right;
-    margin-top: 10px;
+    margin-top: 35px;
     text-align: right;
 
     li {

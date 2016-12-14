@@ -3,6 +3,7 @@
 import React from 'react'
 import { truncateText, wrapPreventDefault } from '../utils'
 
+import logo from '../assets/logo.png'
 import { Link } from 'react-router'
 import { Icon } from './icons/FontAwesome'
 import type { IconType } from './icons/FontAwesome'
@@ -131,7 +132,7 @@ export class Header extends React.Component {
     return (
       <header className='header'>
         <div className='header-wrap'>
-          <h1 className='logo'>SciMS</h1>
+          <img src={logo} alt="SciMS" className="logo"/>
 
           <nav className='nav'>
             <ul>
