@@ -9,6 +9,7 @@ import { Link, DraftLink } from './Link'
 import { Icon } from './icons/FontAwesome'
 import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
 import { CommentList } from './CommentList'
+import { Modal } from './Modal'
 
 import type { Article } from '../services/articles'
 import type { Category } from '../services/categories'
@@ -27,6 +28,10 @@ type Props = {
 
 export class ArticleScreen extends React.Component {
   props: Props
+
+  state = {
+    deleting: false,
+  }
 
   render() {
     if (this.props.loading) {
@@ -103,7 +108,11 @@ export class ArticleScreen extends React.Component {
 
     return (
       <li>
-        <a href="#" onClick={wrapPreventDefault(this.props.deleteArticle)}>
+        <Modal title="Confirm destructive operation." onConfirm={this.props.deleteArticle}
+               onClose={() => this.setState({ deleting: false })} active={this.state.deleting}>
+          Are you sure?
+        </Modal>
+        <a href="#" onClick={wrapPreventDefault(() => this.setState({ deleting: true }))}>
           <Icon type="trash"/> Delete
         </a>
       </li>
