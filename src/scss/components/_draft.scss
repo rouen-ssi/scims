@@ -154,5 +154,14 @@
     blockquote + blockquote {
       margin-top: 0;
     }
+
+    @each $align in center justify left right {
+      .align-#{$align} {
+        [data-text="true"] {
+          display: block;
+          text-align: $align;
+        }
+      }
+    }
   }
 }
