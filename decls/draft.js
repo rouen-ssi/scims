@@ -23,6 +23,7 @@ declare module 'draft-js' {
   }
 
   declare class Block {
+    getType(): string;
     getInlineStyleAt(offset: number): OrderedSet<string>;
   }
 
@@ -33,5 +34,6 @@ declare module 'draft-js' {
 
   declare class RichUtils {
     static toggleInlineStyle(editorState: EditorState, inlineStyle: string): EditorState;
+    static toggleBlockType(editorState: EditorState, blockType: string): EditorState;
   }
 }

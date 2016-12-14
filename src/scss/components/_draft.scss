@@ -138,5 +138,21 @@
     border-top: 1px solid $outer-border-color;
     padding: $padding;
     background: $editor-background-color;
+
+    blockquote {
+      border-left: 3px solid darken($editor-background-color, 50%);
+      background: darken($editor-background-color, 10%);
+      padding-left: 1em;
+    }
+
+    *:not(blockquote) + blockquote {
+      margin-top: 1em;
+    }
+    blockquote + * {
+      margin-top: 1em;
+    }
+    blockquote + blockquote {
+      margin-top: 0;
+    }
   }
 }
