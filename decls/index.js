@@ -1,7 +1,7 @@
 declare var API_URL: string
 declare var __DEV__: boolean
 
-export type Thunk<State, Action> = (dispatch: (state: Action) => void, getState: () => State) => any
+export type Thunk<State, Action> = (dispatch: (state: Action|Thunk<State, Action>) => void, getState: () => State) => any
 
 declare function deepEqual<T>(actual: T, expected: T, opts?: {strict: boolean}): boolean
 
@@ -27,4 +27,10 @@ declare class Router {
   createHref(dest: Path|Location, query?: Query): string;
 
   isActive(dest: Path|Location, indexOnly?: boolean): boolean;
+}
+
+declare type Store<S, A> = {
+  dispatch: (action: any) => void,
+  getState: () => S,
+  subscribe: (listener: () => void) => (() => void),
 }

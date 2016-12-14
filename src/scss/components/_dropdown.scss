@@ -1,16 +1,18 @@
-.dropdown, .header .dropdown, .header .nav .dropdown {
+.dropdown, .header .dropdown, .header .nav .dropdown, .article-infos .dropdown {
   position: absolute;
   margin-top: 1em;
 
   background: white;
   box-shadow: 0 5px 15px 5px rgba(0, 0, 0, 0.2);
 
+  z-index: 3;
+
   ul {
     li {
       display: block;
       text-align: left;
       margin: 0;
-      a {
+      > * {
         display: block;
         color: black;
         padding: 1em 1.3em;

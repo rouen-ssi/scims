@@ -1,5 +1,6 @@
 /** @flow */
 import React from 'react'
+
 import { Article as ArticleComponent } from './Article'
 import { Pagination } from './Pagination'
 import { Spinner } from './Spinner'
@@ -13,10 +14,6 @@ export class ArticleList extends React.Component {
     pagination: { current: number, count: number },
 
     loadArticles: (page: number) => void,
-  }
-
-  componentDidMount() {
-    this.props.loadArticles(this.props.pagination.current)
   }
 
   render() {

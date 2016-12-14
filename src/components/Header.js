@@ -1,7 +1,7 @@
 /** @flow */
 
 import React from 'react'
-import { truncateText } from '../utils'
+import { truncateText, wrapPreventDefault } from '../utils'
 
 import { Link } from 'react-router'
 import { Icon } from './icons/FontAwesome'
@@ -9,19 +9,42 @@ import type { IconType } from './icons/FontAwesome'
 import { Dropdown } from './Dropdown'
 import { TimeAgo } from './DateTime'
 
+import type { User } from '../services/account'
 import type { Article } from '../services/articles'
 
-const HeaderLink = ({to, icon, label, onClick}: {to: string, label: string, icon: IconType, onClick?: (_: Event) => boolean}) => (
+const HeaderLink = ({to = '#', icon, label, onClick}: {to?: string, label: string, icon: IconType, onClick?: () => void}) => (
   <span>
     <Icon type={icon}/>
     {' '}
-    <Link to={to} onClick={onClick}>{label}</Link>
+    <Link to={to} onClick={onClick && wrapPreventDefault(onClick)}>{label}</Link>
   </span>
 )
 
+class AdminHeaderLink extends React.Component {
+  state = {
+    active: false,
+  }
+
+  render() {
+    return (
+      <li>
+        <HeaderLink to="/admin" label="ADMIN" icon="shield" onClick={() => this.setState({ active: true })}/>
+        <Dropdown open={this.state.active} onClose={() => this.setState({ active: false })}>
+          <ul>
+            <li><Link to="/admin/accounts"><Icon type="users"/> Manage Users</Link></li>
+            <li><Link to="/admin/categories"><Icon type="database"/> Manage Categories</Link></li>
+          </ul>
+        </Dropdown>
+      </li>
+    )
+  }
+}
+
 class UserHeader extends React.Component {
   props: {
+    user: User,
     drafts: Array<Article>,
+    loadDrafts: () => void,
   }
 
   static contextTypes = { router: React.PropTypes.any.isRequired }
@@ -33,16 +56,20 @@ class UserHeader extends React.Component {
     openDraft: false,
   }
 
+  componentDidMount() {
+    this.props.loadDrafts()
+  }
+
   render() {
     return (
       <span>
-        <li key="/draft">
+        <li>
           <HeaderLink to="/draft" label="NEW ARTICLE" icon="plus" onClick={this._onClick}/>
-
           {this.renderDraftDropdown()}
         </li>
-        <li key="/me"><HeaderLink to="/me" label="MY PROFILE" icon="user-circle"/></li>
-        <li key="/signout"><HeaderLink to="/signout" label="SIGN OUT" icon="sign-out"/></li>
+        <li><HeaderLink label="MY PROFILE" icon="user-circle"/></li>
+        {this.props.user.role === 'admin' && <AdminHeaderLink/>}
+        <li><HeaderLink to="/signout" label="SIGN OUT" icon="sign-out"/></li>
       </span>
     )
   }
@@ -52,12 +79,15 @@ class UserHeader extends React.Component {
       return null
     }
 
+    const drafts = this.props.drafts.concat().sort((left, right) =>
+      right.last_modification_date.localeCompare(left.last_modification_date))
+
     return (
       <Dropdown open={this.state.openDraft} onClose={() => this.setState({ openDraft: false })}>
         <ul>
           <li><Link to="/draft"><Icon type="file-text-o"/> Draft</Link></li>
 
-          {this.props.drafts.map((draft, i) => (
+          {drafts.map((draft, i) => (
             <li key={i}>{this.renderDraft(draft)}</li>
           ))}
         </ul>
@@ -69,41 +99,32 @@ class UserHeader extends React.Component {
     return (
       <Link to={`/draft/${draft.id}`}>
         <Icon type="history"/>{' '}
-        “{truncateText(draft.title, 50)}”,{' '}
-        <strong><TimeAgo value={draft.publication_date}/></strong>
+        “{truncateText(draft.title, 25)}”,{' '}
+        <strong>edited <TimeAgo value={draft.last_modification_date}/></strong>
       </Link>
     )
   }
 
-  _onClick = (e: Event) => {
-    e.preventDefault()
-
+  _onClick = () => {
     if (this.props.drafts.length <= 0) {
       this.context.router.push('/draft')
     } else {
       this.setState({ openDraft: !this.state.openDraft })
     }
-
-    return false
   }
 }
 
 const GuestHeader = () => (
   <span>
-    <li key="/signup"><HeaderLink to="/signup" label="SIGN UP" icon="user-plus"/></li>
     <li key="/signin"><HeaderLink to="/signin" label="SIGN IN" icon="sign-in"/></li>
   </span>
 )
 
 export class Header extends React.Component {
   props: {
-    logged: boolean,
+    user: ?User,
     drafts: Array<Article>,
     loadDrafts: () => void,
-  }
-
-  componentDidMount() {
-    this.props.loadDrafts()
   }
 
   render() {
@@ -115,8 +136,8 @@ export class Header extends React.Component {
           <nav className='nav'>
             <ul>
               <li><HeaderLink to="/" label="HOME" icon="home"/></li>
-              <li><HeaderLink to="/" label="CATEGORIES" icon="database"/></li>
-              <li><HeaderLink to="/" label="ARCHIVES" icon="archive"/></li>
+              {/* <li><HeaderLink to="/" label="CATEGORIES" icon="database"/></li> */}
+              {/* <li><HeaderLink to="/" label="ARCHIVES" icon="archive"/></li> */}
 
               {this.renderUserHeader()}
             </ul>
@@ -129,8 +150,10 @@ export class Header extends React.Component {
   }
 
   renderUserHeader() {
-    if (this.props.logged) {
-      return <UserHeader drafts={this.props.drafts}/>
+    const { user, drafts, loadDrafts } = this.props
+
+    if (user) {
+      return <UserHeader user={user} drafts={drafts} loadDrafts={loadDrafts}/>
     } else {
       return <GuestHeader />
     }

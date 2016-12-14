@@ -1,6 +1,7 @@
 /** @flow */
 
 import * as Immutable from 'immutable'
+import { removeWhen } from '../utils'
 
 import type { Action } from '../actions/article'
 import type { Article, ArticleError } from '../services/articles'
@@ -13,12 +14,13 @@ export type State = {
   lastError: ?Error,
   drafts: Immutable.Map<ArticleId, Article>,
   currentDraft: {
-    draft: ?Article,
+    draft: Article,
     errors: Array<ArticleError>,
   },
   articlesById: Immutable.Map<ArticleId, Article>,
   articlesByPage: Immutable.Map<PageNumber, Array<Article>>,
   pagination: {
+    categoryId: ?number,
     current: number,
     count: number,
   },
@@ -29,13 +31,14 @@ const initialState: State = {
   lastError: null,
   drafts: new Immutable.Map(),
   currentDraft: {
-    draft: null,
+    draft: emptyArticle(),
     errors: [],
   },
   articlesById: new Immutable.Map(),
   articlesByPage: new Immutable.Map(),
   pagination: {
-    current: 1,
+    categoryId: null,
+    current: 0,
     count: 1,
   },
 }
@@ -81,12 +84,15 @@ export default function reducer(state: State = initialState, action: Action): St
         pagination: {
           ...state.pagination,
           current: action.page,
+          categoryId: action.categoryId,
         },
       }
 
     case '@ARTICLES/LOAD_DRAFTS':
       return {
         ...state,
+        loading: false,
+        loadError: null,
         drafts: action.drafts.reduce((acc, x) => acc.set(x.id, x), new Immutable.Map()),
       }
 
@@ -96,14 +102,63 @@ export default function reducer(state: State = initialState, action: Action): St
         loading: false,
         lastError: null,
 
-        drafts: action.draft ? state.drafts.set(action.draft.id, action.draft) : state.drafts,
+        articlesById: (
+          action.draft && !action.draft.is_draft
+          ? state.articlesById.set(action.draft.id, action.draft)
+          : state.articlesById
+        ),
+
+        drafts: (
+          action.draft
+          ? action.draft.is_draft
+            ? state.drafts.set(action.draft.id, action.draft)
+            : state.drafts.remove(action.draft.id)
+          : state.drafts
+        ),
         currentDraft: {
           draft: action.draft,
           errors: action.errors,
         },
       }
 
+    case '@ARTICLES/UNLOAD_DRAFT':
+      return {
+        ...state,
+
+        currentDraft: initialState.currentDraft,
+      }
+
+    case '@ARTICLES/DELETE':
+      const removeArticleId = action.articleId
+      return {
+        ...state,
+
+        drafts: state.drafts.remove(removeArticleId),
+        articlesById: state.articlesById.remove(removeArticleId),
+        articlesByPage: state.articlesByPage.map(articles => removeWhen(articles, x => x.id === removeArticleId)),
+      }
+
     default:
       return state
+  }
+}
+
+function emptyArticle() {
+  return {
+    id: 0,
+    is_draft: true,
+    user: {
+      uid: '',
+      email: '',
+      first_name: '',
+      last_name: '',
+    },
+    title: '',
+    content: '',
+    category_id: 0,
+    subcategory_id: 0,
+    publication_date: '',
+    last_modification_date: '',
+    comments_count: 0,
   }
 }

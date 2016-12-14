@@ -1,0 +1,16 @@
+ul.breadcrumbs {
+  li {
+    display: inline;
+
+    &.separator {
+      font-size: 0.8em;
+      padding: 0.5em 1em;
+    }
+
+    &:not(.current, .separator) {
+      .fa {
+        color: $link-color;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import * as articleActions from '../actions/article'
 import type { State } from '../reducers'
 
 type Props = {
+  router: Router,
   routeParams: {
     articleId: string,
   },
@@ -14,11 +15,16 @@ type Props = {
 function mapStateToProps(state: State, props: Props): Object {
   const articleId = parseInt(props.routeParams.articleId, 10)
   const article = state.articles.articlesById.get(articleId)
+  const categories = state.categories.categories.valueSeq().toJS()
+  const comments = state.comments.comments.get(articleId, [])
 
   return {
-    loading: !article || state.articles.loading,
+    loading: state.articles.loading,
     lastError: state.articles.lastError,
     article,
+    categories,
+    comments,
+    currentUser: state.account.currentUser,
   }
 }
 
@@ -26,8 +32,9 @@ function mapDispatchToProps(dispatch: (_: any) => void, props: Props): Object {
   const articleId = parseInt(props.routeParams.articleId, 10)
 
   return {
-    loadArticle() {
-      dispatch(articleActions.fetchOne(articleId))
+    async deleteArticle() {
+      await dispatch(articleActions.requestArticleDeletion(articleId))
+      props.router.replace('/')
     },
   }
 }

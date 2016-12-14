@@ -4,7 +4,7 @@ import React from 'react'
 
 import Textarea from 'react-textarea-autosize'
 
-export class ContentInput extends React.Component {
+export class TitleInput extends React.Component {
   props: {
     value: string,
     placeholder: string,

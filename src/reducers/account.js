@@ -1,6 +1,6 @@
 /** @flow */
 
-import type { User, LoginError, SignUpError } from '../services/account'
+import type { User, LoginError } from '../services/account'
 import type { Action } from '../actions/account'
 
 export type State = {
@@ -9,46 +9,16 @@ export type State = {
 
   loggingIn: boolean,
   loginError?: Array<LoginError>,
-
-  signingUp: boolean,
-  signupError?: Array<SignUpError>,
-  signupSuccess?: boolean,
 }
 
 const initialState: State = {
   currentUser: null,
   token: loadToken(),
-
   loggingIn: false,
-  signingUp: false,
 }
 
 export default function reducer(state: State = initialState, action: Action): State {
   switch (action.type) {
-    case '@ACCOUNT/SIGNING_UP':
-      return {
-        ...state,
-        signingUp: true,
-        signupError: undefined,
-        signupSuccess: false,
-      }
-
-    case '@ACCOUNT/SIGNUP_ERROR':
-      return {
-        ...state,
-        signingUp: false,
-        signupError: action.errors,
-        signupSuccess: false,
-      }
-
-    case '@ACCOUNT/SIGNUP_SUCCESS':
-      return {
-        ...state,
-        signingUp: false,
-        signupError: undefined,
-        signupSuccess: true,
-      }
-
     case '@ACCOUNT/LOGGING_IN':
       return {
         ...state,
@@ -63,6 +33,8 @@ export default function reducer(state: State = initialState, action: Action): St
         loggingIn: false,
         loginError: action.errors,
         loginSuccess: false,
+        token: null,
+        currentUser: null,
       }
 
     case '@ACCOUNT/LOGIN_SUCCESS':
@@ -81,6 +53,7 @@ export default function reducer(state: State = initialState, action: Action): St
       }
 
     case '@ACCOUNT/LOGOUT':
+      persistToken(null)
       return initialState
 
     default:
@@ -88,7 +61,7 @@ export default function reducer(state: State = initialState, action: Action): St
   }
 }
 
-function loadToken(): ?string {
+export function loadToken(): ?string {
   const data = window.localStorage['@@SCIMS/1.0/reducers/account']
 
   if (data) {
@@ -99,7 +72,7 @@ function loadToken(): ?string {
   return null
 }
 
-function persistToken(token: ?string): ?string {
+export function persistToken(token: ?string): ?string {
   window.localStorage['@@SCIMS/1.0/reducers/account'] = JSON.stringify({ token })
   return token
 }

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import cx from 'classnames'
+import { wrapPreventDefault } from '../utils'
 
 import { Icon } from './icons/FontAwesome'
 
@@ -12,6 +13,7 @@ export type Props = {
   children?: React$Element<*>,
 
   onClose?: () => void,
+  onConfirm?: () => void,
 }
 
 export function Button({children, ...props}: {children?: any}) {
@@ -53,8 +55,8 @@ export class Modal extends React.Component {
 
   render() {
     const defaultButtons = [
-      <Button key="confirm" className="confirm">Confirm</Button>,
-      <Button key="cancel" className="cancel" onClick={this._onClose}>Cancel</Button>,
+      <Button key="confirm" className="confirm" onClick={wrapPreventDefault(this.props.onConfirm)}>Confirm</Button>,
+      <Button key="cancel" className="cancel" onClick={wrapPreventDefault(() => this.close())}>Cancel</Button>,
     ]
 
     const { title, children, buttons = defaultButtons } = this.props
@@ -63,7 +65,7 @@ export class Modal extends React.Component {
       <div className={cx('modal', { active: this.state.active })}>
         <div className="modal-title">
           <span>{title}</span>
-          <a href="#" onClick={this._onClose}><Icon type="close"/></a>
+          <a href="#" onClick={wrapPreventDefault(() => this.close())}><Icon type="close"/></a>
         </div>
 
         <div className="modal-body">
@@ -75,13 +77,5 @@ export class Modal extends React.Component {
         </div>
       </div>
     )
-  }
-
-  _onClose = (e: Event) => {
-    e.preventDefault()
-
-    this.close()
-
-    return false
   }
 }

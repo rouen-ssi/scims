@@ -48,16 +48,19 @@ export function Button({children, loading, ...props}: Object) {
   )
 }
 
-export class Component extends React.Component {
+type BaseProps = {
+  errors: Array<string>,
+}
+
+type BaseState = {
+  form: Object,
+}
+
+// $FlowFixMe
+export class Component<DefaultProps, Props: BaseProps, State: BaseState>
+  extends React.Component<DefaultProps, Props, State>
+{
   static errors: { [message: string]: [string, string] };
-  props: { errors: Array<string> };
-  state: { form: { [id: string]: ?string } };
-
-  constructor(props: Object, context: mixed) {
-    super(props, context)
-
-    this.state = { form: {} }
-  }
 
   renderField(id: string, label: string, props: Object = {}) {
     const errors = []
@@ -90,7 +93,7 @@ export class Component extends React.Component {
     return false
   }
 
-  onSubmit(_formData: Object) {
+  onSubmit(_formData: Object): * {
 
   }
 

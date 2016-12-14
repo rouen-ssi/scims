@@ -12,7 +12,7 @@ const root = document.createElement('div')
 document.body.appendChild(root)
 
 const store = configureStore()
-const router = configureRouter(hashHistory)
+const router = configureRouter(hashHistory, store)
 ReactDOM.render(<Provider store={store}>{router}</Provider>, root)
 
 store.dispatch(accountActions.fetchProfile())

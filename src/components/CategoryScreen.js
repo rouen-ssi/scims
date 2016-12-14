@@ -1,114 +1,82 @@
 /** @flow */
 import React from 'react'
-import { Link } from 'react-router'
 
 import MainContent from './MainContent'
-import { TimeAgo } from './DateTime'
-import { ArticleLink } from './Link'
+import Sidebar from './Sidebar'
 import { Spinner } from './Spinner'
-import { Icon } from './icons/FontAwesome'
+import { ArticleList } from './ArticleList'
+import { CategoryList } from './CategoryList'
+import { ArchiveList } from './ArchiveList'
+import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
 
 import type { Category } from '../services/categories'
 import type { Article } from '../services/articles'
 
-const icons = {
-  'Mathematics': 'book',
-  'Statistics': 'line-chart',
-  'Arithmetics': 'plus',
-  'Chemistry': 'flask',
-  'Physics': 'space-shuttle',
-}
+type Props = {
+  loadingCategory: boolean,
+  loadingArticles: boolean,
+  category: ?Category,
+  categories: Array<Category>,
+  articles: Array<Article>,
+  pagination: {current: number, count: number, categoryId: ?number},
 
-function Card(props: {category: Category}) {
-  return (
-    <Link to={`/category/${props.category.id}/${props.category.name}`} className="article-category-card">
-      <span className="name">
-        <i className={`fa fa-${icons[props.category.name]}`}/>
-        <span>{props.category.name}</span>
-      </span>
-
-      <span className="stat">
-        {props.category.article_count} articles
-      </span>
-    </Link>
-  )
-}
-
-function ArticleSpan({article}: {article: Article}) {
-  return (
-    <span className="category-article-list-element">
-      <span className="name"><ArticleLink article={article}/></span>
-      <br/>
-      <span className="details">
-        <span className="author">by <a href={`mailto:${article.user.email}`}>{article.user.first_name} {article.user.last_name}</a></span>
-        <TimeAgo value={article.publication_date} className="publication_date"/>
-        <span className="popularity"><Icon type="level-up" fixed/> 8</span>
-        <span className="comments"><Icon type="comments" fixed/> 101</span>
-      </span>
-    </span>
-  )
+  loadArticles: (page: number) => void,
 }
 
 export class CategoryScreen extends React.Component {
-  props: {
-    category: ?Category,
-    categories: Array<Category>,
-    articles: Array<Article>,
-
-    loadCategory: () => void,
-  }
-
-  componentDidMount() {
-    this.props.loadCategory()
-  }
+  props: Props
 
   render() {
-    if (!this.props.category) {
+    if (this.props.loadingCategory) {
       return <Spinner/>
     }
 
     return (
-      <MainContent side="center">
-        <div className="bloc">
-          <h1>
-            <i className={`fa fa-${icons[this.props.category.name]}`}/>
-            {' '}{this.props.category.name}
-          </h1>
+      <div>
+        <h2>
+          <CategoryBreadcrumbs
+            category={this.props.category}
+            categories={this.props.categories}
+          />
+        </h2>
 
+        <Sidebar side="right">
           {this.renderSubcategories(this.props.category)}
+          <ArchiveList/>
+        </Sidebar>
+
+        <MainContent side="left">
           {this.renderArticles()}
-        </div>
-      </MainContent>
+        </MainContent>
+      </div>
     )
   }
 
-  renderSubcategories(category: Category) {
-    const directChildren = this.props.categories.filter(x => x.parent_categories === category.id)
-
-    if (directChildren.length <= 0) {
-      return null
-    }
+  renderSubcategories(category: ?Category) {
+    const categoryId = category ? category.id : -1
+    const directChildren = this.props.categories.filter(x => x.parent_categories === categoryId)
 
     return (
-      <div>
-        <h3 style={{margin: 0}}>Sub-categories</h3>
-
-        <section className="article-category-cards" style={{marginBottom: '1em'}}>
-          {directChildren.map((x, i) => <Card key={i} category={x}/>)}
-        </section>
-      </div>
+      <CategoryList
+        loading={false}
+        categories={directChildren}
+        lastError={null}
+      />
     )
   }
 
   renderArticles() {
-    return (
-      <div>
-        <h3>Trending Articles</h3>
+    if (this.props.loadingArticles) {
+      return <Spinner/>
+    }
 
-        <ol className="category-article-list">
-          {this.props.articles.map((x, i) => <li key={i}><ArticleSpan article={x}/></li>)}
-        </ol>
-      </div>
+    return (
+      <ArticleList
+        loading={this.props.loadingArticles}
+        articles={this.props.articles}
+        pagination={this.props.pagination}
+        loadArticles={this.props.loadArticles}
+      />
     )
   }
 }

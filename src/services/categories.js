@@ -21,4 +21,16 @@ export class CategoryService extends JsonService {
   fetchAll(): Promise<FetchCategoriesResponse> {
     return this.request('GET', '/categories')
   }
+
+  createAsAdmin(category: Category): Promise<{result: Category}> {
+    return this.authRequest('POST', '/category', category)
+  }
+
+  updateAsAdmin(category: Category): Promise<{result: Category}> {
+    return this.authRequest('PUT', `/category/${category.id}`, category)
+  }
+
+  deleteAsAdmin(categoryId: number): Promise<void> {
+    return this.authRequest('DELETE', `/category/${categoryId}`)
+  }
 }

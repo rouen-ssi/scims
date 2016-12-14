@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ArticleArchives = () => (
+export const ArchiveList = () => (
   <div className='sidebar-bloc'>
     <h1>Archives</h1>
     <ul>
@@ -11,5 +11,3 @@ const ArticleArchives = () => (
     </ul>
   </div>
 )
-
-export default ArticleArchives

@@ -6,7 +6,7 @@ import type { User } from './account'
 
 export type Comment = {
   id: number,
-  parent_comment_id: number,
+  parent_comment_id: number | -1,
   user: User,
   publication_date: string,
   content: string,

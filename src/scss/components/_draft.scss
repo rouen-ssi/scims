@@ -25,7 +25,6 @@
   textarea {
     width: 100%;
     max-width: 100%;
-    min-height: 200px;
     border: none;
     font-family: $font-serif;
     font-size: 1em;
@@ -34,6 +33,126 @@
 
     &:focus {
       outline: none;
+    }
+  }
+
+  .article-body textarea {
+    min-height: 200px;
+  }
+}
+
+.editor {
+  $padding: 1em;
+  $icon-size: 0.8em;
+  $icon-color: darken($page-background-color, 75%);
+  $inner-border-color: hsla(220, 14%, 96%, 1);
+  $outer-border-color: hsla(220, 14%, 82%, 1);
+  $editor-background-color: hsla(224, 25%, 98%, 1);
+
+  border: 1px solid $outer-border-color;
+  border-radius: 3px;
+
+  .toolbar {
+    display: inline-block;
+
+    .toolbar-command {
+      display: inline-block;
+      color: $icon-color;
+      border-right: 1px solid $inner-border-color;
+
+      .fa, .toolbar-command-body {
+        padding: $padding;
+        font-size: $icon-size;
+      }
+      .fa {
+        @extend .fa-fw;
+      }
+      .toolbar-command-body {
+        @extend .fa;
+        @extend .fa-fw;
+      }
+
+      &.active {
+        color: hsla(220, 23%, 56%, 1);
+        text-shadow: 0 0 5px lighten(hsla(220, 23%, 56%, 1), 5%);
+        &:hover {
+          text-shadow: 0 0 5px lighten(hsla(220, 23%, 56%, 1), 5%);
+        }
+      }
+
+      &:hover {
+        text-decoration: none;
+        text-shadow: 0 0 5px lighten($icon-color, 25%);
+      }
+
+      &.disabled {
+        color: lighten($icon-color, 50%);
+        &:hover {
+          text-shadow: none;
+          cursor: not-allowed;
+        }
+      }
+
+      .tooltip {
+        border: 1px solid hsla(220, 14%, 30%, 1);
+        border-radius: 3px;
+        background: hsla(220, 24%, 21%, 1);
+        position: absolute;
+        z-index: 2;
+        box-shadow: 0 2px 3px 1px rgba(0, 0, 0, 0.2);
+        margin-top: 0.5em;
+        color: hsla(220, 15%, 86%, 1);
+        text-shadow: none;
+        padding: 0.2em 0.6em;
+        font-size: 0.7em;
+        font-family: $font-family;
+
+        &:after, &:before {
+          bottom: 100%;
+          left: 22px;
+          border: solid transparent;
+          content: " ";
+          height: 0;
+          width: 0;
+          position: absolute;
+          pointer-events: none;
+        }
+
+        &:after {
+          border-color: transparentize(hsla(220, 24%, 21%, 1), 1);
+          border-bottom-color: hsla(220, 24%, 21%, 1);
+          border-width: 6px;
+          margin-left: -6px;
+        }
+        &:before {
+          border-color: transparentize(hsla(220, 24%, 21%, 1), 1);
+          border-bottom-color: hsla(220, 24%, 21%, 1);
+          border-width: 7px;
+          margin-left: -7px;
+        }
+      }
+    }
+  }
+
+  .DraftEditor-root {
+    border-top: 1px solid $outer-border-color;
+    padding: $padding;
+    background: $editor-background-color;
+
+    blockquote {
+      border-left: 3px solid darken($editor-background-color, 50%);
+      background: darken($editor-background-color, 10%);
+      padding-left: 1em;
+    }
+
+    *:not(blockquote) + blockquote {
+      margin-top: 1em;
+    }
+    blockquote + * {
+      margin-top: 1em;
+    }
+    blockquote + blockquote {
+      margin-top: 0;
     }
   }
 }

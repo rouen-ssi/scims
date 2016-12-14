@@ -1,55 +1,112 @@
 /** @flow */
 
 import React from 'react'
+import { wrapPreventDefault } from '../utils'
 
 import { Spinner } from './Spinner'
 import { DateTime } from './DateTime'
-import { Link } from 'react-router'
+import { Link, DraftLink } from './Link'
 import { Icon } from './icons/FontAwesome'
-
-import ArticleCommentList from '../containers/ArticleCommentList'
+import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
+import { CommentList } from './CommentList'
 
 import type { Article } from '../services/articles'
+import type { Category } from '../services/categories'
+import type { User } from '../services/account'
+import type { Comment } from '../services/comments'
+
+type Props = {
+  loading: boolean,
+  article: ?Article,
+  categories: Array<Category>,
+  comments: Array<Comment>,
+  currentUser: ?User,
+
+  deleteArticle: () => void,
+}
 
 export class ArticleScreen extends React.Component {
-  props: {
-    loading: boolean,
-    lastError: ?Error,
-    article: Article,
-
-    loadArticle: () => void,
-  }
-
-  componentDidMount() {
-    this.props.loadArticle()
-    window.scrollTo(0, 0)
-  }
+  props: Props
 
   render() {
     if (this.props.loading) {
       return <Spinner />
     }
 
+    const { article } = this.props
+
+    if (!article) {
+      return (
+        <div className="main-content left">
+          <div className="bloc">
+            <h2>Article not found</h2>
+          </div>
+        </div>
+      )
+    }
+
     return (
-      <article className='bloc article'>
+      <div style={{width: '100%'}}>
         <h2>
-          {this.props.article.title}
+          <CategoryBreadcrumbs
+            category={this.props.categories.find(x => x.id === article.category_id)}
+            categories={this.props.categories}
+            article={article}
+          />
         </h2>
 
-        <div className='article-infos'>
-          <ul>
-            <li><Icon type="calendar"/> <DateTime value={this.props.article.publication_date}/></li>
-            <li><Icon type="user"/> {this.props.article.user.first_name} {this.props.article.user.last_name}</li>
-            <li><Link to='#'><Icon type="share"/> Share</Link></li>
-          </ul>
-        </div>
+        <article className='bloc article'>
+          <h2>
+            {article.title}
+          </h2>
 
-        <div className="article-body">
-          {this.props.article.content}
-        </div>
+          <div className='article-infos'>
+            <ul>
+              <li><Icon type="calendar"/> <DateTime value={article.publication_date}/></li>
+              <li><Icon type="user"/> {article.user.first_name} {article.user.last_name}</li>
+              <li><Link to='#'><Icon type="share"/> Share</Link></li>
+              {this.renderEditButton(article)}
+              {this.renderDeleteButton(article)}
+            </ul>
+          </div>
 
-        <ArticleCommentList article={this.props.article}/>
-      </article>
+          <div className="article-body">
+            {article.content}
+          </div>
+
+          <div className="article-comments">
+            <CommentList comments={this.props.comments} parentCommentId={-1} />
+          </div>
+        </article>
+      </div>
+    )
+  }
+
+  renderEditButton(article: Article) {
+    if (!this.props.currentUser || this.props.currentUser.uid !== article.user.uid) {
+      return null
+    }
+
+    return (
+      <li>
+        <DraftLink draft={article}>
+          <Icon type="pencil"/> Edit
+        </DraftLink>
+      </li>
+    )
+  }
+
+  renderDeleteButton(article: Article) {
+    if (!this.props.currentUser || this.props.currentUser.uid !== article.user.uid) {
+      return null
+    }
+
+    return (
+      <li>
+        <a href="#" onClick={wrapPreventDefault(this.props.deleteArticle)}>
+          <Icon type="trash"/> Delete
+        </a>
+      </li>
     )
   }
 }

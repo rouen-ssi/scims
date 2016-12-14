@@ -18,6 +18,18 @@ export type User = {
   first_name: string,
   last_name: string,
   biography: string,
+  role: 'user' | 'admin',
+}
+
+export function emptyAccount(): User {
+  return {
+    uid: '',
+    email: '',
+    first_name: '',
+    last_name: '',
+    biography: '',
+    role: 'user',
+  }
 }
 
 export type LoginSuccess = SuccessResponse & {
@@ -59,11 +71,27 @@ export class AccountService extends JsonService {
     return this.request('POST', '/account/create', { email, first_name, last_name, password })
   }
 
-  changePassword(old_password: string, new_password: string): Promise<ChangePasswordResponse> {
+  changePassword(new_password: string, old_password?: string): Promise<ChangePasswordResponse> {
     return this.authRequest('PUT', '/account/password', { old_password, new_password })
   }
 
   updateProfile(user: User): Promise<UpdateProfileResponse> {
     return this.authRequest('PUT', '/account', user)
+  }
+
+  fetchAccountsAsAdmin(): Promise<{results: Array<User>}> {
+    return this.authRequest('GET', '/admin/accounts')
+  }
+
+  createAccountAsAdmin(account: User): Promise<{result: User}> {
+    return this.authRequest('POST', '/admin/accounts', account)
+  }
+
+  updateAccountAsAdmin(account: User): Promise<{result: User}> {
+    return this.authRequest('PUT', `/admin/accounts/${account.uid}`, account)
+  }
+
+  deleteAccountAsAdmin(userUid: string): Promise<void> {
+    return this.authRequest('DELETE', `/admin/accounts/${userUid}`)
   }
 }
