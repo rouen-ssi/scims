@@ -9,6 +9,7 @@ import type { IconType } from '../../icons/FontAwesome'
 
 import type { Command as CommandType } from './commands'
 import { inline } from './commands/inline'
+import { link } from './commands/link'
 
 export type ToolBarProps = {
   editorState: EditorState,
@@ -116,7 +117,9 @@ export class ToolBar extends React.Component<*, ToolBarProps, *> {
         <Command icon="underline" tooltip="Underline" command={inline('UNDERLINE')}/>
         <Command icon="strikethrough" tooltip="Strikethrough" command={inline('STRIKETHROUGH')}/>
         <Command icon="code" tooltip="Code" command={inline('CODE')}/>
-        <Command icon="globe" tooltip="Link"/>
+        <Command icon="globe" tooltip="Link" command={link}/>
+        <Command icon="list-ol" tooltip="Ordered List"/>
+        <Command icon="list-ul" tooltip="Unordered List"/>
         <Command icon="align-left" tooltip="Align Left"/>
         <Command icon="align-right" tooltip="Align Right"/>
         <Command icon="align-center" tooltip="Center"/>

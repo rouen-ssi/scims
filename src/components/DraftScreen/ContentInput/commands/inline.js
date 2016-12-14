@@ -1,6 +1,7 @@
 /** @flow */
 
 import { EditorState, RichUtils } from 'draft-js'
+import { getCurrentInlineStyles } from './index'
 import type { Command } from './index'
 
 export type InlineStyle = 'BOLD' | 'ITALIC' | 'UNDERLINE' | 'STRIKETHROUGH' | 'CODE'
@@ -13,13 +14,7 @@ export function inline(inlineStyle: InlineStyle): Command {
       return EditorState.forceSelection(newState, selection)
     },
     isActive: (editorState) => {
-      const content = editorState.getCurrentContent()
-      const selection = editorState.getSelection()
-      const block = content.getBlockForKey(selection.getStartKey())
-      if (!block) {
-        return false
-      }
-      const styles = block.getInlineStyleAt(selection.getStartOffset())
+      const styles = getCurrentInlineStyles(editorState)
       return styles.contains(inlineStyle)
     },
   }
