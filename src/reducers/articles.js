@@ -2,6 +2,7 @@
 
 import * as Immutable from 'immutable'
 import { removeWhen } from '../utils'
+import { emptyRawContent } from '../utils/draft'
 
 import type { Action } from '../actions/article'
 import type { Article, ArticleError } from '../services/articles'
@@ -154,7 +155,7 @@ function emptyArticle() {
       last_name: '',
     },
     title: '',
-    content: '',
+    content: emptyRawContent(),
     category_id: 0,
     subcategory_id: 0,
     publication_date: '',

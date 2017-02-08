@@ -8,7 +8,7 @@ declare module 'draft-js' {
 
   declare class EditorState {
     static createEmpty(): EditorState;
-    static createFromContent(content: ContentState): EditorState;
+    static createWithContent(content: ContentState): EditorState;
     static forceSelection(editorState: EditorState, selection: SelectionState): EditorState;
     static set(editorState: EditorState, config: Object): EditorState;
 
@@ -19,6 +19,7 @@ declare module 'draft-js' {
   declare class ContentState {
     static createFromText(text: string): ContentState;
 
+    getPlainText(delimiter?: string): string;
     getBlockForKey(key: string): Block;
   }
 
@@ -38,4 +39,9 @@ declare module 'draft-js' {
   }
 
   declare var DefaultDraftBlockRenderMap: Map<string, {}>;
+
+  declare class RawDraftContentState {}
+
+  declare function convertFromRaw(rawState: RawDraftContentState): ContentState;
+  declare function convertToRaw(contentState: ContentState): RawDraftContentState;
 }

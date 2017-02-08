@@ -49,8 +49,10 @@
   $outer-border-color: hsla(220, 14%, 82%, 1);
   $editor-background-color: hsla(224, 25%, 98%, 1);
 
-  border: 1px solid $outer-border-color;
-  border-radius: 3px;
+  &:not(.readonly) {
+    border: 1px solid $outer-border-color;
+    border-radius: 3px;
+  }
 
   .toolbar {
     display: inline-block;
@@ -135,9 +137,11 @@
   }
 
   .DraftEditor-root {
-    border-top: 1px solid $outer-border-color;
-    padding: $padding;
-    background: $editor-background-color;
+    .public-DraftEditor-content[contenteditable="true"] {
+      border-top: 1px solid $outer-border-color;
+      padding: $padding;
+      background: $editor-background-color;
+    }
 
     blockquote {
       border-left: 3px solid darken($editor-background-color, 50%);

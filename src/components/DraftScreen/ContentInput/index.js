@@ -1,7 +1,7 @@
 /** @flow */
 import React from 'react'
 
-import { Editor, EditorState, ContentState } from 'draft-js'
+import { Editor, EditorState, ContentState, convertFromRaw } from 'draft-js'
 import { ToolBar } from './ToolBar'
 import { blockRenderMap, blockStyleFn } from './blockRenderMap'
 
@@ -15,11 +15,13 @@ export type State = {
   editorState: EditorState,
 }
 
-function asContentState(value: string | ContentState | void): ContentState {
+function asContentState(value: string | ContentState | Object | void): ContentState {
   if (typeof value === 'string') {
     return ContentState.createFromText(value)
   } else if (value instanceof ContentState) {
     return value
+  } else if (typeof value === 'object') {
+    return convertFromRaw(value)
   }
   return ContentState.createFromText('')
 }

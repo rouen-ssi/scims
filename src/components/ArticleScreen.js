@@ -10,6 +10,7 @@ import { Icon } from './icons/FontAwesome'
 import { CategoryBreadcrumbs } from './CategoryBreadcrumbs'
 import { CommentList } from './CommentList'
 import { Modal } from './Modal'
+import { ArticleContent } from './ArticleContent'
 
 import type { Article } from '../services/articles'
 import type { Category } from '../services/categories'
@@ -76,7 +77,7 @@ export class ArticleScreen extends React.Component {
           </div>
 
           <div className="article-body">
-            {article.content}
+            <ArticleContent content={article.content}/>
           </div>
 
           <div className="article-comments">

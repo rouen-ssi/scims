@@ -1,6 +1,7 @@
 /** @flow */
 import React from 'react'
 import { truncateText } from '../utils'
+import { convertFromRaw } from 'draft-js'
 
 import { Link } from 'react-router'
 import { DateTime } from './DateTime'
@@ -8,6 +9,12 @@ import { ArticleLink } from './Link'
 import { Icon } from './icons/FontAwesome'
 
 import type { Article as ArticleType } from '../services/articles'
+
+function getArticleIntroduction(article: ArticleType): string {
+  const content = convertFromRaw(article.content)
+  const text = content.getPlainText()
+  return truncateText(text, 500)
+}
 
 export const Article = (props: {article: ArticleType}) => (
   <article className='bloc article'>
@@ -25,7 +32,7 @@ export const Article = (props: {article: ArticleType}) => (
     </div>
 
     <div className="article-body">
-      {truncateText(props.article.content, 500)}
+      {getArticleIntroduction(props.article)}
     </div>
   </article>
 )

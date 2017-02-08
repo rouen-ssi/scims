@@ -1,6 +1,7 @@
 /** @flow */
 /* eslint-disable camelcase */
 import { JsonService } from './json'
+import type { RawDraftContentState } from 'draft-js'
 
 export type Article = {
   id: number,
@@ -12,7 +13,7 @@ export type Article = {
     last_name: string,
   },
   title: string,
-  content: string,
+  content: RawDraftContentState,
   category_id: number,
   subcategory_id: number,
   publication_date: string,

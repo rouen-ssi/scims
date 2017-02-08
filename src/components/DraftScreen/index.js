@@ -7,6 +7,7 @@ import { Link } from 'react-router'
 import { Icon } from '../icons/FontAwesome'
 import { Spinner } from '../Spinner'
 import { DateInput, TitleInput, CategoryInput, ContentInput } from './Input'
+import { convertToRaw } from 'draft-js'
 
 import type { User } from '../../services/account'
 import type { Article } from '../../services/articles'
@@ -100,7 +101,14 @@ export class DraftScreen extends React.Component {
     if (deepEqual(currentDraft, this.props.draft)) {
       return
     }
-    return <li><Link to="#" onClick={wrapPreventDefault(this.props.saveDraft.bind(this, currentDraft))}><Icon type="save"/> Save</Link></li>
+    return (
+      <li><Link to="#" onClick={wrapPreventDefault(() => this.props.saveDraft({
+        ...currentDraft,
+        content: convertToRaw(currentDraft.content),
+      }))}>
+        <Icon type="save"/> Save</Link>
+      </li>
+    )
   }
 
   renderPublishButton(currentDraft: Article) {
